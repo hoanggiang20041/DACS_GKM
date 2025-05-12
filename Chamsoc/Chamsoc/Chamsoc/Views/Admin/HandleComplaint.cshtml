@@ -1,0 +1,56 @@
+﻿@model Chamsoc.Models.HandleComplaintViewModel
+
+<div class="container my-5">
+    <h2 class="text-center mb-4 text-primary">Xử Lý Khiếu Nại</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Khiếu Nại Về @Model.CaregiverName</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Khách Hàng:</strong> @Model.SeniorName</p>
+                    <p><strong>Công Việc:</strong> #@Model.JobId</p>
+                    <p><strong>Nội Dung Khiếu Nại:</strong> @Model.Description</p>
+                    <form asp-action="HandleComplaint" method="post">
+                        <input type="hidden" asp-for="ComplaintId" />
+                        <input type="hidden" asp-for="JobId" />
+                        <input type="hidden" asp-for="CaregiverId" />
+                        <input type="hidden" asp-for="CaregiverName" />
+                        <input type="hidden" asp-for="SeniorId" />
+                        <input type="hidden" asp-for="SeniorName" />
+                        <input type="hidden" asp-for="Description" />
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Trạng Thái:</label>
+                            <select asp-for="Status" class="form-control" required>
+                                <option value="Pending">Chưa Xử Lý</option>
+                                <option value="Resolved">Đã Giải Quyết</option>
+                                <option value="Dismissed">Bỏ Qua</option>
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Giải Quyết:</label>
+                            <textarea asp-for="Resolution" class="form-control" rows="5" placeholder="Nhập cách giải quyết của bạn..."></textarea>
+                            <span asp-validation-for="Resolution" class="text-danger"></span>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Lưu
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+}

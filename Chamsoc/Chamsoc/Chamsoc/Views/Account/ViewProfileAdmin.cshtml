@@ -1,0 +1,85 @@
+﻿@model Chamsoc.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Hồ Sơ - Quản Trị Viên";
+}
+
+<style>
+    .verified-tick {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url('/images/tick.png') no-repeat center center;
+        background-size: cover;
+        margin-left: 5px;
+        vertical-align: middle;
+        position: relative;
+    }
+
+        .verified-tick::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            animation: rainbow-border 3s linear infinite;
+            background: url('/images/tick.png') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+        }
+
+    @@keyframes rainbow-border {
+        0% {
+            border-color: #ff0000;
+        }
+        /* Red */
+        16% {
+            border-color: #ff7f00;
+        }
+        /* Orange */
+        33% {
+            border-color: #ffff00;
+        }
+        /* Yellow */
+        50% {
+            border-color: #00ff00;
+        }
+        /* Green */
+        66% {
+            border-color: #00ffff;
+        }
+        /* Cyan */
+        83% {
+            border-color: #0000ff;
+        }
+        /* Blue */
+        100% {
+            border-color: #ff00ff;
+        }
+        /* Magenta */
+    }
+</style>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Hồ Sơ - Quản Trị Viên</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @Model.UserName
+                        <span class="verified-tick"></span>
+                    </h5>
+                    <p class="card-text"><strong>Email:</strong> @Model.Email</p>
+                    <p class="card-text"><strong>Số điện thoại:</strong> @(Model.PhoneNumber ?? "Không có")</p>
+                    <p class="card-text"><strong>Vai trò:</strong> Quản trị viên</p>
+                    <a asp-action="UpdateProfileAdmin" asp-controller="Admin" asp-route-id="@Model.Id" class="btn btn-primary">Cập nhật hồ sơ</a>
+                    <a asp-action="ManageUsers" asp-controller="Admin" class="btn btn-success">Quản lý người dùng</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

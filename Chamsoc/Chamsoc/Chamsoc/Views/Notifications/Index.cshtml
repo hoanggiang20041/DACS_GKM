@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Chamsoc.Models.Notification>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Thông Báo Chưa Đọc</h2>
+    @if (Model.Any())
+    {
+        <div class="row">
+            @foreach (var notification in Model)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Thông Báo Mới</h5>
+                            <p class="card-text"><strong>Thời Gian:</strong> @notification.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                            <p class="card-text"><strong>Nội Dung:</strong></p>
+                            <p class="card-text">@notification.Message</p>
+                            <div class="text-center">
+                                <a asp-action="ViewNotification" asp-route-id="@notification.Id" class="btn btn-primary">Xem Chi Tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted">Bạn không có thông báo chưa đọc nào.</p>
+    }
+</div>

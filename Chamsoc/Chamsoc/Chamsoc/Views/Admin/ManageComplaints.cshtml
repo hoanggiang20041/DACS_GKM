@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Chamsoc.Models.Complaint>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Quản Lý Khiếu Nại</h2>
+    @if (Model.Any())
+    {
+        <div class="row">
+            @foreach (var complaint in Model)
+            {
+                <div class="col-12 mb-2">
+                    <div class="card shadow-sm">
+                        <div class="card-body d-flex align-items-center py-2">
+                            <div class="flex-grow-1">
+                                <span><strong>Khiếu Nại #</strong>@complaint.Id</span> |
+                                <span><strong>Công Việc:</strong> #@complaint.JobId</span> |
+                                <span><strong>Nội Dung:</strong> @(complaint.Description ?? "Không có nội dung")</span> |
+                                <span><strong>Trạng Thái:</strong> @(complaint.Status ?? "Không xác định")</span> |
+                                <p><strong>Thời Gian:</strong> @complaint.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                            </div>
+                            <div class="ms-3">
+                                <a asp-action="HandleComplaint" asp-route-id="@complaint.Id" class="btn btn-primary btn-sm">Xử Lý</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted">Không có khiếu nại nào.</p>
+    }
+</div>
+
+<style>
+    .card-body {
+        padding: 0.75rem 1rem; /* Reduce padding to make the card more compact */
+    }
+
+        .card-body span {
+            margin-right: 0.5rem; /* Add spacing between items in the row */
+        }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem; /* Make the button smaller to fit the compact layout */
+    }
+</style>

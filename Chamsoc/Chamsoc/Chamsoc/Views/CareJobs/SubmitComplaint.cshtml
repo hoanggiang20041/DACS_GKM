@@ -1,0 +1,35 @@
+﻿@model Chamsoc.Models.CareJob
+
+<div class="container my-5">
+    <h2 class="text-center mb-4 text-danger">Gửi Khiếu Nại</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="card-title mb-0">Thông Tin Công Việc</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong><i class="fas fa-concierge-bell me-2"></i>Dịch vụ:</strong> @Model.ServiceType</p>
+                    <p><strong><i class="fas fa-user me-2"></i>Người chăm sóc:</strong> @Model.CaregiverName</p>
+                    <p><strong><i class="fas fa-clock me-2"></i>Thời gian bắt đầu:</strong> @Model.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
+                    <p><strong><i class="fas fa-clock me-2"></i>Thời gian kết thúc:</strong> @(Model.EndTime?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa xác định")</p>
+                    <p><strong><i class="fas fa-money-bill-wave me-2"></i>Tổng bill:</strong> @Model.TotalBill.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</p>
+
+                    <h6 class="text-muted mb-3 mt-4">Nội Dung Khiếu Nại</h6>
+                    <form asp-action="SubmitComplaint" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <div class="form-group mb-3">
+                            <label for="description">Mô tả vấn đề:</label>
+                            <textarea name="description" id="description" class="form-control" rows="5" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-danger btn-lg">
+                                <i class="fas fa-exclamation-circle me-2"></i>Gửi Khiếu Nại
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
