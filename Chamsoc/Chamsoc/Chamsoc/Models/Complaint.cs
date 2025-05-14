@@ -10,6 +10,7 @@
         public string Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public string? Resolution { get; set; } // Cho phép null
+        public string? ImagePath { get; set; } // Đường dẫn hình ảnh khiếu nại
 
         public CareJob Job { get; set; }
         public Caregiver Caregiver { get; set; }

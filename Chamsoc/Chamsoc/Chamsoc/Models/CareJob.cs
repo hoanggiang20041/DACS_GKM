@@ -20,5 +20,11 @@
         public bool CaregiverAccepted { get; set; } = false; // Theo dõi Caregiver đã chấp nhận chưa
         public double Latitude { get; set; }  // Đã thêm
         public double Longitude { get; set; } // Đã thêm
+        public string? PaymentStatus { get; set; } = "Pending"; // Trạng thái thanh toán: Pending, Completed, Failed
+        public string? TransactionId { get; set; } // Mã giao dịch từ ngân hàng
+        public string? TransactionReference { get; set; } // Mã tham chiếu giao dịch tự động
+        public DateTime? PaymentTime { get; set; } // Thời gian thanh toán
+        public bool NeedsManualConfirmation { get; set; } = false; // Đánh dấu cần xác nhận thủ công
+        public string? DepositNote { get; set; } // Ghi chú về thanh toán cọc
     }
 }

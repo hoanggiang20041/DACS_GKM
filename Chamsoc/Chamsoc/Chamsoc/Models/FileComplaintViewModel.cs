@@ -12,5 +12,8 @@ namespace Chamsoc.Models
         [Required(ErrorMessage = "Vui lòng nhập nội dung khiếu nại.")]
         [StringLength(1000, ErrorMessage = "Nội dung khiếu nại không được dài quá 1000 ký tự.")]
         public string Description { get; set; }
+        
+        [Display(Name = "Hình ảnh đính kèm")]
+        public IFormFile ImageFile { get; set; }
     }
 }
