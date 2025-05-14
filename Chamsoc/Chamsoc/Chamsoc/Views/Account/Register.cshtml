@@ -2,6 +2,84 @@
     ViewData["Title"] = "Đăng Ký";
 }
 
+    <style>
+/* Màu nền nhẹ nhàng, tạo cảm giác thư giãn */
+body {
+    background-color: #f7fafc;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Tăng cường độ sáng cho tiêu đề */
+h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Làm đẹp các ô nhập liệu */
+input[type="text"], input[type="email"], input[type="password"], select {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Thêm viền mờ cho các ô khi người dùng chưa điền đủ */
+input:invalid, select:invalid {
+    border-color: #e74c3c;
+}
+
+/* Thiết kế nút bấm với hiệu ứng hover */
+button[type="submit"] {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #16a085;
+}
+
+/* Định dạng các alert thông báo */
+.alert {
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+/* Mặc định các biểu tượng input */
+input[type="file"] {
+    padding: 5px;
+}
+
+/* Điều chỉnh cách hiển thị các lựa chọn */
+select {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #fff;
+    width: 100%;
+}
+
+/* Thêm hiệu ứng cho form khi gửi */
+form {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Làm đẹp phần trường nhập liệu */
+.form-control {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+</style>
+
 <div class="container my-5">
     <h2 class="text-center mb-4">Đăng Ký</h2>
     <div class="row justify-content-center">
