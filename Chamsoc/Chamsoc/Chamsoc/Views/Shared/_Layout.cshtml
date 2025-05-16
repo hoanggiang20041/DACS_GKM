@@ -286,22 +286,23 @@
                     {
                         @if (Context.Session != null && Context.Session.GetString("UserRole") == "Admin")
                         {
+                            <!-- Caregiver Dropdown -->
                             <li class="nav-item position-relative">
                                 @{
-                                    var adminUserId = Context.Session.GetString("UserId");
-                                    var adminUnreadCount = 0;
-                                    var adminNotifications = new List<Chamsoc.Models.Notification>();
-                                    if (!string.IsNullOrEmpty(adminUserId) && DbContext != null)
+                                    var caregiverUserId = Context.Session.GetString("UserId");
+                                    var caregiverUnreadCount = 0;
+                                    var caregiverNotifications = new List<Chamsoc.Models.Notification>();
+                                    if (!string.IsNullOrEmpty(caregiverUserId) && DbContext != null)
                                     {
                                         try
                                         {
-                                            adminUnreadCount = DbContext.Notifications
-                                            .Where(n => n.UserId == adminUserId && !n.IsRead)
+                                            caregiverUnreadCount = DbContext.Notifications
+                                            .Where(n => n.UserId == caregiverUserId && !n.IsRead)
                                             .Count();
-                                            if (adminUnreadCount > 0)
+                                            if (caregiverUnreadCount > 0)
                                             {
-                                                adminNotifications = DbContext.Notifications
-                                                .Where(n => n.UserId == adminUserId && !n.IsRead)
+                                                caregiverNotifications = DbContext.Notifications
+                                                .Where(n => n.UserId == caregiverUserId && !n.IsRead)
                                                 .OrderByDescending(n => n.CreatedAt)
                                                 .ToList();
                                             }
@@ -313,40 +314,106 @@
                                         </li>
                                         }
                                     }
+                                }
+                            <a class="nav-link dropdown-toggle" href="#" id="caregiverNotificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Thông Báo
+                                    @if (caregiverUnreadCount > 0)
+                                    {
+                                    <span class="notification-badge">@caregiverUnreadCount</span>
+                                    }
+                            </a>
+                            <ul class="dropdown-menu notification-dropdown" id="caregiver-notifications" aria-labelledby="caregiverNotificationsDropdown">
+                                    @if (caregiverUnreadCount > 0 && caregiverNotifications != null)
+                                    {
+                                        foreach (var notification in caregiverNotifications)
+                                        {
+                                            if (notification != null)
+                                            {
+                                                @if (notification.Type == "Call")
+                                                {
+                                                <li class="notification-item" onclick="showCallPopup('@notification.Id', '@notification.Message', '@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")', '@notification.UserId')">
+                                                    <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
+                                                    <p>@(notification.Message ?? "Không có nội dung")</p>
+                                                </li>
+                                                }
+                                                else
+                                                {
+                                                <li class="notification-item">
+                                                    <a href="@Url.Action("Index", "Notifications", new { notificationId = notification.Id })" class="text-decoration-none text-dark">
+                                                        <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
+                                                        <p>@(notification.Message ?? "Không có nội dung")</p>
+                                                    </a>
+                                                </li>
+                                                }
+                                            }
+                                        }
+                                    }
                                     else
                                     {
-                                        if (string.IsNullOrEmpty(adminUserId))
+                                    <li class="dropdown-item text-center">Không có thông báo mới</li>
+                                    }
+                            </ul>
+                            </li>
+
+                            <!-- Senior Dropdown (Thông Báo) -->
+                            <li class="nav-item position-relative">
+                                @{
+                                    var seniorUserId = Context.Session.GetString("UserId");
+                                    var seniorUnreadCount = 0;
+                                    var seniorNotifications = new List<Chamsoc.Models.Notification>();
+                                    if (!string.IsNullOrEmpty(seniorUserId) && DbContext != null)
+                                    {
+                                        try
                                         {
-                                        <li class="nav-item">
-                                            <a class="nav-link text-danger">Lỗi: UserId không được thiết lập trong session.</a>
-                                        </li>
+                                            seniorUnreadCount = DbContext.Notifications
+                                            .Where(n => n.UserId == seniorUserId && !n.IsRead && !n.Message.Contains("Khiếu nại"))
+                                            .Count();
+                                            if (seniorUnreadCount > 0)
+                                            {
+                                                seniorNotifications = DbContext.Notifications
+                                                .Where(n => n.UserId == seniorUserId && !n.IsRead && !n.Message.Contains("Khiếu nại"))
+                                                .OrderByDescending(n => n.CreatedAt)
+                                                .ToList();
+                                            }
                                         }
-                                        if (DbContext == null)
+                                        catch (Exception ex)
                                         {
                                         <li class="nav-item">
-                                            <a class="nav-link text-danger">Lỗi: DbContext là null.</a>
+                                            <a class="nav-link text-danger">Lỗi khi tải thông báo: @ex.Message</a>
                                         </li>
                                         }
                                     }
                                 }
-                            <a class="nav-link dropdown-toggle" href="#" id="adminNotificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="seniorNotificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Thông Báo
-                                    @if (adminUnreadCount > 0)
+                                    @if (seniorUnreadCount > 0)
                                     {
-                                    <span class="notification-badge">@adminUnreadCount</span>
+                                    <span class="notification-badge">@seniorUnreadCount</span>
                                     }
                             </a>
-                            <ul class="dropdown-menu notification-dropdown" aria-labelledby="adminNotificationsDropdown">
-                                    @if (adminUnreadCount > 0 && adminNotifications != null)
+                            <ul class="dropdown-menu notification-dropdown" id="senior-notifications" aria-labelledby="seniorNotificationsDropdown">
+                                    @if (seniorUnreadCount > 0 && seniorNotifications != null)
                                     {
-                                        foreach (var notification in adminNotifications)
+                                        foreach (var notification in seniorNotifications)
                                         {
                                             if (notification != null)
                                             {
-                                            <li class="notification-item">
-                                                <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
-                                                <p>@(notification.Message ?? "Không có nội dung")</p>
-                                            </li>
+                                                @if (notification.Type == "Call")
+                                                {
+                                                <li class="notification-item" onclick="showCallPopup('@notification.Id', '@notification.Message', '@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")', '@notification.UserId')">
+                                                    <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
+                                                    <p>@(notification.Message ?? "Không có nội dung")</p>
+                                                </li>
+                                                }
+                                                else
+                                                {
+                                                <li class="notification-item">
+                                                    <a href="@Url.Action("Index", "Notifications", new { notificationId = notification.Id })" class="text-decoration-none text-dark">
+                                                        <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
+                                                        <p>@(notification.Message ?? "Không có nội dung")</p>
+                                                    </a>
+                                                </li>
+                                                }
                                             }
                                         }
                                     }
@@ -450,8 +517,10 @@
                                             if (notification != null)
                                             {
                                             <li class="notification-item">
-                                                <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
-                                                <p>@(notification.Message ?? "Không có nội dung")</p>
+                                                <a href="@Url.Action("Index", "Notifications", new { notificationId = notification.Id })" class="text-decoration-none text-dark">
+                                                    <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
+                                                    <p>@(notification.Message ?? "Không có nội dung")</p>
+                                                </a>
                                             </li>
                                             }
                                         }
@@ -595,8 +664,10 @@
                                             if (notification != null)
                                             {
                                             <li class="notification-item">
-                                                <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
-                                                <p>@(notification.Message ?? "Không có nội dung")</p>
+                                                <a href="@Url.Action("Index", "Notifications", new { notificationId = notification.Id })" class="text-decoration-none text-dark">
+                                                    <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
+                                                    <p>@(notification.Message ?? "Không có nội dung")</p>
+                                                </a>
                                             </li>
                                             }
                                         }
@@ -815,8 +886,31 @@
             <button onclick="sendChatbotQuestion()">Gửi</button>
         </div>
     </div>
-
+    <!-- Call Popup Modal -->
+    <div class="modal fade" id="callPopupModal" tabindex="-1" aria-labelledby="callPopupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="callPopupModalLabel">Yêu Cầu Cuộc Gọi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Người gọi:</strong> <span id="callSender"></span></p>
+                    <p><strong>Thông báo:</strong> <span id="callMessage"></span></p>
+                    <p><strong>Thời gian:</strong> <span id="callTime"></span></p>
+                    <p><strong>Đối phương:</strong> <span id="callReceiver"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="acceptCallButton">Chấp nhận</button>
+                    <button type="button" class="btn btn-success" id="callBackButton">Gọi Lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
     <script>
+        // Hàm gửi câu hỏi cho chatbot
         async function sendChatbotQuestion() {
             const questionInput = document.getElementById('chatbot-question');
             const messagesContainer = document.getElementById('chatbot-messages');
@@ -836,6 +930,180 @@
             messagesContainer.innerHTML += `<div><strong>Bot:</strong> ${data.reply}</div>`;
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
+
+        // Hàm hiển thị popup cuộc gọi
+        function showCallPopup(notificationId, message, createdAt, userId) {
+            const currentUserId = '@(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "anonymous")';
+            const currentRole = '@(Context.Session.GetString("UserRole") ?? "Unknown")';
+            let sender, receiver;
+
+            if (currentRole === "Caregiver") {
+                sender = "Caregiver";
+                receiver = "Senior";
+            } else if (currentRole === "Senior") {
+                sender = "Senior";
+                receiver = "Caregiver";
+            } else {
+                sender = "Unknown";
+                receiver = "Unknown";
+            }
+
+            // Cập nhật nội dung của modal
+            document.getElementById('callSender').textContent = sender;
+            document.getElementById('callMessage').textContent = message;
+            document.getElementById('callTime').textContent = createdAt;
+            document.getElementById('callReceiver').textContent = receiver;
+
+            // Lưu notificationId và userId vào data attribute của các nút
+            const acceptCallButton = document.getElementById('acceptCallButton');
+            const callBackButton = document.getElementById('callBackButton');
+            acceptCallButton.setAttribute('data-notification-id', notificationId);
+            acceptCallButton.setAttribute('data-user-id', userId);
+            callBackButton.setAttribute('data-notification-id', notificationId);
+            callBackButton.setAttribute('data-user-id', userId);
+
+            // Hiển thị modal
+            const callPopupModal = new bootstrap.Modal(document.getElementById('callPopupModal'));
+            callPopupModal.show();
+        }
+
+        // Xử lý sự kiện nhấn nút "Chấp nhận"
+        document.getElementById('acceptCallButton').addEventListener('click', function () {
+            const notificationId = this.getAttribute('data-notification-id');
+            const userId = this.getAttribute('data-user-id');
+            fetch(`/Notifications/AcceptCall?notificationId=${notificationId}&userId=${userId}`, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Đã chấp nhận cuộc gọi!');
+                    const callPopupModal = bootstrap.Modal.getInstance(document.getElementById('callPopupModal'));
+                    callPopupModal.hide();
+                    fetchNotifications();
+                } else {
+                    alert('Có lỗi xảy ra khi chấp nhận cuộc gọi.');
+                }
+            })
+            .catch(err => {
+                console.error('Lỗi khi chấp nhận cuộc gọi:', err);
+                alert('Có lỗi xảy ra khi chấp nhận cuộc gọi.');
+            });
+        });
+
+        // Xử lý sự kiện nhấn nút "Gọi lại"
+        document.getElementById('callBackButton').addEventListener('click', function () {
+            const notificationId = this.getAttribute('data-notification-id');
+            const userId = this.getAttribute('data-user-id');
+            fetch(`/Notifications/CallBack?notificationId=${notificationId}&userId=${userId}`, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Đã gọi lại thành công!');
+                    const callPopupModal = bootstrap.Modal.getInstance(document.getElementById('callPopupModal'));
+                    callPopupModal.hide();
+                    fetchNotifications();
+                } else {
+                    alert('Có lỗi xảy ra khi gọi lại.');
+                }
+            })
+            .catch(err => {
+                console.error('Lỗi khi gọi lại:', err);
+                alert('Có lỗi xảy ra khi gọi lại.');
+            });
+        });
+
+        // Hàm lấy danh sách thông báo chưa đọc
+        async function fetchNotifications() {
+            try {
+                const response = await fetch('/Notifications/GetUnreadNotifications');
+                const data = await response.json();
+                const role = '@(Context.Session.GetString("UserRole") ?? "Unknown")';
+                let dropdownId, badgeId;
+
+                if (role === "Admin") {
+                    dropdownId = 'admin-notifications';
+                    badgeId = 'adminNotificationsDropdown';
+                } else if (role === "Senior") {
+                    dropdownId = 'senior-notifications';
+                    badgeId = 'seniorNotificationsDropdown';
+                } else if (role === "Caregiver") {
+                    dropdownId = 'caregiver-notifications';
+                    badgeId = 'caregiverNotificationsDropdown';
+                }
+
+                const notificationDropdown = document.getElementById(dropdownId);
+                const notificationBadge = document.querySelector(`#${badgeId} + .notification-badge`);
+
+                if (notificationDropdown) {
+                    notificationDropdown.innerHTML = '';
+                    if (data.length > 0) {
+                        data.forEach(notification => {
+                            const item = document.createElement('li');
+                            item.className = 'notification-item';
+                            if (notification.type === "Call") {
+                                item.onclick = () => showCallPopup(notification.id, notification.message, notification.createdAt, notification.userId);
+                                item.innerHTML = `
+                                    <strong>${notification.createdAt}</strong>
+                                    <p>${notification.message}</p>
+                                `;
+                            } else {
+                                const link = document.createElement('a');
+                                link.className = 'text-decoration-none text-dark';
+                                link.href = `/Notifications/Index?notificationId=${notification.id}`;
+                                link.innerHTML = `
+                                    <strong>${notification.createdAt}</strong>
+                                    <p>${notification.message}</p>
+                                `;
+                                item.appendChild(link);
+                            }
+                            notificationDropdown.appendChild(item);
+                        });
+                        if (notificationBadge) {
+                            notificationBadge.textContent = data.length;
+                            notificationBadge.style.display = 'block';
+                        }
+                    } else {
+                        const item = document.createElement('li');
+                        item.className = 'dropdown-item text-center';
+                        item.textContent = 'Không có thông báo mới';
+                        notificationDropdown.appendChild(item);
+                        if (notificationBadge) {
+                            notificationBadge.style.display = 'none';
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error("Lỗi lấy thông báo:", err);
+            }
+        }
+
+        // Gọi hàm khi trang tải
+        window.addEventListener('DOMContentLoaded', fetchNotifications);
+
+        // Cập nhật thông báo realtime qua SignalR
+        const currentUserId = '@(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "anonymous")';
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl(`  https://9772-118-68-26-210.ngrok-free.app/callHub?userId=${currentUserId}`)
+            .withAutomaticReconnect()
+            .build();
+
+        connection.on("ReceiveNotification", () => {
+            console.log("Nhận thông báo mới");
+            fetchNotifications();
+        });
+
+        async function startConnection() {
+            try {
+                await connection.start();
+                console.log("Đã kết nối SignalR:", connection.connectionId);
+            } catch (err) {
+                console.error("Lỗi kết nối SignalR:", err);
+                setTimeout(startConnection, 5000);
+            }
+        }
+
+        startConnection();
     </script>
 
 </body>
