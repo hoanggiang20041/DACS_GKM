@@ -691,24 +691,35 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // JavaScript để kéo-thả bong bóng chat Zalo
+                // JavaScript để kéo-thả bong bóng chat Zalo
         document.addEventListener('DOMContentLoaded', function () {
             const zaloChatBtn = document.getElementById('zaloChatBtn');
             let isDragging = false;
-            let currentX;
-            let currentY;
-            let initialX;
-            let initialY;
+            let currentX = 0;
+            let currentY = 0;
+            let initialX = 0;
+            let initialY = 0;
 
-             zaloChatBtn.addEventListener('click', function() {
-            window.open('https://zalo.me/0522336052', '_blank'); // Thay your-zalo-id bằng ID Zalo của bạn
-        });
+            // Mở link khi click (chỉ khi không kéo)
+            let wasDragging = false;
+            zaloChatBtn.addEventListener('click', function () {
+                if (!wasDragging) {
+                    window.open('https://zalo.me/0522336052', '_blank');
+                }
+            });
 
             zaloChatBtn.addEventListener('mousedown', startDragging);
-            zaloChatBtn.addEventListener('touchstart', startDragging); // Hỗ trợ cảm ứng trên mobile
+            zaloChatBtn.addEventListener('touchstart', startDragging, { passive: false }); // Cảm ứng
 
             function startDragging(e) {
+                e.preventDefault();
                 isDragging = true;
+                wasDragging = false;
+
+                const rect = zaloChatBtn.getBoundingClientRect();
+                currentX = rect.left;
+                currentY = rect.top;
+
                 if (e.type === 'mousedown') {
                     initialX = e.clientX - currentX;
                     initialY = e.clientY - currentY;
@@ -719,30 +730,31 @@
 
                 document.addEventListener('mousemove', drag);
                 document.addEventListener('mouseup', stopDragging);
-                document.addEventListener('touchmove', drag); // Hỗ trợ cảm ứng
-                document.addEventListener('touchend', stopDragging); // Hỗ trợ cảm ứng
+                document.addEventListener('touchmove', drag, { passive: false });
+                document.addEventListener('touchend', stopDragging);
             }
 
             function drag(e) {
-                if (isDragging) {
-                    e.preventDefault();
-                    if (e.type === 'mousemove') {
-                        currentX = e.clientX - initialX;
-                        currentY = e.clientY - initialY;
-                    } else if (e.type === 'touchmove') {
-                        currentX = e.touches[0].clientX - initialX;
-                        currentY = e.touches[0].clientY - initialY;
-                    }
+                if (!isDragging) return;
+                wasDragging = true;
+                e.preventDefault();
 
-                    // Giới hạn không cho kéo ra ngoài màn hình
-                    currentX = Math.max(0, Math.min(currentX, window.innerWidth - zaloChatBtn.offsetWidth));
-                    currentY = Math.max(0, Math.min(currentY, window.innerHeight - zaloChatBtn.offsetHeight));
-
-                    zaloChatBtn.style.left = currentX + 'px';
-                    zaloChatBtn.style.top = currentY + 'px';
-                    zaloChatBtn.style.right = 'auto';
-                    zaloChatBtn.style.bottom = 'auto';
+                if (e.type === 'mousemove') {
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                } else if (e.type === 'touchmove') {
+                    currentX = e.touches[0].clientX - initialX;
+                    currentY = e.touches[0].clientY - initialY;
                 }
+
+                // Giới hạn không vượt khỏi màn hình
+                currentX = Math.max(0, Math.min(currentX, window.innerWidth - zaloChatBtn.offsetWidth));
+                currentY = Math.max(0, Math.min(currentY, window.innerHeight - zaloChatBtn.offsetHeight));
+
+                zaloChatBtn.style.left = currentX + 'px';
+                zaloChatBtn.style.top = currentY + 'px';
+                zaloChatBtn.style.right = 'auto';
+                zaloChatBtn.style.bottom = 'auto';
             }
 
             function stopDragging() {
@@ -754,29 +766,69 @@
             }
 
             // Khởi tạo vị trí ban đầu
-            currentX = window.innerWidth - zaloChatBtn.offsetWidth - 20; // Ban đầu ở góc phải dưới
-            currentY = window.innerHeight - zaloChatBtn.offsetHeight - 20;
-            zaloChatBtn.style.left = currentX + 'px';
-            zaloChatBtn.style.top = currentY + 'px';
+            const startX = window.innerWidth - zaloChatBtn.offsetWidth - 20;
+            const startY = window.innerHeight - zaloChatBtn.offsetHeight - 20;
+            zaloChatBtn.style.left = startX + 'px';
+            zaloChatBtn.style.top = startY + 'px';
         });
     </script>
-    @RenderSection("Scripts", required: false)
+
+    <!-- Bong bóng chatbot -->
+    <div class="chatbot-toggle-btn" id="chatbotToggleBtn" title="Hỏi chăm sóc">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+
+    <!-- Khung Chatbot -->
+    <div id="chatbot-container" style="display: none;">
+        <div id="chatbot-header">
+            🩺 Tư vấn Chăm Sóc
+            <button id="close-chatbot" title="Đóng" style="float:right; background:transparent; border:none; color:white; font-size:18px; cursor:pointer;">×</button>
+        </div>
+        <div id="chatbot-messages"></div>
+        <div id="chatbot-input">
+            <input type="text" id="chatbot-question" placeholder="Nhập câu hỏi...">
+            <button onclick="sendChatbotQuestion()">Gửi</button>
+        </div>
+    </div>
+
     <style>
+        .chatbot-toggle-btn {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            background-color: #000000;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998;
+            cursor: move;
+            font-size: 24px;
+            /* Đặt cạnh bong bóng Zalo */
+            bottom: 20px;
+            right: 90px; /* Cách bong bóng Zalo 70px để sát bên trái */
+        }
+
         #chatbot-container {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
             width: 300px;
+            max-height: 400px;
             background: white;
             border: 1px solid #ccc;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            z-index: 9999;
+            z-index: 10000;
+            display: none;
+            /* Đặt trước, nhưng sẽ được cập nhật bằng JS */
+            left: 0;
+            top: 0;
         }
 
+
         #chatbot-header {
-            background: #007bff;
+            background: #dc3545;
             color: white;
             padding: 10px;
             text-align: center;
@@ -801,39 +853,129 @@
 
             #chatbot-input button {
                 border: none;
-                background: #007bff;
+                background: #dc3545;
                 color: white;
                 padding: 10px 20px;
             }
+
+        .bot-message {
+            background-color: #f1f1f1;
+            color: #000;
+            padding: 6px 10px;
+            border-radius: 8px;
+            margin: 5px 0;
+        }
+
+        .user-message {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 6px 10px;
+            border-radius: 8px;
+            margin: 5px 0;
+            text-align: right;
+        }
     </style>
-
-    <div id="chatbot-container">
-        <div id="chatbot-header">🤖 Tư vấn Chăm Sóc</div>
-        <div id="chatbot-messages"></div>
-        <div id="chatbot-input">
-            <input type="text" id="chatbot-question" placeholder="Nhập câu hỏi...">
-            <button onclick="sendChatbotQuestion()">Gửi</button>
-        </div>
-    </div>
-
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btn = document.getElementById("chatbotToggleBtn");
+            const container = document.getElementById("chatbot-container");
+            const messagesContainer = document.getElementById("chatbot-messages");
+            const questionInput = document.getElementById("chatbot-question");
+            const closeBtn = document.getElementById("close-chatbot");
+
+            let isDragging = false;
+            let offsetX = 0;
+            let offsetY = 0;
+
+            btn.addEventListener("mousedown", function (e) {
+                isDragging = true;
+                offsetX = e.clientX - btn.getBoundingClientRect().left;
+                offsetY = e.clientY - btn.getBoundingClientRect().top;
+                btn.style.transition = "none";
+            });
+
+            document.addEventListener("mousemove", function (e) {
+                if (isDragging) {
+                    const x = e.clientX - offsetX;
+                    const y = e.clientY - offsetY;
+
+                    btn.style.left = `${x}px`;
+                    btn.style.top = `${y}px`;
+
+                    // Nếu khung chat đang mở, cập nhật vị trí lệch trái
+                    if (container.style.display === 'block') {
+                        const containerWidth = container.offsetWidth;
+                        container.style.left = `${x + btn.offsetWidth - containerWidth}px`;
+                        container.style.top = `${y - container.offsetHeight - 10}px`;
+                    }
+                }
+            });
+
+            document.addEventListener("mouseup", function () {
+                isDragging = false;
+                btn.style.transition = "";
+            });
+
+            btn.addEventListener("click", function () {
+                const isVisible = container.style.display === 'block';
+
+                if (!isVisible) {
+                    container.style.display = 'block';
+
+                    const rect = btn.getBoundingClientRect();
+                    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                    const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+
+                    const containerWidth = container.offsetWidth;
+
+                    // Góc phải của khung chat khớp với góc phải của bong bóng
+                    container.style.left = `${rect.right + scrollLeft - containerWidth}px`;
+                    container.style.top = `${rect.top + scrollTop - container.offsetHeight - 10}px`;
+
+                    if (messagesContainer.innerHTML.trim() === '') {
+                        messagesContainer.innerHTML = `<div class="bot-message"><strong>Bot:</strong> Xin chào! Mình là trợ lý chăm sóc sức khỏe. Bạn cần mình hỗ trợ điều gì?</div>`;
+                    }
+                } else {
+                    container.style.display = 'none';
+                }
+            });
+
+            closeBtn.addEventListener("click", function () {
+                container.style.display = 'none';
+            });
+
+            questionInput.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    sendChatbotQuestion();
+                }
+            });
+        });
+
         async function sendChatbotQuestion() {
             const questionInput = document.getElementById('chatbot-question');
             const messagesContainer = document.getElementById('chatbot-messages');
             const question = questionInput.value.trim();
             if (!question) return;
 
-            messagesContainer.innerHTML += `<div><strong>Bạn:</strong> ${question}</div>`;
+            messagesContainer.innerHTML += `<div class="user-message"><strong>Bạn:</strong> ${question}</div>`;
             questionInput.value = '';
 
             const response = await fetch('/Chatbot/Ask', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: question })
+                body: JSON.stringify({
+                    messages: [
+                        {
+                            role: 'user',
+                            content: question
+                        }
+                    ]
+                })
             });
-            const data = await response.json();
 
-            messagesContainer.innerHTML += `<div><strong>Bot:</strong> ${data.reply}</div>`;
+            const data = await response.json();
+            messagesContainer.innerHTML += `<div class="bot-message"><strong>Bot:</strong> ${data.reply}</div>`;
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
     </script>
