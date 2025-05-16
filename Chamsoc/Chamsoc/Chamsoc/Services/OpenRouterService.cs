@@ -2,6 +2,8 @@
 using System.Text.Json;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Chamsoc.Controllers;
+using Chamsoc.Models;
 
 namespace Chamsoc.Services
 {
@@ -14,49 +16,64 @@ namespace Chamsoc.Services
         {
             _httpClient = httpClient;
             _configuration = configuration;
+
+            var apiKey = _configuration["OpenRouter:ApiKey"];
+            if (!string.IsNullOrEmpty(apiKey))
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+                _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            }
         }
 
-        public async Task<string> AskAsync(string prompt)
+        public async Task<string> AskAsync(List<ChatMessage> messages)
         {
-            var apiKey = _configuration["OpenRouter:ApiKey"];
-            var apiUrl = _configuration["OpenRouter:ApiUrl"];
-            var model = _configuration["OpenRouter:Model"];
-
-            var requestBody = new
+            try
             {
-                model = model,
-                messages = new[]
+                var requestBody = new
                 {
-                    new { role = "user", content = prompt }
-                },
-                temperature = 0.7
-            };
+                    model = "gpt-3.5-turbo", // có thể cấu hình từ appsettings nếu cần
+                    messages = messages.Select(m => new
+                    {
+                        role = m.Role,
+                        content = m.Content
+                    }).ToList()
+                };
 
-            var requestJson = JsonSerializer.Serialize(requestBody);
-            var content = new StringContent(requestJson, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsJsonAsync("https://openrouter.ai/api/v1/chat/completions", requestBody);
 
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", apiKey);
+                if (!response.IsSuccessStatusCode)
+                {
+                    // Có thể log chi tiết lỗi từ OpenRouter tại đây nếu cần
+                    return $"❌ Lỗi khi gọi OpenRouter: {response.StatusCode}";
+                }
 
+                var result = await response.Content.ReadFromJsonAsync<OpenAiResponse>();
 
-            if (string.IsNullOrWhiteSpace(apiUrl))
-                throw new InvalidOperationException("API URL is not configured properly.");
-            var response = await _httpClient.PostAsync(apiUrl, content);
-            var responseJson = await response.Content.ReadAsStringAsync();
-
-            if (!response.IsSuccessStatusCode)
+                return result?.Choices?.FirstOrDefault()?.Message?.Content?.Trim()
+                       ?? "❌ Bot không thể phản hồi lúc này. Vui lòng thử lại sau.";
+            }
+            catch (Exception ex)
             {
-                return $"❌ Lỗi: {response.StatusCode} - {responseJson}";
+                // Log lỗi nếu cần
+                return $"❌ Đã xảy ra lỗi khi xử lý yêu cầu: {ex.Message}";
+            }
+        }
+
+        // Mapping response từ OpenRouter
+        public class OpenAiResponse
+        {
+            public List<Choice> Choices { get; set; }
+
+            public class Choice
+            {
+                public Message Message { get; set; }
             }
 
-            using var doc = JsonDocument.Parse(responseJson);
-            var result = doc.RootElement
-                            .GetProperty("choices")[0]
-                            .GetProperty("message")
-                            .GetProperty("content")
-                            .GetString();
-
-            return result?.Trim() ?? "❌ Không nhận được phản hồi.";
+            public class Message
+            {
+                public string Role { get; set; }
+                public string Content { get; set; }
+            }
         }
     }
 }
