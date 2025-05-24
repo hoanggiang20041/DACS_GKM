@@ -2,6 +2,105 @@
     ViewData["Title"] = "Đăng Nhập - GKM Support and Care System";
 }
 
+    <style>
+/* Cập nhật phong cách cho body */
+body {
+    background-color: #f7fafc;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Cải thiện giao diện của các thông báo lỗi và thành công */
+.alert {
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+/* Cải tiến giao diện của các ô nhập liệu */
+.form-control {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 12px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Thêm hiệu ứng khi ô nhập liệu được focus */
+.form-control:focus {
+    border-color: #1abc9c;
+    box-shadow: 0 0 8px rgba(26, 188, 156, 0.5);
+}
+
+/* Thêm margin cho mỗi ô nhập liệu */
+.mb-3 {
+    margin-bottom: 20px;
+}
+
+/* Thiết kế nút đăng nhập */
+button[type="submit"] {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Để nút chiếm toàn bộ chiều rộng */
+}
+
+button[type="submit"]:hover {
+    background-color: #16a085;
+}
+
+/* Thiết kế phần tiêu đề h2 */
+h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Cải thiện giao diện của các liên kết */
+a {
+    color: #1abc9c;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Cải tiến giao diện cho phần thông báo dưới cùng */
+.text-center p {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Các hiệu ứng hover cho các trường input */
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #1abc9c;
+    box-shadow: 0 0 8px rgba(26, 188, 156, 0.5);
+}
+
+/* Thêm hiệu ứng cho các ô nhập liệu bị lỗi */
+.is-invalid {
+    border-color: #e74c3c;
+}
+
+.invalid-feedback {
+    color: #e74c3c;
+    font-size: 0.875rem;
+    display: block;
+}
+
+/* Tăng cường độ sáng cho các nút và thẻ */
+.text-center a {
+    font-weight: bold;
+}
+</style>
+
 <div class="container my-5">
     <h2 class="text-center mb-4">Đăng Nhập</h2>
     <div class="row justify-content-center">

@@ -23,6 +23,18 @@ namespace Chamsoc.Services
             var referer = _configuration["OpenAI:Referer"];
             var title = _configuration["OpenAI:Title"];
 
+            if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(baseUrl))
+                return "❌ Cấu hình API Key hoặc BaseUrl chưa chính xác.";
+
+            // Dọn dẹp headers trước khi thêm mới (tránh trùng lặp nếu gọi nhiều lần)
+            _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", apiKey);
+            _httpClient.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient.DefaultRequestHeaders.Add("HTTP-Referer", referer ?? "");
+            _httpClient.DefaultRequestHeaders.Add("X-Title", title ?? "");
+
             var requestBody = new
             {
                 model = "gpt-3.5-turbo",
@@ -36,23 +48,30 @@ namespace Chamsoc.Services
             var requestJson = JsonSerializer.Serialize(requestBody);
             var content = new StringContent(requestJson, Encoding.UTF8, "application/json");
 
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", apiKey);
+            try
+            {
+                var response = await _httpClient.PostAsync(baseUrl, content);
 
-            _httpClient.DefaultRequestHeaders.Add("HTTP-Referer", referer);
-            _httpClient.DefaultRequestHeaders.Add("X-Title", title);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return $"❌ Lỗi từ OpenAI: {response.StatusCode}";
+                }
 
-            var response = await _httpClient.PostAsync(baseUrl, content);
-            var responseJson = await response.Content.ReadAsStringAsync();
+                var responseJson = await response.Content.ReadAsStringAsync();
 
-            using var doc = JsonDocument.Parse(responseJson);
-            var result = doc.RootElement
-                            .GetProperty("choices")[0]
-                            .GetProperty("message")
-                            .GetProperty("content")
-                            .GetString();
+                using var doc = JsonDocument.Parse(responseJson);
+                var result = doc.RootElement
+                                .GetProperty("choices")[0]
+                                .GetProperty("message")
+                                .GetProperty("content")
+                                .GetString();
 
-            return result?.Trim();
+                return result?.Trim() ?? "❌ Không có nội dung phản hồi.";
+            }
+            catch (Exception ex)
+            {
+                return $"❌ Đã xảy ra lỗi khi gọi OpenAI: {ex.Message}";
+            }
         }
     }
 }
