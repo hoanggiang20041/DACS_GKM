@@ -1,0 +1,73 @@
+@model dynamic
+
+@{
+    ViewData["Title"] = "Lịch Sử Số Dư";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-wallet me-2"></i>Số Dư Hiện Tại
+                    </h3>
+                    <h2 class="text-primary mb-0">@ViewBag.CurrentBalance.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="card-title mb-4">
+                    <i class="fas fa-history me-2"></i>Lịch Sử Giao Dịch
+                </h3>
+                
+                @if (ViewBag.BalanceHistory != null && ViewBag.BalanceHistory.Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Thời Gian</th>
+                                    <th>Mã Giao Dịch</th>
+                                    <th>Loại</th>
+                                    <th>Số Tiền</th>
+                                    <th>Mô Tả</th>
+                                    <th>Số Dư Sau</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var transaction in ViewBag.BalanceHistory)
+                                {
+                                    <tr>
+                                        <td>@transaction.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td>#@transaction.PaymentId</td>
+                                        <td>
+                                            <span class="badge @(transaction.Type == "Received" ? "bg-success" : "bg-primary")">
+                                                @(transaction.Type == "Received" ? "Nhận" : "Chuyển")
+                                            </span>
+                                        </td>
+                                        <td class="@(transaction.Type == "Received" ? "text-success" : "text-primary")">
+                                            @((transaction.Type == "Received" ? "+" : "") + transaction.Amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))) VNĐ
+                                        </td>
+                                        <td>@transaction.Description</td>
+                                        <td>@transaction.BalanceAfter.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-5">
+                        <i class="fas fa-inbox text-muted" style="font-size: 3rem;"></i>
+                        <p class="text-muted mt-3">Chưa có lịch sử giao dịch nào.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div> 

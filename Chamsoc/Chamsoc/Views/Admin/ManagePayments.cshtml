@@ -1,0 +1,750 @@
+@model IEnumerable<Chamsoc.Models.PaymentViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý giao dịch";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <!-- Thống kê tổng quan -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Tổng giao dịch
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.Count()
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Tổng tiền
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.Sum(p => p.TotalAmount).ToString("N0") VNĐ
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Đã thanh toán
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.Count(p => p.PaymentStatus == "Đã thanh toán").ToString("N0")
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Chờ xử lý
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.Count(p => p.PaymentStatus == "Chờ thanh toán").ToString("N0")
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clock fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bảng giao dịch -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Danh sách giao dịch</h6>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
+                <i class="fas fa-filter me-2"></i>Lọc giao dịch
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="paymentsTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Người cao tuổi</th>
+                            <th>Người chăm sóc</th>
+                            <th>Tổng tiền</th>
+                            <th>Số tiền đặt cọc</th>
+                            <th>Còn lại</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày tạo</th>
+                            <th>Nội dung CK</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var payment in Model)
+                        {
+                            <tr>
+                                <td>@payment.Id</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm me-2">
+                                            <div class="avatar-title rounded-circle bg-soft-primary">
+                                                <i class="fas fa-user-circle"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h5 class="font-size-14 mb-1">@payment.SeniorName</h5>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm me-2">
+                                            <div class="avatar-title rounded-circle bg-soft-success">
+                                                <i class="fas fa-user-nurse"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h5 class="font-size-14 mb-1">@payment.CaregiverName</h5>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>@payment.TotalAmount.ToString("N0") VNĐ</td>
+                                <td>@payment.Deposit.ToString("N0") VNĐ</td>
+                                <td>@payment.RemainingAmount.ToString("N0") VNĐ</td>
+                                <td>
+                                    @{
+                                        var statusClass = payment.PaymentStatus switch
+                                        {
+                                            "Chờ thanh toán" => "badge bg-warning",
+                                            "Đã thanh toán" => "badge bg-success",
+                                            "Từ chối" => "badge bg-danger",
+                                            _ => "badge bg-secondary"
+                                        };
+                                    }
+                                    <span class="@statusClass">@payment.PaymentStatus</span>
+                                </td>
+                                <td>@payment.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    <span class="text-truncate d-inline-block" style="max-width: 150px;" title="@payment.DepositNote">
+                                        @(string.IsNullOrEmpty(payment.DepositNote) ? "Không có nội dung cọc" : payment.DepositNote)
+                                    </span>
+                                </td>
+                                <td>
+                                    @if (payment.PaymentStatus == "Chờ thanh toán")
+                                    {
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-success btn-sm" onclick="approvePayment(@payment.Id)" title="Duyệt">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="showRejectModal(@payment.Id)" title="Từ chối">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-info btn-sm" onclick="showPaymentDetails(@payment.Id)" title="Chi tiết">
+                                                <i class="fas fa-info-circle"></i>
+                                            </button>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-info btn-sm" onclick="showPaymentDetails(@payment.Id)" title="Chi tiết">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal lọc giao dịch -->
+<div class="modal fade" id="filterModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-filter me-2"></i>
+                    Lọc giao dịch
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="filterForm" class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Trạng thái:</label>
+                        <select class="form-select" id="statusFilter">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="Chờ thanh toán">Chờ thanh toán</option>
+                            <option value="Đã thanh toán">Đã thanh toán</option>
+                            <option value="Từ chối">Từ chối</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Phương thức thanh toán:</label>
+                        <select class="form-select" id="paymentMethodFilter">
+                            <option value="">Tất cả phương thức</option>
+                            <option value="Cash">Tiền mặt</option>
+                            <option value="Bank">Chuyển khoản</option>
+                            <option value="Momo">Ví Momo</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Người cần chăm sóc:</label>
+                        <select class="form-select" id="seniorFilter">
+                            <option value="">Tất cả người cần chăm sóc</option>
+                            @foreach (var payment in Model.Select(p => p.SeniorName).Distinct())
+                            {
+                                <option value="@payment">@payment</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Người chăm sóc:</label>
+                        <select class="form-select" id="caregiverFilter">
+                            <option value="">Tất cả người chăm sóc</option>
+                            @foreach (var payment in Model.Select(p => p.CaregiverName).Distinct())
+                            {
+                                <option value="@payment">@payment</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Từ ngày:</label>
+                        <input type="date" class="form-control" id="startDate">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Đến ngày:</label>
+                        <input type="date" class="form-control" id="endDate">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Số tiền từ:</label>
+                        <input type="number" class="form-control" id="minAmount" placeholder="0">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Số tiền đến:</label>
+                        <input type="number" class="form-control" id="maxAmount" placeholder="1000000">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Sắp xếp theo:</label>
+                        <select class="form-select" id="sortBy">
+                            <option value="id">ID</option>
+                            <option value="date">Ngày tạo</option>
+                            <option value="amount">Số tiền</option>
+                            <option value="status">Trạng thái</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Thứ tự:</label>
+                        <select class="form-select" id="sortOrder">
+                            <option value="desc">Giảm dần</option>
+                            <option value="asc">Tăng dần</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="resetFilters()">
+                    <i class="fas fa-undo me-1"></i>Đặt lại
+                </button>
+                <button type="button" class="btn btn-primary" onclick="applyFilters()">
+                    <i class="fas fa-check me-1"></i>Áp dụng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal từ chối thanh toán -->
+<div class="modal fade" id="rejectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-times-circle me-2 text-danger"></i>
+                    Từ chối thanh toán
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="rejectForm">
+                <div class="modal-body">
+                    <input type="hidden" id="rejectPaymentId" name="paymentId">
+                    <div class="mb-3">
+                        <label for="rejectReason" class="form-label">Lý do từ chối:</label>
+                        <textarea class="form-control" id="rejectReason" name="reason" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>Hủy
+                    </button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-check me-1"></i>Xác nhận từ chối
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal chi tiết giao dịch -->
+<div class="modal fade" id="paymentDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-info-circle me-2 text-info"></i>
+                    Chi tiết giao dịch
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="paymentDetailsContent">
+                    <!-- Nội dung chi tiết sẽ được điền bằng JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <style>
+        .card {
+            border: none;
+            margin-bottom: 24px;
+            -webkit-box-shadow: 0 0 13px 0 rgba(236,236,241,.44);
+            box-shadow: 0 0 13px 0 rgba(236,236,241,.44);
+            background-color: #fff;
+        }
+
+        .avatar-sm {
+            height: 3rem;
+            width: 3rem;
+        }
+
+        .bg-soft-primary {
+            background-color: rgba(85,110,230,.25)!important;
+        }
+
+        .bg-soft-success {
+            background-color: rgba(52,195,143,.25)!important;
+        }
+
+        .avatar-title {
+            align-items: center;
+            display: flex;
+            font-weight: 500;
+            height: 100%;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .font-size-14 {
+            font-size: 14px!important;
+        }
+
+        .badge {
+            padding: 0.5em 0.8em;
+        }
+
+        .border-left-primary {
+            border-left: .25rem solid #4e73df!important;
+        }
+
+        .border-left-success {
+            border-left: .25rem solid #1cc88a!important;
+        }
+
+        .border-left-info {
+            border-left: .25rem solid #36b9cc!important;
+        }
+
+        .border-left-warning {
+            border-left: .25rem solid #f6c23e!important;
+        }
+
+        .text-gray-300 {
+            color: #dddfeb!important;
+        }
+
+        .text-gray-800 {
+            color: #5a5c69!important;
+        }
+
+        .btn-group .btn {
+            padding: 0.25rem 0.5rem;
+        }
+
+        .btn-group .btn i {
+            font-size: 0.875rem;
+        }
+
+        .table thead th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        let paymentsTable;
+
+        $(document).ready(function () {
+            initializeDataTable();
+            initializeDatePickers();
+        });
+
+        function initializeDataTable() {
+            paymentsTable = $('#paymentsTable').DataTable({
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.10.24/i18n/Vietnamese.json"
+                },
+                pageLength: 10,
+                order: [[0, "desc"]],
+                responsive: true,
+                columnDefs: [
+                    { orderable: false, targets: [9] }
+                ],
+                initComplete: function() {
+                    // Khởi tạo các bộ lọc sau khi DataTable được tạo
+                    updateFilters();
+                }
+            });
+        }
+
+        function updateFilters() {
+            // Cập nhật danh sách người cần chăm sóc
+            const seniorSelect = $('#seniorFilter');
+            seniorSelect.empty().append('<option value="">Tất cả người cần chăm sóc</option>');
+            const seniors = [...new Set(paymentsTable.column(1).data().toArray())];
+            seniors.forEach(senior => {
+                if (senior) {
+                    seniorSelect.append(`<option value="${senior}">${senior}</option>`);
+                }
+            });
+
+            // Cập nhật danh sách người chăm sóc
+            const caregiverSelect = $('#caregiverFilter');
+            caregiverSelect.empty().append('<option value="">Tất cả người chăm sóc</option>');
+            const caregivers = [...new Set(paymentsTable.column(2).data().toArray())];
+            caregivers.forEach(caregiver => {
+                if (caregiver) {
+                    caregiverSelect.append(`<option value="${caregiver}">${caregiver}</option>`);
+                }
+            });
+        }
+
+        function initializeDatePickers() {
+            const today = new Date();
+            const thirtyDaysAgo = new Date(today);
+            thirtyDaysAgo.setDate(today.getDate() - 30);
+
+            $('#startDate').val(thirtyDaysAgo.toISOString().split('T')[0]);
+            $('#endDate').val(today.toISOString().split('T')[0]);
+        }
+
+        function approvePayment(paymentId) {
+            Swal.fire({
+                title: 'Xác nhận duyệt',
+                text: 'Bạn có chắc muốn duyệt giao dịch này?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Duyệt',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/Admin/ApprovePayment',
+                        type: 'POST',
+                        data: { paymentId: paymentId },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire(
+                                    'Thành công!',
+                                    'Giao dịch đã được duyệt.',
+                                    'success'
+                                ).then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Lỗi!',
+                                    response.message,
+                                    'error'
+                                );
+                            }
+                        },
+                        error: function() {
+                            Swal.fire(
+                                'Lỗi!',
+                                'Có lỗi xảy ra khi xử lý yêu cầu.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        }
+
+        function showRejectModal(paymentId) {
+            $('#rejectPaymentId').val(paymentId);
+            $('#rejectModal').modal('show');
+        }
+
+        $('#rejectForm').on('submit', function(e) {
+            e.preventDefault();
+            const paymentId = $('#rejectPaymentId').val();
+            const reason = $('#rejectReason').val();
+
+            $.ajax({
+                url: '/Admin/RejectPayment',
+                type: 'POST',
+                data: { paymentId: paymentId, reason: reason },
+                success: function(response) {
+                    if (response.success) {
+                        $('#rejectModal').modal('hide');
+                        Swal.fire(
+                            'Thành công!',
+                            'Giao dịch đã bị từ chối.',
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Lỗi!',
+                            response.message,
+                            'error'
+                        );
+                    }
+                },
+                error: function() {
+                    Swal.fire(
+                        'Lỗi!',
+                        'Có lỗi xảy ra khi xử lý yêu cầu.',
+                        'error'
+                    );
+                }
+            });
+        });
+
+        function showPaymentDetails(paymentId) {
+            $.ajax({
+                url: '/Admin/GetPaymentDetails',
+                type: 'GET',
+                data: { paymentId: paymentId },
+                success: function(response) {
+                    if (response.success) {
+                        $('#paymentDetailsContent').html(formatPaymentDetails(response.data));
+                        $('#paymentDetailsModal').modal('show');
+                    } else {
+                        Swal.fire(
+                            'Lỗi!',
+                            response.message,
+                            'error'
+                        );
+                    }
+                },
+                error: function() {
+                    Swal.fire(
+                        'Lỗi!',
+                        'Có lỗi xảy ra khi tải thông tin chi tiết.',
+                        'error'
+                    );
+                }
+            });
+        }
+
+        function formatPaymentDetails(payment) {
+            return `
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Thông tin cơ bản</h6>
+                        <p><strong>ID:</strong> ${payment.id}</p>
+                        <p><strong>Ngày tạo:</strong> ${new Date(payment.createdAt).toLocaleString()}</p>
+                        <p><strong>Trạng thái:</strong> <span class="badge ${getStatusClass(payment.status)}">${getStatusText(payment.status)}</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Thông tin thanh toán</h6>
+                        <p><strong>Tổng tiền:</strong> ${payment.totalAmount.toLocaleString()} VNĐ</p>
+                        <p><strong>Đã đặt cọc:</strong> ${payment.deposit.toLocaleString()} VNĐ</p>
+                        <p><strong>Còn lại:</strong> ${payment.remainingAmount.toLocaleString()} VNĐ</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Thông tin người cao tuổi</h6>
+                        <p><strong>Họ tên:</strong> ${payment.seniorName}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Thông tin người chăm sóc</h6>
+                        <p><strong>Họ tên:</strong> ${payment.caregiverName}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h6 class="mb-3">Nội dung cọc (chuyển khoản)</h6>
+                        <p>${payment.depositNote || 'Không có nội dung cọc'}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getStatusClass(status) {
+            switch (status) {
+                case 'Chờ thanh toán': return 'bg-warning';
+                case 'Đã thanh toán': return 'bg-success';
+                case 'Từ chối': return 'bg-danger';
+                default: return 'bg-secondary';
+            }
+        }
+
+        function getStatusText(status) {
+            switch (status) {
+                case 'Chờ thanh toán': return 'Chờ thanh toán';
+                case 'Đã thanh toán': return 'Đã thanh toán';
+                case 'Từ chối': return 'Từ chối';
+                default: return status;
+            }
+        }
+
+        function applyFilters() {
+            const status = $('#statusFilter').val();
+            const paymentMethod = $('#paymentMethodFilter').val();
+            const startDate = $('#startDate').val();
+            const endDate = $('#endDate').val();
+            const minAmount = $('#minAmount').val();
+            const maxAmount = $('#maxAmount').val();
+            const sortBy = $('#sortBy').val();
+            const sortOrder = $('#sortOrder').val();
+            const senior = $('#seniorFilter').val();
+            const caregiver = $('#caregiverFilter').val();
+
+            // Xóa tất cả các bộ lọc hiện tại
+            paymentsTable.search('').columns().search('');
+
+            // Áp dụng bộ lọc trạng thái
+            if (status) {
+                paymentsTable.column(6).search(status);
+            }
+
+            // Áp dụng bộ lọc phương thức thanh toán
+            if (paymentMethod) {
+                paymentsTable.column(8).search(paymentMethod);
+            }
+
+            // Áp dụng bộ lọc người cần chăm sóc
+            if (senior) {
+                paymentsTable.column(1).search(senior);
+            }
+
+            // Áp dụng bộ lọc người chăm sóc
+            if (caregiver) {
+                paymentsTable.column(2).search(caregiver);
+            }
+
+            // Áp dụng bộ lọc ngày
+            if (startDate && endDate) {
+                $.fn.dataTable.ext.search.push(
+                    function(settings, data, dataIndex) {
+                        const date = new Date(data[7]);
+                        const min = new Date(startDate);
+                        const max = new Date(endDate);
+                        return (date >= min && date <= max);
+                    }
+                );
+            }
+
+            // Áp dụng bộ lọc số tiền
+            if (minAmount || maxAmount) {
+                $.fn.dataTable.ext.search.push(
+                    function(settings, data, dataIndex) {
+                        const amount = parseFloat(data[3].replace(/[^\d]/g, ''));
+                        const min = minAmount ? parseFloat(minAmount) : 0;
+                        const max = maxAmount ? parseFloat(maxAmount) : Infinity;
+                        return (amount >= min && amount <= max);
+                    }
+                );
+            }
+
+            // Áp dụng sắp xếp
+            const sortColumnIndex = getSortColumnIndex(sortBy);
+            paymentsTable.order([sortColumnIndex, sortOrder]);
+
+            // Vẽ lại bảng
+            paymentsTable.draw();
+
+            $('#filterModal').modal('hide');
+        }
+
+        function getSortColumnIndex(sortBy) {
+            switch (sortBy) {
+                case 'id': return 0;
+                case 'date': return 7;
+                case 'amount': return 3;
+                case 'status': return 6;
+                default: return 0;
+            }
+        }
+
+        function resetFilters() {
+            // Reset form
+            $('#filterForm')[0].reset();
+            initializeDatePickers();
+
+            // Xóa tất cả các bộ lọc
+            $.fn.dataTable.ext.search = [];
+            paymentsTable.search('').columns().search('');
+
+            // Vẽ lại bảng
+            paymentsTable.draw();
+        }
+    </script>
+} 

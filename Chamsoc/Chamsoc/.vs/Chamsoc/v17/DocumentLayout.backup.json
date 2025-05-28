@@ -1,0 +1,729 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\chamsoc.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:chamsoc.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\vietqr\\generateqr.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\vietqr\\generateqr.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\caregivers\\listcaregivers.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\caregivers\\listcaregivers.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\admin\\managepayments.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\admin\\managepayments.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\dotnet\\sdk\\9.0.100\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.Sdk.DefaultItems.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\admin\\manageusers.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\admin\\manageusers.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\admin\\handlecomplaint.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\admin\\handlecomplaint.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\controllers\\controllerthanhtoan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:controllers\\controllerthanhtoan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\models\\transactionviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:models\\transactionviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\admin\\transactionstats.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\admin\\transactionstats.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\controllers\\carejobscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:controllers\\carejobscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\admin\\managecomplaints.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\admin\\managecomplaints.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\shared\\updateprofilecaregiver.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\shared\\updateprofilecaregiver.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\controllers\\caregiverscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:controllers\\caregiverscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\carejobs\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\carejobs\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\controllers\\seniorscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:controllers\\seniorscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\carejobs\\bookcaregiver.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\carejobs\\bookcaregiver.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\caregivers\\bookcaregiver.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\caregivers\\bookcaregiver.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\notifications\\viewnotification.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\notifications\\viewnotification.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\carejobs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\carejobs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250519080558_chamsoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Migrations\\20250519080558_chamsoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\carejobs\\submitcomplaint.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\carejobs\\submitcomplaint.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\deposit\\makedeposit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\deposit\\makedeposit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\models\\carejob.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:models\\carejob.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\caregivers\\depositsuccess.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\caregivers\\depositsuccess.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\account\\viewprofilesenior.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\account\\viewprofilesenior.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\account\\profilecaregiver.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\account\\profilecaregiver.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\controllers\\depositcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:controllers\\depositcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\carejobs\\ratecaregiver.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\carejobs\\ratecaregiver.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\notifications\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:views\\notifications\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\models\\transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:models\\transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\admin\\desktop\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\models\\complaint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:models\\complaint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Views\\Home\\Privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Chamsoc.Web\\Views\\Home\\Privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Views\\Home\\Index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Chamsoc.Web\\Views\\Home\\Index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Controllers\\DepositController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Chamsoc.Web\\Controllers\\DepositController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Chamsoc.Web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Chamsoc.Web\\Chamsoc.Web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AdminController.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\AdminController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AdminController.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\AdminController.cs",
+              "RelativeToolTip": "Controllers\\AdminController.cs",
+              "ViewState": "AgIAAKoBAAAAAAAAAAAqwMsBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T08:45:43.264Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ManagePayments.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\ManagePayments.cshtml",
+              "RelativeDocumentMoniker": "Views\\Admin\\ManagePayments.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\ManagePayments.cshtml",
+              "RelativeToolTip": "Views\\Admin\\ManagePayments.cshtml",
+              "ViewState": "AgIAAKkCAAAAAAAAAAAqwLMCAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-21T02:46:41.319Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ListCaregivers.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Caregivers\\ListCaregivers.cshtml",
+              "RelativeDocumentMoniker": "Views\\Caregivers\\ListCaregivers.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Caregivers\\ListCaregivers.cshtml",
+              "RelativeToolTip": "Views\\Caregivers\\ListCaregivers.cshtml",
+              "ViewState": "AgIAAFYCAAAAAAAAAAAwwGwCAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T09:13:34.43Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GenerateQR.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\VietQR\\GenerateQR.cshtml",
+              "RelativeDocumentMoniker": "Views\\VietQR\\GenerateQR.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\VietQR\\GenerateQR.cshtml",
+              "RelativeToolTip": "Views\\VietQR\\GenerateQR.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T07:51:21.178Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Chamsoc.csproj",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Chamsoc.csproj",
+              "RelativeDocumentMoniker": "Chamsoc.csproj",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Chamsoc.csproj",
+              "RelativeToolTip": "Chamsoc.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-05-26T06:28:04.89Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ControllerThanhToan.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\ControllerThanhToan.cs",
+              "RelativeDocumentMoniker": "Controllers\\ControllerThanhToan.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\ControllerThanhToan.cs",
+              "RelativeToolTip": "Controllers\\ControllerThanhToan.cs",
+              "ViewState": "AgIAAA8CAAAAAAAAAAAmwCwCAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T07:36:15.385Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ManageUsers.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\ManageUsers.cshtml",
+              "RelativeDocumentMoniker": "Views\\Admin\\ManageUsers.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\ManageUsers.cshtml",
+              "RelativeToolTip": "Views\\Admin\\ManageUsers.cshtml",
+              "ViewState": "AgIAALoBAAAAAAAAAAAqwNIBAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T07:38:45.711Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Microsoft.NET.Sdk.DefaultItems.targets",
+              "DocumentMoniker": "C:\\Program Files\\dotnet\\sdk\\9.0.100\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.Sdk.DefaultItems.targets",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\Program Files\\dotnet\\sdk\\9.0.100\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.Sdk.DefaultItems.targets",
+              "ToolTip": "C:\\Program Files\\dotnet\\sdk\\9.0.100\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.Sdk.DefaultItems.targets",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\Program Files\\dotnet\\sdk\\9.0.100\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.Sdk.DefaultItems.targets",
+              "ViewState": "AgIAAGsAAAAAAAAAAAAnwH8AAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2025-05-26T06:28:15.465Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Controllers\\AccountController.cs",
+              "ViewState": "AgIAAP4DAAAAAAAAAAAmwAoEAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T08:30:47.005Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "HandleComplaint.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\HandleComplaint.cshtml",
+              "RelativeDocumentMoniker": "Views\\Admin\\HandleComplaint.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\HandleComplaint.cshtml",
+              "RelativeToolTip": "Views\\Admin\\HandleComplaint.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-22T14:35:18.383Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "_AdminLayout.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_AdminLayout.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_AdminLayout.cshtml",
+              "ViewState": "AgIAAFcBAAAAAAAAAAAUwI4BAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-21T02:54:04.612Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "TransactionStats.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\TransactionStats.cshtml",
+              "RelativeDocumentMoniker": "Views\\Admin\\TransactionStats.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\TransactionStats.cshtml",
+              "RelativeToolTip": "Views\\Admin\\TransactionStats.cshtml",
+              "ViewState": "AgIAABQAAAAAAAAAAAAmwCoAAABZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-21T04:08:58.434Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "TransactionViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Models\\TransactionViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\TransactionViewModel.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Models\\TransactionViewModel.cs",
+              "RelativeToolTip": "Models\\TransactionViewModel.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAmwBQAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-21T04:10:20.439Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "CareJobsController.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\CareJobsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CareJobsController.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\CareJobsController.cs",
+              "RelativeToolTip": "Controllers\\CareJobsController.cs",
+              "ViewState": "AgIAAL8DAAAAzczMzEwkwMADAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T07:35:00.905Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\CareJobs\\Details.cshtml",
+              "RelativeDocumentMoniker": "Views\\CareJobs\\Details.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\CareJobs\\Details.cshtml",
+              "RelativeToolTip": "Views\\CareJobs\\Details.cshtml",
+              "ViewState": "AgIAAAQBAACAm5mZmZkXwAcBAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T12:20:29.157Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ManageComplaints.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\ManageComplaints.cshtml",
+              "RelativeDocumentMoniker": "Views\\Admin\\ManageComplaints.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\ManageComplaints.cshtml",
+              "RelativeToolTip": "Views\\Admin\\ManageComplaints.cshtml",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAAAAAAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T07:33:09.263Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "UpdateProfileCaregiver.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Shared\\UpdateProfileCaregiver.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\UpdateProfileCaregiver.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Shared\\UpdateProfileCaregiver.cshtml",
+              "RelativeToolTip": "Views\\Shared\\UpdateProfileCaregiver.cshtml",
+              "ViewState": "AgIAAMsAAAAAAAAAAAAqwNIAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-21T02:30:08.629Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "SeniorsController.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\SeniorsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\SeniorsController.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\SeniorsController.cs",
+              "RelativeToolTip": "Controllers\\SeniorsController.cs",
+              "ViewState": "AgIAAH4AAAAAAAAAAAAmwJIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-20T02:11:42.465Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "CaregiversController.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\CaregiversController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CaregiversController.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\CaregiversController.cs",
+              "RelativeToolTip": "Controllers\\CaregiversController.cs",
+              "ViewState": "AgIAADgAAAAAAAAAAAAmwEsAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T07:38:26.288Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "ViewNotification.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Notifications\\ViewNotification.cshtml",
+              "RelativeDocumentMoniker": "Views\\Notifications\\ViewNotification.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Notifications\\ViewNotification.cshtml",
+              "RelativeToolTip": "Views\\Notifications\\ViewNotification.cshtml",
+              "ViewState": "AgIAAA4AAACIZmZmZmYpwB4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T07:51:38.461Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "BookCaregiver.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\CareJobs\\BookCaregiver.cshtml",
+              "RelativeDocumentMoniker": "Views\\CareJobs\\BookCaregiver.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\CareJobs\\BookCaregiver.cshtml",
+              "RelativeToolTip": "Views\\CareJobs\\BookCaregiver.cshtml",
+              "ViewState": "AgIAACkAAAAAAAAAAAAmwDwAAABrAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-20T03:19:16.723Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "BookCaregiver.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Caregivers\\BookCaregiver.cshtml",
+              "RelativeDocumentMoniker": "Views\\Caregivers\\BookCaregiver.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Caregivers\\BookCaregiver.cshtml",
+              "RelativeToolTip": "Views\\Caregivers\\BookCaregiver.cshtml",
+              "ViewState": "AgIAACABAAAAAAAAAAAmwGYBAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T07:39:24.35Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAPcAAAAAAAAAAAAmwB8BAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T07:38:33.554Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\CareJobs\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\CareJobs\\Index.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\CareJobs\\Index.cshtml",
+              "RelativeToolTip": "Views\\CareJobs\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T07:38:56.051Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAKgAAABAMzMzM5MwwLUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T07:39:02.584Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "20250519080558_chamsoc.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250519080558_chamsoc.cs",
+              "RelativeDocumentMoniker": "Migrations\\20250519080558_chamsoc.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250519080558_chamsoc.cs",
+              "RelativeToolTip": "Migrations\\20250519080558_chamsoc.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T08:05:58.559Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "MakeDeposit.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Deposit\\MakeDeposit.cshtml",
+              "RelativeDocumentMoniker": "Views\\Deposit\\MakeDeposit.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Deposit\\MakeDeposit.cshtml",
+              "RelativeToolTip": "Views\\Deposit\\MakeDeposit.cshtml",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAmwB0AAABYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T07:53:01.503Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-05-19T07:30:02.516Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "SubmitComplaint.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\CareJobs\\SubmitComplaint.cshtml",
+              "RelativeDocumentMoniker": "Views\\CareJobs\\SubmitComplaint.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\CareJobs\\SubmitComplaint.cshtml",
+              "RelativeToolTip": "Views\\CareJobs\\SubmitComplaint.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAC3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T07:51:40.443Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "CareJob.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Models\\CareJob.cs",
+              "RelativeDocumentMoniker": "Models\\CareJob.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Models\\CareJob.cs",
+              "RelativeToolTip": "Models\\CareJob.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAmwD0AAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T07:43:07.689Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "NotificationsController.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\NotificationsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\NotificationsController.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\NotificationsController.cs",
+              "RelativeToolTip": "Controllers\\NotificationsController.cs",
+              "ViewState": "AgIAAMMAAAAAAAAAAAAmwNYAAABNAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T07:36:34.446Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "Data\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "Data\\AppDbContext.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAmwC8AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T07:40:50.535Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "DepositSuccess.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Caregivers\\DepositSuccess.cshtml",
+              "RelativeDocumentMoniker": "Views\\Caregivers\\DepositSuccess.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Caregivers\\DepositSuccess.cshtml",
+              "RelativeToolTip": "Views\\Caregivers\\DepositSuccess.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T07:39:16.271Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "ViewProfileSenior.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Account\\ViewProfileSenior.cshtml",
+              "RelativeDocumentMoniker": "Views\\Account\\ViewProfileSenior.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Account\\ViewProfileSenior.cshtml",
+              "RelativeToolTip": "Views\\Account\\ViewProfileSenior.cshtml",
+              "ViewState": "AgIAAFMAAAAAAAAAAAAmwGYAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T07:39:22.648Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "ProfileCaregiver.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Account\\ProfileCaregiver.cshtml",
+              "RelativeDocumentMoniker": "Views\\Account\\ProfileCaregiver.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Account\\ProfileCaregiver.cshtml",
+              "RelativeToolTip": "Views\\Account\\ProfileCaregiver.cshtml",
+              "ViewState": "AgIAAHAAAAAAAAAAAAAmwG4AAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T07:38:48.225Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "DepositController.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\DepositController.cs",
+              "RelativeDocumentMoniker": "Controllers\\DepositController.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\DepositController.cs",
+              "RelativeToolTip": "Controllers\\DepositController.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAmwCoAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T07:35:20.559Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "RateCaregiver.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\CareJobs\\RateCaregiver.cshtml",
+              "RelativeDocumentMoniker": "Views\\CareJobs\\RateCaregiver.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\CareJobs\\RateCaregiver.cshtml",
+              "RelativeToolTip": "Views\\CareJobs\\RateCaregiver.cshtml",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAUwGEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T07:34:10.294Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Notifications\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Notifications\\Index.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Notifications\\Index.cshtml",
+              "RelativeToolTip": "Views\\Notifications\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-19T07:33:31.188Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "Transaction.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Models\\Transaction.cs",
+              "RelativeDocumentMoniker": "Models\\Transaction.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Models\\Transaction.cs",
+              "RelativeToolTip": "Models\\Transaction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T07:31:37.41Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "Complaint.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Models\\Complaint.cs",
+              "RelativeDocumentMoniker": "Models\\Complaint.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Models\\Complaint.cs",
+              "RelativeToolTip": "Models\\Complaint.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T07:31:29.777Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "Privacy.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Views\\Home\\Privacy.cshtml",
+              "RelativeDocumentMoniker": "src\\Chamsoc.Web\\Views\\Home\\Privacy.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Views\\Home\\Privacy.cshtml",
+              "RelativeToolTip": "src\\Chamsoc.Web\\Views\\Home\\Privacy.cshtml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-16T23:56:20.611Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "src\\Chamsoc.Web\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "src\\Chamsoc.Web\\Views\\Home\\Index.cshtml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-16T23:56:18.453Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "DepositController.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Controllers\\DepositController.cs",
+              "RelativeDocumentMoniker": "src\\Chamsoc.Web\\Controllers\\DepositController.cs",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Controllers\\DepositController.cs",
+              "RelativeToolTip": "src\\Chamsoc.Web\\Controllers\\DepositController.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-16T23:40:36.45Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "Chamsoc.Web.csproj",
+              "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Chamsoc.Web.csproj",
+              "RelativeDocumentMoniker": "src\\Chamsoc.Web\\Chamsoc.Web.csproj",
+              "ToolTip": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Chamsoc.Web.csproj",
+              "RelativeToolTip": "src\\Chamsoc.Web\\Chamsoc.Web.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-05-16T23:39:16.09Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

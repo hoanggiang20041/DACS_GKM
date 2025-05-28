@@ -1,0 +1,2 @@
+C:\Users\admin\Desktop\DACS_GKM\Chamsoc\Chamsoc\Chamsoc\wwwroot\js\notifications.js
+wwwroot\js\notifications.js

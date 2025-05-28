@@ -1,0 +1,653 @@
+﻿@model Chamsoc.Models.Caregiver
+@{
+    ViewData["Title"] = "Cập Nhật Hồ Sơ Người Chăm Sóc";
+    string currentUserRole = ViewBag.CurrentUserRole;
+}
+
+<style>
+    .profile-container {
+        background: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-top: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .profile-container:hover {
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .profile-header h2 {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        margin: 0 auto 1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .profile-avatar:hover {
+        transform: scale(1.05);
+    }
+
+    .form-label {
+        color: #34495e;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 0.75rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    }
+
+    .verified-badge {
+        display: inline-flex;
+        align-items: center;
+        background: #e8f5e9;
+        color: #2e7d32;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+
+    .verified-tick {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url('/images/tick.png') no-repeat center center;
+        background-size: cover;
+        margin-left: 5px;
+        vertical-align: middle;
+        position: relative;
+    }
+
+    .verified-tick::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        border: 2px solid transparent;
+        border-radius: 50%;
+        animation: rainbow-border 3s linear infinite;
+        background: url('/images/tick.png') no-repeat center center;
+        background-size: cover;
+        z-index: -1;
+    }
+
+    @@keyframes rainbow-border {
+        0% { border-color: #ff0000; }
+        16% { border-color: #ff7f00; }
+        33% { border-color: #ffff00; }
+        50% { border-color: #00ff00; }
+        66% { border-color: #00ffff; }
+        83% { border-color: #0000ff; }
+        100% { border-color: #ff00ff; }
+    }
+
+    .btn-primary {
+        background: #3498db;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    }
+
+    .btn-secondary {
+        background: #95a5a6;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        background: #7f8c8d;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(149, 165, 166, 0.3);
+    }
+
+    .alert {
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        border: none;
+    }
+
+    .alert-success {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .alert-danger {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .status-available {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .status-busy {
+        background: #ffebee;
+        color: #c62828;
+    }
+
+    .skills-select {
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 0.75rem;
+        transition: all 0.3s ease;
+        background-color: #fff;
+    }
+
+    .skills-select:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    }
+
+    /* Toast Notification Styles */
+    .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+
+    .toast {
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 10px;
+        transform: translateX(120%);
+        transition: transform 0.3s ease-in-out;
+        opacity: 0;
+    }
+
+    .toast.show {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    .toast.hide {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+
+    .toast-icon {
+        width: 24px;
+        height: 24px;
+        background-color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .toast-icon svg {
+        width: 16px;
+        height: 16px;
+        fill: #4CAF50;
+    }
+
+    .toast-message {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    /* Success Modal Styles */
+    .success-modal-overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.15);
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.3s;
+        opacity: 0;
+        pointer-events: none;
+    }
+    .success-modal-overlay.show {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .success-modal {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        padding: 36px 32px 28px 32px;
+        text-align: center;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        animation: popIn 0.3s cubic-bezier(.68,-0.55,.27,1.55);
+    }
+    @@media (max-width: 480px) {
+        .success-modal {
+            max-width: 95vw;
+            padding: 20px 5vw 18px 5vw;
+        }
+    }
+    .success-checkmark {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 18px auto;
+        display: block;
+    }
+    .success-title {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 8px;
+    }
+    .success-desc {
+        font-size: 1.05rem;
+        color: #666;
+        margin-bottom: 22px;
+    }
+    .success-modal-btn {
+        background: #3498db;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 32px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s;
+        outline: none;
+    }
+    .success-modal-btn:hover {
+        background: #217dbb;
+    }
+    /* Tick animation */
+    .success-checkmark__circle {
+        stroke: #4CAF50;
+        stroke-width: 4;
+        fill: none;
+        stroke-dasharray: 300;
+        stroke-dashoffset: 300;
+        animation: circle-appear 0.5s ease forwards;
+    }
+    @@keyframes circle-appear {
+        to { stroke-dashoffset: 0; }
+    }
+    .success-checkmark__check {
+        stroke: #4CAF50;
+        stroke-width: 4;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+        stroke-dasharray: 36;
+        stroke-dashoffset: 36;
+        animation: check-draw 0.5s 0.3s cubic-bezier(.68,-0.55,.27,1.55) forwards;
+    }
+    @@keyframes check-draw {
+        to { stroke-dashoffset: 0; }
+    }
+</style>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Success Modal -->
+<div class="success-modal-overlay" id="successModal">
+    <div class="success-modal">
+        <svg class="success-checkmark" viewBox="0 0 52 52">
+            <circle class="success-checkmark__circle" cx="26" cy="26" r="24"/>
+            <path class="success-checkmark__check" d="M16 27l7 7 13-13"/>
+        </svg>
+        <div class="success-title">Cập nhật thành công!</div>
+        <div class="success-desc">Chúng tôi đã cập nhật thông tin của bạn</div>
+        <button class="success-modal-btn" id="successModalBtn">OK</button>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="profile-container">
+        <div class="profile-header">
+            <h2>Cập Nhật Hồ Sơ Người Chăm Sóc</h2>
+            @if (!string.IsNullOrEmpty(Model.AvatarUrl))
+            {
+                <img src="@Model.AvatarUrl" alt="Avatar" class="profile-avatar" />
+            }
+            <h5>@Model.Name</h5>
+            <div class="verified-badge">
+                @if (Model.IsVerified)
+                {
+                    <span>Đã xác minh <span class="verified-tick"></span></span>
+                }
+                else
+                {
+                    <span>Chưa xác minh</span>
+                }
+            </div>
+        </div>
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        <form asp-action="UpdateProfileCaregiver" asp-controller="Account" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <input type="hidden" name="id" value="@ViewBag.User.Id" />
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Họ và tên</label>
+                        <input type="text" class="form-control" id="name" name="name" value="@Model.Name" required />
+                        <div class="invalid-feedback">
+                            Vui lòng nhập họ và tên.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="skills" class="form-label">Kỹ năng chăm sóc</label>
+                        <select class="form-control skills-select" id="skills" name="skills" required>
+                            <option value="">Chọn kỹ năng</option>
+                            @if (Model.Skills == "Khám toàn diện")
+                            {
+                                <option value="Khám toàn diện" selected>Khám toàn diện</option>
+                                <option value="Khám vật lý trị liệu">Khám vật lý trị liệu</option>
+                            }
+                            else if (Model.Skills == "Khám vật lý trị liệu")
+                            {
+                                <option value="Khám toàn diện">Khám toàn diện</option>
+                                <option value="Khám vật lý trị liệu" selected>Khám vật lý trị liệu</option>
+                            }
+                            else
+                            {
+                                <option value="Khám toàn diện">Khám toàn diện</option>
+                                <option value="Khám vật lý trị liệu">Khám vật lý trị liệu</option>
+                            }
+                        </select>
+                        <div class="invalid-feedback">
+                            Vui lòng chọn kỹ năng chăm sóc.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="@ViewBag.User.Email" required />
+                        <div class="invalid-feedback">
+                            Vui lòng nhập email hợp lệ.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="contact" class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" id="contact" name="contact" value="@ViewBag.User.PhoneNumber" required maxlength="10" pattern="\d{10}" />
+                        <div class="invalid-feedback">
+                            Vui lòng nhập số điện thoại gồm đúng 10 chữ số.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="price" class="form-label">Thù lao bạn mong muốn (1 giờ) (VNĐ)</label>
+                <input type="text" class="form-control" id="price" name="priceDisplay" value="@Model.Price.ToString("N0")" required />
+                <input type="hidden" id="priceHidden" name="price" value="@Model.Price" />
+                <span class="text-danger" id="priceError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="isAvailable" class="form-label">Trạng thái</label>
+                <select class="form-control" id="isAvailable" name="isAvailable">
+                    @if (Model.IsAvailable)
+                    {
+                        <option value="true" selected>Sẵn sàng</option>
+                        <option value="false">Đang bận</option>
+                    }
+                    else
+                    {
+                        <option value="true">Sẵn sàng</option>
+                        <option value="false" selected>Đang bận</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="avatar" class="form-label">Ảnh đại diện</label>
+                <input type="file" class="form-control" id="avatar" name="avatar" accept="image/*" />
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="currentPassword" class="form-label">Mật khẩu hiện tại (nếu muốn đổi mật khẩu)</label>
+                        <input type="password" class="form-control" id="currentPassword" name="currentPassword" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="newPassword" class="form-label">Mật khẩu mới (nếu muốn đổi mật khẩu)</label>
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                @if (currentUserRole == "Admin")
+                {
+                    <a asp-action="ManageUsers" asp-controller="Admin" class="btn btn-secondary">Quay lại</a>
+                }
+                else if (currentUserRole == "Senior")
+                {
+                    <a asp-action="ListCaregivers" asp-controller="Caregivers" class="btn btn-secondary">Quay lại</a>
+                }
+                else if (currentUserRole == "Caregiver")
+                {
+                    <a asp-action="ListSeniors" asp-controller="Seniors" class="btn btn-secondary">Quay lại</a>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const priceInput = document.getElementById('price');
+            const priceHidden = document.getElementById('priceHidden');
+            const priceError = document.getElementById('priceError');
+            const contactInput = document.getElementById('contact');
+            const form = document.querySelector('form');
+
+            // Định dạng số khi hiển thị (thêm dấu chấm phân cách hàng nghìn)
+            function formatNumber(value) {
+                return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
+
+            // Loại bỏ định dạng để lấy giá trị số thô
+            function parseNumber(value) {
+                return parseFloat(value.replace(/\./g, '')) || 0;
+            }
+
+            // Định dạng giá trị ban đầu cho price
+            priceInput.value = formatNumber(parseFloat(priceInput.value.replace(/\./g, '')));
+
+            // Xử lý khi người dùng nhập price
+            priceInput.addEventListener('input', function () {
+                let rawValue = parseNumber(this.value);
+                if (isNaN(rawValue) || rawValue < 0) {
+                    priceError.textContent = 'Giá phải là số không âm.';
+                    priceHidden.value = '';
+                } else {
+                    priceError.textContent = '';
+                    this.value = formatNumber(rawValue);
+                    priceHidden.value = rawValue;
+                }
+            });
+
+            priceInput.addEventListener('change', function () {
+                let rawValue = parseNumber(this.value);
+                this.value = formatNumber(rawValue);
+                priceHidden.value = rawValue;
+            });
+
+            // Kiểm tra real-time khi nhập số điện thoại
+            contactInput.addEventListener('input', function (e) {
+                let value = e.target.value.replace(/[^0-9]/g, ''); // Chỉ giữ lại số
+                e.target.value = value; // Cập nhật giá trị ngay lập tức
+                if (value.length > 10) {
+                    e.target.value = value.slice(0, 10); // Cắt bớt nếu vượt quá 10 số
+                }
+                if (value.length !== 10) {
+                    e.target.classList.add('is-invalid');
+                } else {
+                    e.target.classList.remove('is-invalid');
+                }
+            });
+
+            // Success Modal logic
+            const successModal = document.getElementById('successModal');
+            const successModalBtn = document.getElementById('successModalBtn');
+            function showSuccessModal() {
+                successModal.classList.add('show');
+                // Auto close after 2.5s
+                setTimeout(() => {
+                    successModal.classList.remove('show');
+                }, 2500);
+            }
+            successModalBtn.addEventListener('click', function() {
+                successModal.classList.remove('show');
+            });
+
+            // Modify form submit handler to show toast on success
+            form.addEventListener('submit', function (e) {
+                let name = document.getElementById('name').value;
+                let skills = document.getElementById('skills').value;
+                let email = document.getElementById('email').value;
+                let contact = document.getElementById('contact').value;
+                let price = document.getElementById('priceHidden').value;
+                let errors = [];
+
+                // Reset validation state
+                form.querySelectorAll('.is-invalid').forEach(element => element.classList.remove('is-invalid'));
+
+                // Debug giá trị của các trường
+                console.log("Name:", name);
+                console.log("Skills:", skills);
+                console.log("Email:", email);
+                console.log("Contact:", contact);
+                console.log("Price:", price);
+
+                // Kiểm tra số điện thoại phải là 10 chữ số
+                const phoneRegex = /^\d{10}$/;
+                if (!contact || !phoneRegex.test(contact)) {
+                    errors.push(`Số điện thoại phải gồm đúng 10 chữ số. Giá trị hiện tại: "${contact}"`);
+                    document.getElementById('contact').classList.add('is-invalid');
+                }
+
+   
+                if (!name || name.trim() === '') {
+                    errors.push(`Họ và tên không hợp lệ. Giá trị hiện tại: "${name}"`);
+                    document.getElementById('name').classList.add('is-invalid');
+                }
+
+                if (!skills) {
+                    errors.push(`Kỹ năng chăm sóc không hợp lệ. Giá trị hiện tại: "${skills}"`);
+                    document.getElementById('skills').classList.add('is-invalid');
+                }
+
+                if (!price || parseInt(price) <= 0) {
+                    errors.push(`Giá mong muốn phải lớn hơn 0. Giá trị hiện tại: "${price}"`);
+                    document.getElementById('price').classList.add('is-invalid');
+                }
+
+                if (errors.length > 0) {
+                    e.preventDefault();
+                    console.log("Validation Errors:", errors);
+                    alert("Có lỗi xảy ra:\n" + errors.join("\n"));
+                } else {
+                    showSuccessModal();
+                }
+            });
+
+            @if (TempData["ShowSuccessModal"] != null)
+            {
+                <text>
+                showSuccessModalAndRedirect('@Url.Action("ViewProfileCaregiver", "Account", new { id = ViewBag.User.Id })');
+                </text>
+            }
+        });
+
+        function showSuccessModalAndRedirect(redirectUrl) {
+            const successModal = document.getElementById('successModal');
+            successModal.classList.add('show');
+            setTimeout(() => {
+                successModal.classList.remove('show');
+                window.location.href = redirectUrl;
+            }, 2500);
+        }
+    </script>
+}

@@ -1,0 +1,48 @@
+﻿@{
+    Layout = null;
+}
+@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<style>
+    .access-denied-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        text-align: center;
+        background-color: #f8f9fa;
+    }
+
+    .access-denied-image {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+    .access-denied-message {
+        font-size: 1.5rem;
+        color: #dc3545; /* Màu đỏ để cảnh báo */
+        margin-bottom: 10px;
+    }
+
+    .redirect-message {
+        font-size: 1rem;
+        color: #6c757d; /* Màu xám */
+    }
+</style>
+
+<div class="access-denied-container">
+    <img src="/images/truycap.png" alt="Access Denied" class="access-denied-image" />
+    <div class="access-denied-message">Access Denied</div>
+    <div class="redirect-message">Bạn sẽ được chuyển hướng về trang trang giới thiệu trong 10 giây...</div>
+</div>
+
+<script>
+    // Tự động chuyển hướng về trang About sau 3 giây
+    setTimeout(function () {
+        window.location.href = '@Url.Action("About", "Home")';
+    }, 10000);
+</script>

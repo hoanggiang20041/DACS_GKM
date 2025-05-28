@@ -1,0 +1,291 @@
+﻿@model Chamsoc.Models.HandleComplaintViewModel
+
+@{
+    ViewData["Title"] = "Xử lý khiếu nại";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            Xử lý khiếu nại #@Model.ComplaintId
+                        </h3>
+                        <a asp-action="ManageComplaints" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left me-2"></i>Quay lại
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card bg-light border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary mb-3">
+                                        <i class="fas fa-info-circle me-2"></i>Thông tin công việc
+                                    </h5>
+                                    <div class="mb-2">
+                                        <strong>Mã công việc:</strong>
+                                        <span class="badge bg-primary">#@Model.JobId</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <strong>Người chăm sóc:</strong>
+                                        <span>@Model.CaregiverName</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <strong>Khách hàng:</strong>
+                                        <span>@Model.SeniorName</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-light border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary mb-3">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>Thông tin khiếu nại
+                                    </h5>
+                                    <div class="mb-2">
+                                        <strong>Trạng thái:</strong>
+                                        <span class="badge bg-warning">@Model.Status</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <strong>Ngày tạo:</strong>
+                                        <span>@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-comment-alt me-2"></i>Nội dung khiếu nại
+                        </h5>
+                        <div class="bg-light p-3 rounded">
+                            <p class="mb-0">@Model.Description</p>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.ImagePath))
+                    {
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-image me-2"></i>Hình ảnh đính kèm
+                            </h5>
+                            <div class="text-center">
+                                <img src="@Model.ImagePath" class="img-fluid rounded shadow-sm" 
+                                     style="max-height: 400px; cursor: pointer;" 
+                                     alt="Hình ảnh khiếu nại"
+                                     data-bs-toggle="modal" 
+                                     data-bs-target="#imageModal" />
+                            </div>
+                        </div>
+                    }
+
+                    <form asp-action="HandleComplaint" method="post" id="handleComplaintForm">
+                        <input type="hidden" asp-for="ComplaintId" />
+                        <input type="hidden" asp-for="JobId" />
+                        <input type="hidden" asp-for="CaregiverId" />
+                        <input type="hidden" asp-for="SeniorId" />
+                        <input type="hidden" asp-for="Description" />
+                        <input type="hidden" asp-for="CreatedAt" />
+                        <input type="hidden" asp-for="Status" />
+                        <input type="hidden" asp-for="Resolution" />
+                        
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-tasks me-2"></i>Xử lý khiếu nại
+                            </h5>
+                            <div class="card bg-light border-0">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Trạng thái xử lý</label>
+                                        <select asp-for="NewStatus" class="form-select" required>
+                                            <option value="">-- Chọn trạng thái --</option>
+                                            <option value="Chờ xử lý">Chờ xử lý</option>
+                                            <option value="Đang xử lý">Đang xử lý</option>
+                                            <option value="Đã xử lý">Đã xử lý</option>
+                                            <option value="Đã hủy">Đã hủy</option>
+                                        </select>
+                                        <span asp-validation-for="NewStatus" class="text-danger"></span>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label asp-for="NewResolution" class="form-label">Nội dung xử lý</label>
+                                        <textarea asp-for="NewResolution" class="form-control" rows="4" 
+                                                  placeholder="Nhập nội dung xử lý khiếu nại..." required></textarea>
+                                        <span asp-validation-for="NewResolution" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <i class="fas fa-save me-2"></i>Lưu kết quả
+                            </button>
+                            <a asp-action="ManageComplaints" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i>Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary mb-3">
+                        <i class="fas fa-lightbulb me-2"></i>Hướng dẫn xử lý
+                    </h5>
+                    <div class="alert alert-info">
+                        <h6 class="alert-heading">
+                            <i class="fas fa-info-circle me-2"></i>Lưu ý quan trọng
+                        </h6>
+                        <ul class="mb-0">
+                            <li>Kiểm tra kỹ thông tin khiếu nại</li>
+                            <li>Liên hệ các bên liên quan nếu cần</li>
+                            <li>Ghi rõ nội dung xử lý và quyết định</li>
+                            <li>Đảm bảo giải quyết công bằng, minh bạch</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ImagePath))
+{
+    <div class="modal fade" id="imageModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-image me-2"></i>Hình ảnh khiếu nại
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center p-0">
+                    <img src="@Model.ImagePath" class="img-fluid" alt="Hình ảnh khiếu nại" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    .bg-light {
+        background-color: #f8f9fa !important;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #495057;
+    }
+
+    .form-control, .form-select {
+        border-radius: 0.25rem;
+        border: 1px solid #ced4da;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .badge {
+        font-size: 0.8rem;
+        padding: 0.5em 0.8em;
+        border-radius: 0.25rem;
+    }
+
+    .modal-content {
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    img {
+        transition: transform 0.3s ease;
+    }
+
+    img:hover {
+        transform: scale(1.02);
+    }
+</style>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Hiển thị thông báo thành công/ lỗi
+            if ($('.alert').length > 0) {
+                setTimeout(function() {
+                    $('.alert').alert('close');
+                }, 5000);
+            }
+
+            // Xử lý form submit
+            $('#handleComplaintForm').on('submit', function() {
+                var status = $('#NewStatus').val();
+                var resolution = $('#NewResolution').val();
+
+                if (!status || !resolution) {
+                    alert('Vui lòng điền đầy đủ thông tin xử lý khiếu nại!');
+                    return false;
+                }
+
+                $('#submitBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Đang xử lý...');
+                return true;
+            });
+        });
+    </script>
+}

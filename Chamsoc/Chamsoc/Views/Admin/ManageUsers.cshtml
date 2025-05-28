@@ -1,0 +1,576 @@
+﻿@model IEnumerable<Chamsoc.Models.ApplicationUser>
+@using Chamsoc.Data
+@using Microsoft.AspNetCore.Identity
+@inject AppDbContext _context
+
+@{
+    ViewData["Title"] = "Quản Lý Người Dùng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="stats-card bg-primary text-white">
+            <div class="stats-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stats-info">
+                <h3>@Model.Count()</h3>
+                <p>Tổng số người dùng</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stats-card bg-success text-white">
+            <div class="stats-icon">
+                <i class="fas fa-user-nurse"></i>
+            </div>
+            <div class="stats-info">
+                <h3>@Model.Count(u => u.Role == "Caregiver")</h3>
+                <p>Người chăm sóc</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stats-card bg-info text-white">
+            <div class="stats-icon">
+                <i class="fas fa-user-alt"></i>
+            </div>
+            <div class="stats-info">
+                <h3>@Model.Count(u => u.Role == "Senior")</h3>
+                <p>Người cần chăm sóc</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex align-items-center">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-users me-2"></i>Danh sách người dùng
+                </h5>
+            </div>
+            <div class="d-flex gap-2">
+                <form class="search-form" asp-action="ManageUsers" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="search" value="@ViewBag.Search" 
+                               placeholder="Tìm kiếm người dùng...">
+                        <button class="btn btn-outline-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <a asp-action="AddUser" class="btn btn-primary">
+                    <i class="fas fa-user-plus me-2"></i>Thêm mới
+                </a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Tên đăng nhập</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                        <th>Vai trò</th>
+                        <th>Trạng thái</th>
+                        <th>Xác minh</th>
+                        <th>Trạng thái giao dịch</th>
+                        <th class="text-end">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        var hasActiveTransaction = false;
+                        if (user.Role == "Senior")
+                        {
+                            hasActiveTransaction = _context.CareJobs.Any(j =>
+                                j.Senior != null &&
+                                j.Senior.UserId == user.Id &&
+                                j.CaregiverAccepted == true &&
+                                j.SeniorAccepted == true &&
+                                j.Status != "Hoàn thành" &&
+                                j.Status != "Hủy"
+                            );
+                        }
+                        else if (user.Role == "Caregiver")
+                        {
+                            hasActiveTransaction = _context.CareJobs.Any(j =>
+                                j.Caregiver != null &&
+                                j.Caregiver.UserId == user.Id &&
+                                j.CaregiverAccepted == true &&
+                                j.SeniorAccepted == true &&
+                                j.Status != "Hoàn thành" &&
+                                j.Status != "Hủy"
+                            );
+                        }
+
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar @(user.Role == "Admin" ? "bg-danger" : user.Role == "Caregiver" ? "bg-success" : "bg-primary")">
+                                        @user.UserName.Substring(0, 1).ToUpper()
+                                    </div>
+                                    <div class="ms-3">
+                                        <h6 class="mb-0">@user.UserName</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@user.Email</td>
+                            <td>@user.PhoneNumber</td>
+                            <td>
+                                <span class="badge bg-@(user.Role == "Admin" ? "danger" : user.Role == "Caregiver" ? "success" : "primary")">
+                                    @user.Role
+                                </span>
+                            </td>
+                            <td>
+                                @if (user.IsLocked)
+                                {
+                                    <span class="badge bg-danger">Đã khóa</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">Hoạt động</span>
+                                }
+                            </td>
+                            <td>
+                                @{
+                                    bool isVerified = false;
+                                    if (user.Role == "Senior")
+                                    {
+                                        var senior = _context?.Seniors.FirstOrDefault(s => s.UserId == user.Id);
+                                        isVerified = senior?.IsVerified ?? false;
+                                    }
+                                    else if (user.Role == "Caregiver")
+                                    {
+                                        var caregiver = _context?.Caregivers.FirstOrDefault(c => c.UserId == user.Id);
+                                        isVerified = caregiver?.IsVerified ?? false;
+                                    }
+
+                                    if (user.Role != "Admin")
+                                    {
+                                        if (isVerified)
+                                        {
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check-circle me-1"></i>Đã xác minh
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="fas fa-clock me-1"></i>Chưa xác minh
+                                            </span>
+                                        }
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @if (user.Role != "Admin")
+                                {
+                                    <span class="badge bg-@(hasActiveTransaction ? "warning" : "success")">
+                                        @(hasActiveTransaction ? "Đang bận" : "Sẵn sàng")
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Không áp dụng</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-end gap-2">
+                                    @if (user.Role == "Senior")
+                                    {
+                                        <button type="button" class="btn btn-sm btn-outline-info" title="Xem hồ sơ"
+                                                onclick="showUserDetails('@user.Id', '@user.Role')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <a asp-action="UpdateProfileSenior" asp-route-id="@user.Id" 
+                                           class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    }
+                                    else if (user.Role == "Caregiver")
+                                    {
+                                        <button type="button" class="btn btn-sm btn-outline-info" title="Xem hồ sơ"
+                                                onclick="showUserDetails('@user.Id', '@user.Role')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <a asp-action="UpdateProfileCaregiver" asp-route-id="@user.Id" 
+                                           class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    }
+                                    else if (user.Role == "Admin" && user.Id == ViewBag.CurrentUserId)
+                                    {
+                                        <button type="button" class="btn btn-sm btn-outline-info" title="Xem hồ sơ"
+                                                onclick="showUserDetails('@user.Id', '@user.Role')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <a asp-action="UpdateProfileAdmin" asp-route-id="@user.Id" 
+                                           class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    }
+
+                                    @if (user.Id != ViewBag.CurrentUserId)
+                                    {
+                                        @if (!user.IsLocked)
+                                        {
+                                            <button type="button" class="btn btn-sm btn-outline-warning" title="Khóa"
+                                                    onclick="confirmAction('Khóa người dùng', 'Bạn có chắc muốn khóa người dùng này?', 'LockUser', '@user.Id')">
+                                                <i class="fas fa-lock"></i>
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="btn btn-sm btn-outline-success" title="Mở khóa"
+                                                    onclick="confirmAction('Mở khóa người dùng', 'Bạn có chắc muốn mở khóa người dùng này?', 'UnlockUser', '@user.Id')">
+                                                <i class="fas fa-lock-open"></i>
+                                            </button>
+                                        }
+
+                                        @if (user.Role != "Admin" && !isVerified)
+                                        {
+                                            <button type="button" class="btn btn-sm btn-outline-success" title="Xác minh"
+                                                    onclick="confirmAction('Xác minh người dùng', 'Bạn có chắc muốn xác minh người dùng này?', 'VerifyUser', '@user.Id')">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        }
+
+                                        <button type="button" class="btn btn-sm btn-outline-danger" title="Xóa"
+                                                onclick="confirmAction('Xóa người dùng', 'Bạn có chắc muốn xóa người dùng này?', 'DeleteUser', '@user.Id')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal xác nhận -->
+<div class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="modalMessage">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <form id="confirmForm" method="post" class="d-inline">
+                    <input type="hidden" id="userId" name="id" />
+                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal xem chi tiết người dùng -->
+<div class="modal fade" id="userDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông tin chi tiết</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-4">
+                    <div class="avatar-lg mx-auto mb-3">
+                        <img id="userAvatar" src="" alt="Avatar" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                    </div>
+                    <h4 id="userName" class="mb-1"></h4>
+                    <p id="userRole" class="text-muted mb-0"></p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Thông tin cơ bản</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><strong>Email:</strong> <span id="userEmail"></span></li>
+                            <li class="mb-2"><strong>Số điện thoại:</strong> <span id="userPhone"></span></li>
+                            <li class="mb-2"><strong>Trạng thái:</strong> <span id="userStatus"></span></li>
+                            <li class="mb-2"><strong>Xác minh:</strong> <span id="userVerification"></span></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Thông tin bổ sung</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><strong>Kỹ năng/Nhu cầu:</strong> <span id="userSkills"></span></li>
+                            <li class="mb-2"><strong>Giá mong muốn:</strong> <span id="userPrice"></span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="caregiverDocuments" class="mt-4" style="display: none;">
+                    <h6 class="mb-3">Tài liệu</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title">Bằng cấp</h6>
+                                    <div id="degreePreview" class="text-center">
+                                        <p class="text-muted">Chưa có bằng cấp</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title">Chứng chỉ hành nghề</h6>
+                                    <div id="certificatePreview" class="text-center">
+                                        <p class="text-muted">Chưa có chứng chỉ</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title">Giấy tờ tùy thân</h6>
+                            <div id="identityDocsPreview" class="text-center"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stats-card {
+        padding: 1.5rem;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stats-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .stats-icon i {
+        font-size: 1.5rem;
+        color: white;
+    }
+
+    .stats-info h3 {
+        font-size: 1.75rem;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .stats-info p {
+        margin: 0;
+        opacity: 0.9;
+    }
+
+    .search-form {
+        min-width: 300px;
+    }
+
+    .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .table th {
+        font-weight: 600;
+        color: #495057;
+        background-color: #f8f9fa;
+        white-space: nowrap;
+    }
+
+    .table td {
+        padding: 1rem 0.75rem;
+    }
+
+    .badge {
+        padding: 0.5em 0.75em;
+        font-weight: 500;
+    }
+
+    .btn-sm {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.875rem;
+    }
+
+    .btn-sm i {
+        font-size: 0.875rem;
+    }
+
+    .modal-content {
+        border: none;
+        border-radius: 10px;
+    }
+
+    .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .btn-custom-degree {
+        padding: 0.375rem 0.75rem; /* Consistent padding for all buttons */
+        font-size: 0.875rem; /* Consistent font size */
+        line-height: 1.5; /* Proper text alignment */
+        max-width: 100%; /* Prevent overflow */
+        white-space: nowrap; /* Prevent text wrapping */
+        overflow: hidden; /* Handle overflow */
+        text-overflow: ellipsis; /* Add ellipsis if text overflows */
+    }
+
+    #degreePreview,
+    #certificatePreview,
+    #identityDocsPreview {
+        min-height: 60px; /* Ensure containers have enough space */
+        display: flex;
+        flex-direction: column; /* Stack buttons vertically in identityDocsPreview */
+        align-items: center;
+        justify-content: center;
+    }
+
+    #identityDocsPreview a {
+        width: fit-content; /* Ensure buttons only take the width they need */
+        max-width: 200px; /* Cap the width to prevent overflow */
+        text-align: center; /* Center the text within the button */
+    }
+</style>
+
+@section Scripts {
+    <script>
+        function confirmAction(title, message, action, userId) {
+            $('#modalTitle').text(title);
+            $('#modalMessage').text(message);
+            $('#confirmForm').attr('action', action);
+            $('#userId').val(userId);
+            new bootstrap.Modal($('#confirmModal')).show();
+        }
+
+        function showUserDetails(userId, role) {
+            // Gọi API để lấy thông tin chi tiết người dùng
+            $.get(`/Account/GetUserDetails/${userId}`, function(data) {
+                if (data.success) {
+                    const user = data.data;
+                    
+                    // Cập nhật thông tin cơ bản
+                    $('#userAvatar').attr('src', user.avatarUrl || '/images/default-avatar.png');
+                    $('#userName').text(user.name);
+                    $('#userRole').text(role);
+                    $('#userEmail').text(user.email);
+                    $('#userPhone').text(user.phoneNumber);
+                    $('#userStatus').html(user.isLocked ? 
+                        '<span class="badge bg-danger">Đã khóa</span>' : 
+                        '<span class="badge bg-success">Hoạt động</span>');
+                    $('#userVerification').html(user.isVerified ? 
+                        '<span class="badge bg-success">Đã xác minh</span>' : 
+                        '<span class="badge bg-warning">Chưa xác minh</span>');
+
+                    // Cập nhật thông tin bổ sung
+                    $('#userSkills').text(user.skills || user.careNeeds || 'Chưa cập nhật');
+                    $('#userPrice').text(user.price ? new Intl.NumberFormat('vi-VN').format(user.price) + ' VNĐ' : 'Chưa cập nhật');
+
+                    // Hiển thị tài liệu nếu là Caregiver
+                    if (role === 'Caregiver') {
+                        $('#caregiverDocuments').show();
+                        
+                        // Cập nhật bằng cấp
+                        if (user.degree) {
+                            $('#degreePreview').html(`
+                                <div class="w-100 text-center">
+                                    <a href="${user.degree}" target="_blank" class="btn btn-primary btn-custom-degree d-inline-flex align-items-center gap-2">
+                                        <i class="fas fa-file-alt"></i>
+                                        <span>Xem bằng cấp</span>
+                                    </a>
+                                </div>
+                            `);
+                        } else {
+                            $('#degreePreview').html('<p class="text-muted">Chưa có bằng cấp</p>');
+                        }
+
+                        // Cập nhật chứng chỉ
+                        if (user.certificate) {
+                            $('#certificatePreview').html(`
+                                <div class="w-100 text-center">
+                                    <a href="${user.certificate}" target="_blank" class="btn btn-info btn-custom-degree d-inline-flex align-items-center gap-2">
+                                        <i class="fas fa-file-alt"></i>
+                                        <span>Xem chứng chỉ</span>
+                                    </a>
+                                </div>
+                            `);
+                        } else {
+                            $('#certificatePreview').html('<p class="text-muted">Chưa có chứng chỉ</p>');
+                        }
+                    } else {
+                        $('#caregiverDocuments').hide();
+                    }
+
+                    // Hiển thị giấy tờ tùy thân
+                    if (user.identityDocs) {
+                        const files = user.identityDocs.split(',');
+                        let html = '';
+                        files.forEach((file, idx) => {
+                            if (file && file.trim() !== '') {
+                                html += `
+                                    <a href="${file}" target="_blank" class="btn btn-primary btn-custom-degree mb-1 d-block d-inline-flex align-items-center gap-2">
+                                        <i class="fas fa-id-card"></i>
+                                        <span>Xem giấy tờ ${files.length > 1 ? idx + 1 : ''}</span>
+                                    </a>
+                                `;
+                            }
+                        });
+                        $('#identityDocsPreview').html(html || '<p class="text-muted">Chưa có giấy tờ</p>');
+                    } else {
+                        $('#identityDocsPreview').html('<p class="text-muted">Chưa có giấy tờ</p>');
+                    }
+
+                    // Hiển thị modal
+                    new bootstrap.Modal($('#userDetailsModal')).show();
+                }
+            });
+        }
+    </script>
+}
+
+@inject UserManager<Chamsoc.Models.ApplicationUser> _userManager

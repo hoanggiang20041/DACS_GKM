@@ -1,0 +1,438 @@
+﻿@model Chamsoc.Models.CaregiverViewModel
+@{
+    ViewData["Title"] = "Cập Nhật Hồ Sơ Người Chăm Sóc";
+    string currentUserRole = ViewBag.CurrentUserRole;
+}
+
+<style>
+    .verified-tick {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url('/images/tick.png') no-repeat center center;
+        background-size: cover;
+        margin-left: 5px;
+        vertical-align: middle;
+        position: relative;
+    }
+
+    .verified-tick::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        border: 2px solid transparent;
+        border-radius: 50%;
+        animation: rainbow-border 3s linear infinite;
+        background: url('/images/tick.png') no-repeat center center;
+        background-size: cover;
+        z-index: -1;
+    }
+
+    @@keyframes rainbow-border {
+        0% { border-color: #ff0000; }
+        16% { border-color: #ff7f00; }
+        33% { border-color: #ffff00; }
+        50% { border-color: #00ff00; }
+        66% { border-color: #00ffff; }
+        83% { border-color: #0000ff; }
+        100% { border-color: #ff00ff; }
+    }
+
+    .profile-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .profile-card:hover {
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .avatar-preview {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0 auto;
+        border: 3px solid #007bff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .form-floating {
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .btn-submit {
+        padding: 10px 30px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+    }
+
+    .loading-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #007bff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+
+<div class="loading-overlay">
+    <div class="loading-spinner"></div>
+</div>
+
+<div class="container-fluid py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="profile-card p-4">
+                <h2 class="text-center mb-4">
+                    <i class="fas fa-user-edit me-2"></i>Cập Nhật Hồ Sơ Người Chăm Sóc
+                </h2>
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <form asp-action="UpdateProfileCaregiver" asp-controller="Account" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <input type="hidden" name="id" value="@ViewBag.User.Id" />
+                    
+                    <div class="text-center mb-4">
+                        <div class="avatar-preview mb-3">
+                            @if (!string.IsNullOrEmpty(Model.AvatarUrl))
+                            {
+                                <img src="@Model.AvatarUrl" alt="Avatar" id="avatar-preview-img" />
+                            }
+                            else
+                            {
+                                <img src="/images/default-avatar.png" alt="Default Avatar" id="avatar-preview-img" />
+                            }
+                        </div>
+                        <h5>@Model.Name</h5>
+                        <p class="mb-0">
+                            <i class="fas fa-shield-alt me-2"></i>
+                            @if (Model.IsVerified)
+                            {
+                                <span class="text-success">Đã xác minh <span class="verified-tick"></span></span>
+                            }
+                            else
+                            {
+                                <span class="text-warning">Chưa xác minh</span>
+                            }
+                        </p>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="name" name="name" value="@Model.Name" required placeholder="Họ và tên" />
+                        <label for="name"><i class="fas fa-user me-2"></i>Họ và tên</label>
+                        <div class="invalid-feedback">
+                            Vui lòng nhập họ và tên.
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <select class="form-control" id="skills" name="skills" required>
+                            <option value="">Chọn chuyên môn</option>
+                            @{
+                                var isDoctor = Model.Skills == "Bác sĩ";
+                                var isNurse = Model.Skills == "Y tá";
+                                var isNursing = Model.Skills == "Điều dưỡng";
+                                var isPhysical = Model.Skills == "Vật lý trị liệu";
+                                var isNutrition = Model.Skills == "Dinh dưỡng";
+                            }
+                            <option value="Bác sĩ" selected="@isDoctor">Bác sĩ</option>
+                            <option value="Y tá" selected="@isNurse">Y tá</option>
+                            <option value="Điều dưỡng" selected="@isNursing">Điều dưỡng</option>
+                            <option value="Vật lý trị liệu" selected="@isPhysical">Vật lý trị liệu</option>
+                            <option value="Dinh dưỡng" selected="@isNutrition">Dinh dưỡng</option>
+                        </select>
+                        <label for="skills"><i class="fas fa-star me-2"></i>Chuyên môn</label>
+                        <div class="invalid-feedback">
+                            Vui lòng chọn chuyên môn.
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="email" name="email" value="@ViewBag.User.Email" required placeholder="Email" />
+                        <label for="email"><i class="fas fa-envelope me-2"></i>Email</label>
+                        <div class="invalid-feedback">
+                            Vui lòng nhập email hợp lệ.
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="contact" name="contact" value="@ViewBag.User.PhoneNumber" required maxlength="10" pattern="\d{10}" placeholder="Số điện thoại" />
+                        <label for="contact"><i class="fas fa-phone me-2"></i>Số điện thoại</label>
+                        <div class="invalid-feedback">
+                            Vui lòng nhập số điện thoại gồm đúng 10 chữ số.
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="price" name="priceDisplay" value="@Model.Price.ToString("N0")" required placeholder="Thù lao" />
+                        <input type="hidden" id="priceHidden" name="price" value="@Model.Price" />
+                        <label for="price"><i class="fas fa-money-bill me-2"></i>Thù lao bạn mong muốn (1 giờ) (VNĐ)</label>
+                        <span class="text-danger" id="priceError"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <select class="form-control" id="isAvailable" name="isAvailable">
+                            @{
+                                var isAvailable = Model.IsAvailable;
+                            }
+                            <option value="true" selected="@isAvailable">Sẵn sàng</option>
+                            <option value="false" selected="@(!isAvailable)">Đang bận</option>
+                        </select>
+                        <label for="isAvailable"><i class="fas fa-clock me-2"></i>Trạng thái</label>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="degree" class="form-label">
+                            <i class="fas fa-graduation-cap me-2"></i>Cập nhật bằng cấp chuyên môn
+                        </label>
+                        <input type="file" class="form-control" id="degree" name="degree" accept=".pdf,.jpg,.jpeg,.png" />
+                        <small class="text-muted">Tải lên bằng cấp chuyên môn của bạn (PDF, JPG, JPEG, hoặc PNG)</small>
+                        @if (!string.IsNullOrEmpty(Model.Caregiver.Degree) && Model.Caregiver.Degree.StartsWith("/uploads/"))
+                        {
+                            <div class="mt-2">
+                                <a href="@Model.Caregiver.Degree" target="_blank" class="btn btn-sm btn-info">
+                                    <i class="fas fa-file-alt me-2"></i>Xem bằng cấp hiện tại
+                                </a>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="certificate" class="form-label">
+                            <i class="fas fa-certificate me-2"></i>Cập nhật chứng chỉ hành nghề
+                        </label>
+                        <input type="file" class="form-control" id="certificate" name="certificate" accept=".pdf,.jpg,.jpeg,.png" />
+                        <small class="text-muted">Tải lên chứng chỉ hành nghề của bạn (PDF, JPG, JPEG, hoặc PNG)</small>
+                        @if (!string.IsNullOrEmpty(Model.CertificateFilePath))
+                        {
+                            <div class="mt-2">
+                                <a href="@Model.CertificateFilePath" target="_blank" class="btn btn-sm btn-info">
+                                    <i class="fas fa-file-alt me-2"></i>Xem chứng chỉ hiện tại
+                                </a>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="avatar" class="form-label">
+                            <i class="fas fa-camera me-2"></i>Cập nhật ảnh đại diện
+                        </label>
+                        <input type="file" class="form-control" id="avatar" name="avatar" accept="image/*" />
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Mật khẩu hiện tại" />
+                        <label for="currentPassword"><i class="fas fa-lock me-2"></i>Mật khẩu hiện tại</label>
+                        <small class="text-muted">Chỉ điền nếu muốn đổi mật khẩu</small>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Mật khẩu mới" />
+                        <label for="newPassword"><i class="fas fa-key me-2"></i>Mật khẩu mới</label>
+                        <small class="text-muted">Chỉ điền nếu muốn đổi mật khẩu</small>
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="submit" class="btn btn-primary btn-submit">
+                            <i class="fas fa-save me-2"></i>Cập nhật
+                        </button>
+                        @if (currentUserRole == "Admin")
+                        {
+                            <a asp-action="ManageUsers" asp-controller="Admin" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Quay lại
+                            </a>
+                        }
+                        else if (currentUserRole == "Senior")
+                        {
+                            <a asp-action="ListCaregivers" asp-controller="Caregivers" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Quay lại
+                            </a>
+                        }
+                        else if (currentUserRole == "Caregiver")
+                        {
+                            <a asp-action="ListSeniors" asp-controller="Seniors" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Quay lại
+                            </a>
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const priceInput = document.getElementById('price');
+            const priceHidden = document.getElementById('priceHidden');
+            const priceError = document.getElementById('priceError');
+            const contactInput = document.getElementById('contact');
+            const form = document.querySelector('form');
+            const avatarInput = document.getElementById('avatar');
+            const avatarPreview = document.getElementById('avatar-preview-img');
+
+            // Avatar preview
+            avatarInput.addEventListener('change', function(e) {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        avatarPreview.src = e.target.result;
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+            // Định dạng số khi hiển thị
+            function formatNumber(value) {
+                return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
+
+            function parseNumber(value) {
+                return parseFloat(value.replace(/\./g, '')) || 0;
+            }
+
+            // Định dạng giá trị ban đầu cho price
+            priceInput.value = formatNumber(parseFloat(priceInput.value.replace(/\./g, '')));
+
+            // Xử lý khi người dùng nhập price
+            priceInput.addEventListener('input', function () {
+                let rawValue = parseNumber(this.value);
+                if (isNaN(rawValue) || rawValue < 0) {
+                    priceError.textContent = 'Giá phải là số không âm.';
+                    priceHidden.value = '';
+                } else {
+                    priceError.textContent = '';
+                    this.value = formatNumber(rawValue);
+                    priceHidden.value = rawValue;
+                }
+            });
+
+            priceInput.addEventListener('change', function () {
+                let rawValue = parseNumber(this.value);
+                this.value = formatNumber(rawValue);
+                priceHidden.value = rawValue;
+            });
+
+            // Kiểm tra real-time số điện thoại
+            contactInput.addEventListener('input', function (e) {
+                let value = e.target.value.replace(/[^0-9]/g, '');
+                e.target.value = value;
+                if (value.length > 10) {
+                    e.target.value = value.slice(0, 10);
+                }
+                if (value.length !== 10) {
+                    e.target.classList.add('is-invalid');
+                } else {
+                    e.target.classList.remove('is-invalid');
+                }
+            });
+
+            // Form validation
+            form.addEventListener('submit', function (e) {
+                const loadingOverlay = document.querySelector('.loading-overlay');
+                let name = document.getElementById('name').value;
+                let skills = document.getElementById('skills').value;
+                let email = document.getElementById('email').value;
+                let contact = document.getElementById('contact').value;
+                let price = document.getElementById('priceHidden').value;
+                let errors = [];
+
+                form.querySelectorAll('.is-invalid').forEach(element => element.classList.remove('is-invalid'));
+
+                const phoneRegex = /^\d{10}$/;
+                if (!contact || !phoneRegex.test(contact)) {
+                    errors.push(`Số điện thoại phải gồm đúng 10 chữ số.`);
+                    document.getElementById('contact').classList.add('is-invalid');
+                }
+
+                if (!name || name.trim() === '') {
+                    errors.push(`Vui lòng nhập họ và tên.`);
+                    document.getElementById('name').classList.add('is-invalid');
+                }
+
+                if (!skills) {
+                    errors.push(`Vui lòng chọn chuyên môn.`);
+                    document.getElementById('skills').classList.add('is-invalid');
+                }
+
+                if (!price || parseInt(price) <= 0) {
+                    errors.push(`Thù lao phải lớn hơn 0.`);
+                    document.getElementById('price').classList.add('is-invalid');
+                }
+
+                if (errors.length > 0) {
+                    e.preventDefault();
+                    alert("Vui lòng kiểm tra lại các thông tin:\n" + errors.join("\n"));
+                } else {
+                    loadingOverlay.style.display = 'flex';
+                }
+            });
+
+            // Đóng alert tự động sau 5 giây
+            setTimeout(function() {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function(alert) {
+                    const closeButton = alert.querySelector('.btn-close');
+                    if (closeButton) {
+                        closeButton.click();
+                    }
+                });
+            }, 5000);
+        });
+    </script>
+}

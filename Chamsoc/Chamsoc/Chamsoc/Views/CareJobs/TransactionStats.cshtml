@@ -1,0 +1,201 @@
+﻿@model IEnumerable<Chamsoc.Models.TransactionStatsViewModel>
+
+@{
+    ViewData["Title"] = "Thống Kê Giao Dịch";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Sử dụng layout mặc định hoặc layout Admin
+}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Thống Kê Giao Dịch</h2>
+
+    <!-- Form lọc theo tháng -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <form asp-action="TransactionStats" method="get" class="row g-3">
+                <div class="col-md-4">
+                    <label for="month" class="form-label fw-bold">Tháng</label>
+                    <select id="month" name="month" class="form-select">
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i" selected="@(i == ViewBag.FilterMonth)">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="year" class="form-label fw-bold">Năm</label>
+                    <select id="year" name="year" class="form-select">
+                        @for (int i = DateTime.Now.Year - 5; i <= DateTime.Now.Year; i++)
+                        {
+                            <option value="@i" selected="@(i == ViewBag.FilterYear)">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Lọc</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Biểu đồ -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Phân bố trạng thái</h5>
+                    <canvas id="statusChart" width="300" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Doanh thu Caregiver</h5>
+                    <canvas id="revenueChart" width="300" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bảng thống kê -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Tên Khách Hàng</th>
+                                <th>Tên Người Chăm Sóc</th>
+                                <th>Ngày Giờ Giao Dịch</th>
+                                <th>SĐT Khách Hàng</th>
+                                <th>Email Khách Hàng</th>
+                                <th>SĐT Người Chăm Sóc</th>
+                                <th>Email Người Chăm Sóc</th>
+                                <th>Dịch Vụ</th>
+                                <th>Tổng Bill (VNĐ)</th>
+                                <th>Số Tiền Cọc (VNĐ)</th>
+                                <th>Trạng Thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var stat in Model)
+                            {
+                                <tr>
+                                    <td>@stat.SeniorName</td>
+                                    <td>@stat.CaregiverName</td>
+                                    <td>@stat.TransactionDateTime.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@stat.SeniorPhone</td>
+                                    <td>@stat.SeniorEmail</td>
+                                    <td>@stat.CaregiverPhone</td>
+                                    <td>@stat.CaregiverEmail</td>
+                                    <td>@stat.ServiceName</td>
+                                    <td>@stat.TotalBill.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))</td>
+                                    <td>@stat.Deposit.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))</td>
+                                    <td>@stat.Status</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-center text-muted">Không có giao dịch nào trong tháng này.</p>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Biểu đồ tròn (Phân bố trạng thái)
+            var statusCtx = document.getElementById('statusChart').getContext('2d');
+            var statusChart = new Chart(statusCtx, {
+                type: 'pie',
+                data: {
+                    labels: @Html.Raw(Json.Serialize(ViewBag.StatusLabels)),
+                    datasets: [{
+                        label: 'Phân bố trạng thái',
+                        data: @Html.Raw(Json.Serialize(ViewBag.StatusData)),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(153, 102, 255, 0.7)',
+                            'rgba(255, 159, 64, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Phân bố trạng thái giao dịch'
+                        }
+                    }
+                }
+            });
+
+            // Biểu đồ cột (Doanh thu Caregiver)
+            var revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            var revenueChart = new Chart(revenueCtx, {
+                type: 'bar',
+                data: {
+                    labels: @Html.Raw(Json.Serialize(ViewBag.CaregiverNames)),
+                    datasets: [{
+                        label: 'Doanh thu (VNĐ)',
+                        data: @Html.Raw(Json.Serialize(ViewBag.CaregiverRevenue)),
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Doanh thu (VNĐ)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Caregiver'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Doanh thu theo Caregiver'
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

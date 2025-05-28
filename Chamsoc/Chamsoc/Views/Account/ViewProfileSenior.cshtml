@@ -1,0 +1,137 @@
+﻿@model Chamsoc.Models.CaregiverViewModel
+@{
+    ViewData["Title"] = "Trang cá nhân người cần chăm sóc";
+    string currentUserRole = ViewBag.CurrentUserRole;
+}
+
+<style>
+    .verified-tick {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url('/images/tick.png') no-repeat center center;
+        background-size: cover;
+        margin-left: 5px;
+        vertical-align: middle;
+        position: relative;
+    }
+
+        .verified-tick::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            animation: rainbow-border 3s linear infinite;
+            background: url('/images/tick.png') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+        }
+
+    @@keyframes rainbow-border {
+        0% {
+            border-color: #ff0000;
+        }
+        /* Red */
+        16% {
+            border-color: #ff7f00;
+        }
+        /* Orange */
+        33% {
+            border-color: #ffff00;
+        }
+        /* Yellow */
+        50% {
+            border-color: #00ff00;
+        }
+        /* Green */
+        66% {
+            border-color: #00ffff;
+        }
+        /* Cyan */
+        83% {
+            border-color: #0000ff;
+        }
+        /* Blue */
+        100% {
+            border-color: #ff00ff;
+        }
+        /* Magenta */
+    }
+    .profile-frame {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Trang cá nhân người cần chăm sóc</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="text-center mb-3">
+                @if (!string.IsNullOrEmpty(Model.AvatarUrl))
+                {
+                    <img src="@Model.AvatarUrl" alt="Avatar" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;" />
+                }
+                else
+                {
+                    <img src="https://via.placeholder.com/100" alt="Avatar mặc định" class="rounded-circle" style="width: 100px; height: 100px;" />
+                }
+            </div>
+            <div class="profile-frame text-center">
+                <p><strong>Tên:</strong> @Model.Name</p>
+                <p>
+                    <strong>Tình trạng:</strong>
+                    @if (Model.IsVerified)
+                    {
+                        <span>Đã xác minh <span class="verified-tick"></span></span>
+                    }
+                    else
+                    {
+                        <span>Chưa xác minh</span>
+                    }
+                </p>
+            </div>
+            <p><strong>Kỹ năng:</strong> @Model.Skills</p>
+            <p><strong>Liên hệ:</strong> @Model.Contact</p>
+            <p><strong>Chi phí chi trả (1 giờ):</strong> @Model.Price.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</p>
+            <p><strong>Trạng thái:</strong> @(Model.IsAvailable ? "Sẵn sàng" : "Đang bận")</p>
+            <p>
+                <strong>Chứng chỉ:</strong>
+                @if (!string.IsNullOrEmpty(Model.CertificateFilePath))
+                {
+                    <a href="@Model.CertificateFilePath" target="_blank">Xem chứng chỉ</a>
+                }
+                else
+                {
+                    <span>Không có</span>
+                }
+            </p>
+            <div class="text-center">
+                <a asp-action="UpdateProfileCaregiver" asp-controller="Account" asp-route-id="@ViewBag.User.Id" class="btn btn-primary">Cập nhật</a>
+                @if (currentUserRole == "Admin")
+                {
+                    <a asp-action="ManageUsers" asp-controller="Admin" class="btn btn-secondary">Quay lại</a>
+                }
+                else if (currentUserRole == "Senior")
+                {
+                    <a asp-action="ListCaregivers" asp-controller="Caregivers" class="btn btn-secondary">Quay lại</a>
+                }
+                else if (currentUserRole == "Caregiver")
+                {
+                    <a asp-action="ListSeniors" asp-controller="Seniors" class="btn btn-secondary">Quay lại</a>
+                }
+                else
+                {
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Quay lại</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

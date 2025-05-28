@@ -1,0 +1,117 @@
+﻿@model Chamsoc.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Cập Nhật Hồ Sơ - Quản Trị Viên";
+}
+
+<style>
+    .verified-tick {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url('/images/tick.png') no-repeat center center;
+        background-size: cover;
+        margin-left: 5px;
+        vertical-align: middle;
+        position: relative;
+    }
+
+        .verified-tick::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            animation: rainbow-border 3s linear infinite;
+            background: url('/images/tick.png') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+        }
+
+    @@keyframes rainbow-border {
+        0%
+
+    {
+        border-color: #ff0000;
+    }
+
+    16% {
+        border-color: #ff7f00;
+    }
+
+    33% {
+        border-color: #ffff00;
+    }
+
+    50% {
+        border-color: #00ff00;
+    }
+
+    66% {
+        border-color: #00ffff;
+    }
+
+    83% {
+        border-color: #0000ff;
+    }
+
+    100% {
+        border-color: #ff00ff;
+    }
+
+    }
+</style>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Cập Nhật Hồ Sơ - Quản Trị Viên</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success" role="alert">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+            <form asp-action="UpdateProfileAdmin" asp-controller="Admin" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <div class="mb-3 text-center">
+                    <h5>@Model.UserName <span class="verified-tick"></span></h5>
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Tên đăng nhập</label>
+                    <input type="text" class="form-control" id="username" name="username" value="@Model.UserName" readonly />
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" value="@Model.Email" required />
+                </div>
+                <div class="mb-3">
+                    <label for="phoneNumber" class="form-label">Số điện thoại</label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value="@Model.PhoneNumber" required />
+                </div>
+                <div class="mb-3">
+                    <label for="currentPassword" class="form-label">Mật khẩu hiện tại (để đổi mật khẩu)</label>
+                    <input type="password" class="form-control" id="currentPassword" name="currentPassword" />
+                </div>
+                <div class="mb-3">
+                    <label for="newPassword" class="form-label">Mật khẩu mới (nếu muốn đổi)</label>
+                    <input type="password" class="form-control" id="newPassword" name="newPassword" />
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                    <a asp-action="Profile" asp-controller="Admin" class="btn btn-secondary">Hủy</a>
+                    <a asp-action="ManageUsers" asp-controller="Admin" class="btn btn-secondary">Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,101 @@
+﻿@model IEnumerable<Chamsoc.Models.ApplicationUser>
+@using Chamsoc.Data
+@using Microsoft.AspNetCore.Identity
+
+@{
+    ViewData["Title"] = "Quản Lý Người Dùng";
+}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Quản Lý Người Dùng</h2>
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="mb-3">
+            <a asp-action="AddUser" class="btn btn-success">Thêm Người Dùng</a>
+        </div>
+    }
+    <div class="mb-3">
+        <form asp-action="ManageUsers" method="get">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Tìm kiếm người dùng..." value="@ViewBag.Search" />
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            </div>
+        </form>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tên đăng nhập</th>
+                <th>Email</th>
+                <th>Số điện thoại</th>
+                <th>Vai trò</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@(user.PhoneNumber ?? "Không có")</td>
+                    <td>@user.Role</td>
+                    <td>@(user.IsLocked ? "Đã khóa" : "Hoạt động")</td>
+                    <td>
+                        @{
+                            var currentUser = await _userManager.GetUserAsync(User);
+                            if (User.IsInRole("Admin") || (currentUser != null && currentUser.Id == user.Id))
+                            {
+                                <a asp-action="ViewUserProfile" asp-controller="Account" asp-route-id="@user.Id" class="btn btn-info btn-sm">Xem hồ sơ</a>
+                            }
+                        }
+                        @if (User.IsInRole("Admin") && user.Role != "Admin")
+                        {
+                            if (user.IsLocked)
+                            {
+                                <form asp-action="UnlockUser" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@user.Id" />
+                                    <button type="submit" class="btn btn-success btn-sm">Mở khóa</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-action="LockUser" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@user.Id" />
+                                    <button type="submit" class="btn btn-warning btn-sm">Khóa</button>
+                                </form>
+                            }
+                            if (user.Role == "Senior" || user.Role == "Caregiver")
+                            {
+                                // Chuyển RoleId thành int để so sánh với Senior.Id hoặc Caregiver.Id
+                                bool isVerified = false;
+                                if (int.TryParse(user.RoleId, out int roleId))
+                                {
+                                    isVerified = user.Role == "Senior"
+                                    ? _context.Seniors.FirstOrDefault(s => s.Id == roleId)?.IsVerified ?? false
+                                    : _context.Caregivers.FirstOrDefault(c => c.Id == roleId)?.IsVerified ?? false;
+                                }
+
+                                if (!isVerified)
+                                {
+                                    <form asp-action="VerifyUser" method="post" style="display:inline;">
+                                        <input type="hidden" name="id" value="@user.Id" />
+                                        <button type="submit" class="btn btn-info btn-sm">Xác minh</button>
+                                    </form>
+                                }
+                            }
+                            <form asp-action="DeleteUser" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');">
+                                <input type="hidden" name="id" value="@user.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@inject UserManager<Chamsoc.Models.ApplicationUser> _userManager
+@inject AppDbContext _context

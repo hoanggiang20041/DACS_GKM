@@ -1,0 +1,217 @@
+﻿@model IEnumerable<Chamsoc.Controllers.CareJobsController.CareJobViewModel>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Lịch Chăm Sóc</h2>
+    @if (Model.Any())
+    {
+        <div class="row justify-content-center">
+            @foreach (var item in Model)
+            {
+                var job = item.Job;
+                <div class="col-12 mb-2">
+                    <div class="card shadow-sm">
+                        <div class="card-body d-flex align-items-center py-2">
+                            <div class="flex-grow-1">
+                                <span><strong>Công Việc #</strong>@job.Id</span> |
+                                <span><strong>Dịch vụ:</strong> @(job.ServiceType ?? "Không xác định")</span> |
+                                <p><strong>Thời gian bắt đầu:</strong> @job.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
+                                <p><strong>Thời gian kết thúc:</strong> @(job.EndTime?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa xác định")</p>
+                                <span><strong>Tổng bill:</strong> @(job.TotalBill.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))) VNĐ</span> |
+                                <span><strong>Trạng thái:</strong> @(job.Status ?? "Không xác định")</span>
+                            </div>
+                            <div class="ms-3 d-flex align-items-center gap-2">
+                                <!-- Nút xem trang cá nhân -->
+                                @if (User.IsInRole("Senior") && !string.IsNullOrEmpty(item.CaregiverUserId))
+                                {
+                                    <a asp-controller="Account" asp-action="ViewUserProfile" asp-route-id="@item.CaregiverUserId" class="btn btn-info btn-sm">Xem trang cá nhân người chăm sóc</a>
+                                }
+                                @if (User.IsInRole("Caregiver") && !string.IsNullOrEmpty(item.SeniorUserId))
+                                {
+                                    <a asp-controller="Account" asp-action="ViewUserProfile" asp-route-id="@item.SeniorUserId" class="btn btn-info btn-sm">Xem trang cá nhân người cần chăm sóc</a>
+                                }
+
+                                <!-- Nút Xem Vị Trí -->
+                                @if (item.Latitude != 0 && item.Longitude != 0)
+                                {
+                                    <a href="https://www.google.com/maps?q=@item.Latitude,@item.Longitude" target="_blank" class="btn btn-primary btn-sm">Xem Vị Trí</a>
+                                }
+
+                                <!-- Các nút hành động -->
+                                @if (job.Status == "Đang thực hiện")
+                                {
+                                    <form asp-action="CompleteJob" method="post" style="display:inline;">
+                                        <input type="hidden" name="id" value="@job.Id" />
+                                        <button type="submit" class="btn btn-success btn-sm">Hoàn Tất</button>
+                                    </form>
+                                    <!-- Không hiển thị nút Hủy khi đã giao dịch -->
+                                }
+                                else if (job.Status == "Đang chờ" || job.Status == "Đang chờ xác nhận từ Senior" || job.Status == "Đang chờ xác nhận từ Caregiver")
+                                {
+                                    @if (User.IsInRole("Senior") && !job.SeniorAccepted && job.Status == "Đang chờ xác nhận từ Senior")
+                                    {
+                                        <form asp-action="AcceptJob" method="post" style="display:inline;">
+                                            <input type="hidden" name="id" value="@job.Id" />
+                                            <button type="submit" class="btn btn-success btn-sm">Chấp Nhận</button>
+                                        </form>
+                                        <form asp-action="CancelJob" method="post" style="display:inline;">
+                                            <input type="hidden" name="id" value="@job.Id" />
+                                            <button type="submit" class="btn btn-danger btn-sm">Hủy</button>
+                                        </form>
+                                    }
+                                    @if (User.IsInRole("Caregiver") && !job.CaregiverAccepted && job.Status == "Đang chờ xác nhận từ Caregiver")
+                                    {
+                                        <form asp-action="AcceptJob" method="post" style="display:inline;">
+                                            <input type="hidden" name="id" value="@job.Id" />
+                                            <button type="submit" class="btn btn-success btn-sm">Chấp Nhận</button>
+                                        </form>
+                                        <form asp-action="CancelJob" method="post" style="display:inline;">
+                                            <input type="hidden" name="id" value="@job.Id" />
+                                            <button type="submit" class="btn btn-danger btn-sm">Hủy</button>
+                                        </form>
+                                    }
+                                    @if (User.IsInRole("Caregiver") && !job.CaregiverAccepted && job.Status == "Đang chờ" && job.CreatedByRole == "Senior")
+                                    {
+                                        <form asp-action="AcceptJob" method="post" style="display:inline;">
+                                            <input type="hidden" name="id" value="@job.Id" />
+                                            <button type="submit" class="btn btn-success btn-sm">Chấp Nhận</button>
+                                        </form>
+                                        <form asp-action="CancelJob" method="post" style="display:inline;">
+                                            <input type="hidden" name="id" value="@job.Id" />
+                                            <button type="submit" class="btn btn-danger btn-sm">Hủy</button>
+                                        </form>
+                                    }
+                                    @if (User.IsInRole("Senior") && !job.SeniorAccepted && job.Status == "Đang chờ" && job.CreatedByRole == "Caregiver")
+                                    {
+                                        <div class="d-flex flex-column gap-2">
+                                            <div class="mb-2">
+                                                <div id="locationMessage_@job.Id" class="alert alert-info mt-2 d-none">
+                                                    Vị trí đã xác định: <span id="latLong_@job.Id"></span>
+                                                </div>
+                                                <button type="button" id="getLocation_@job.Id" class="btn btn-primary btn-sm">Cập nhật vị trí</button>
+                                            </div>
+                                            <input type="hidden" id="latitude_@job.Id" name="latitude" value="0" />
+                                            <input type="hidden" id="longitude_@job.Id" name="longitude" value="0" />
+                                            <form asp-action="AcceptJob" method="post" style="display:inline;" class="accept-form" data-job-id="@job.Id">
+                                                <input type="hidden" name="id" value="@job.Id" />
+                                                <input type="hidden" name="latitude" id="formLatitude_@job.Id" value="0" />
+                                                <input type="hidden" name="longitude" id="formLongitude_@job.Id" value="0" />
+                                                <button type="submit" class="btn btn-success btn-sm">Chấp Nhận</button>
+                                            </form>
+                                            <form asp-action="CancelJob" method="post" style="display:inline;">
+                                                <input type="hidden" name="id" value="@job.Id" />
+                                                <button type="submit" class="btn btn-danger btn-sm">Hủy</button>
+                                            </form>
+                                        </div>
+                                    }
+                                    @if (User.IsInRole("Caregiver") && !job.CaregiverAccepted && job.Status == "Đang chờ" && job.CreatedByRole == "Caregiver")
+                                    {
+                                        <form asp-action="CancelJob" method="post" style="display:inline;">
+                                            <input type="hidden" name="id" value="@job.Id" />
+                                            <button type="submit" class="btn btn-danger btn-sm">Hủy</button>
+                                        </form>
+                                    }
+                                    @if (User.IsInRole("Senior") && !job.SeniorAccepted && job.Status == "Đang chờ" && job.CreatedByRole == "Senior")
+                                    {
+                                        <form asp-action="CancelJob" method="post" style="display:inline;">
+                                            <input type="hidden" name="id" value="@job.Id" />
+                                            <button type="submit" class="btn btn-danger btn-sm">Hủy</button>
+                                        </form>
+                                    }
+                                }
+                                else if (job.Status == "Đang chờ Người chăm sóc thanh toán cọc" && User.IsInRole("Caregiver"))
+                                {
+                                    <a asp-controller="Caregivers" asp-action="Deposit" asp-route-jobId="@job.Id" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-coins me-1"></i>Nạp Cọc
+                                    </a>
+                                    <!-- Không hiển thị nút Hủy khi đã giao dịch -->
+                                }
+                                @if (job.Status == "Hoàn tất" && User.IsInRole("Senior"))
+                                {
+                                    <a asp-action="RateCaregiver" asp-route-jobId="@job.Id" class="btn btn-primary btn-sm rate-btn" data-has-rated="@item.HasRated.ToString().ToLower()">Đánh Giá</a>
+                                    <a asp-action="FileComplaint" asp-route-jobId="@job.Id" class="btn btn-warning btn-sm complain-btn" data-has-complained="@item.HasComplained.ToString().ToLower()">Khiếu Nại</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted">Bạn chưa có lịch chăm sóc nào.</p>
+    }
+</div>
+
+<style>
+    .card-body {
+        padding: 0.75rem 1rem;
+    }
+
+        .card-body span {
+            margin-right: 0.5rem;
+        }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+    }
+
+    .gap-2 {
+        gap: 0.5rem;
+    }
+</style>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.rate-btn').on('click', function (e) {
+                if ($(this).data('has-rated') === true) {
+                    e.preventDefault();
+                    alert('Bạn đã đánh giá công việc này rồi!');
+                }
+            });
+            $('.complain-btn').on('click', function (e) {
+                if ($(this).data('has-complained') === true) {
+                    e.preventDefault();
+                    alert('Bạn đã khiếu nại công việc này rồi!');
+                }
+            });
+
+            // Xử lý xác định vị trí với Geolocation cho từng job
+            $('.accept-form').each(function () {
+                const jobId = $(this).data('job-id');
+                const getLocationBtn = document.getElementById('getLocation_' + jobId);
+                const locationMessage = document.getElementById('locationMessage_' + jobId);
+                const latLongSpan = document.getElementById('latLong_' + jobId);
+                const latitudeInput = document.getElementById('latitude_' + jobId);
+                const longitudeInput = document.getElementById('longitude_' + jobId);
+                const formLatitudeInput = document.getElementById('formLatitude_' + jobId);
+                const formLongitudeInput = document.getElementById('formLongitude_' + jobId);
+
+                getLocationBtn.addEventListener('click', function () {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                            function (position) {
+                                const latitude = position.coords.latitude;
+                                const longitude = position.coords.longitude;
+                                latitudeInput.value = latitude;
+                                longitudeInput.value = longitude;
+                                formLatitudeInput.value = latitude;
+                                formLongitudeInput.value = longitude;
+                                locationMessage.classList.remove('d-none');
+                                latLongSpan.textContent = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+                            },
+                            function (error) {
+                                alert('Không thể lấy vị trí: ' + error.message + '. Vui lòng bật quyền truy cập vị trí trong trình duyệt.');
+                            },
+                            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+                        );
+                    } else {
+                        alert('Trình duyệt của bạn không hỗ trợ Geolocation.');
+                    }
+                });
+            });
+        });
+    </script>
+}

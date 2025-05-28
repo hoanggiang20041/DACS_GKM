@@ -1,0 +1,362 @@
+{
+  "Version": 1,
+  "Hash": "jeEpj7ruwODmhbKSyZVC2eunmlFeHSwPMKG4Gyw6AgM=",
+  "Source": "Chamsoc",
+  "BasePath": "_content/Chamsoc",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Chamsoc\\wwwroot",
+      "Source": "Chamsoc",
+      "ContentRoot": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Debug\\net9.0\\compressed\\pbuc1jkoe4-9d9yxuz059.gz",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "js/notifications#[.{fingerprint=9d9yxuz059}]?.js.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\js\\notifications.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "hb8plr9xod",
+      "Integrity": "o7hKit9vXc7TWIbPy/mYH6p/izBfA1FAppOQYRO7XgM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\js\\notifications.js"
+    },
+    {
+      "Identity": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\js\\notifications.js",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "js/notifications#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "9d9yxuz059",
+      "Integrity": "7Yytlc3p6WVZIh6VyiV0/YR1nEev9qQFRMqr+062qU0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\notifications.js"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "js/notifications.9d9yxuz059.js",
+      "AssetFile": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Debug\\net9.0\\compressed\\pbuc1jkoe4-9d9yxuz059.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001270648030"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "786"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"o7hKit9vXc7TWIbPy/mYH6p/izBfA1FAppOQYRO7XgM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 16 May 2025 20:12:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"7Yytlc3p6WVZIh6VyiV0/YR1nEev9qQFRMqr+062qU0=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "9d9yxuz059"
+        },
+        {
+          "Name": "label",
+          "Value": "js/notifications.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-7Yytlc3p6WVZIh6VyiV0/YR1nEev9qQFRMqr+062qU0="
+        }
+      ]
+    },
+    {
+      "Route": "js/notifications.9d9yxuz059.js",
+      "AssetFile": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\js\\notifications.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2236"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"7Yytlc3p6WVZIh6VyiV0/YR1nEev9qQFRMqr+062qU0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 16 May 2025 20:12:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "9d9yxuz059"
+        },
+        {
+          "Name": "label",
+          "Value": "js/notifications.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-7Yytlc3p6WVZIh6VyiV0/YR1nEev9qQFRMqr+062qU0="
+        }
+      ]
+    },
+    {
+      "Route": "js/notifications.9d9yxuz059.js.gz",
+      "AssetFile": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Debug\\net9.0\\compressed\\pbuc1jkoe4-9d9yxuz059.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "786"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"o7hKit9vXc7TWIbPy/mYH6p/izBfA1FAppOQYRO7XgM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 16 May 2025 20:12:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "9d9yxuz059"
+        },
+        {
+          "Name": "label",
+          "Value": "js/notifications.js.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-o7hKit9vXc7TWIbPy/mYH6p/izBfA1FAppOQYRO7XgM="
+        }
+      ]
+    },
+    {
+      "Route": "js/notifications.js",
+      "AssetFile": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Debug\\net9.0\\compressed\\pbuc1jkoe4-9d9yxuz059.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001270648030"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "786"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"o7hKit9vXc7TWIbPy/mYH6p/izBfA1FAppOQYRO7XgM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 16 May 2025 20:12:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"7Yytlc3p6WVZIh6VyiV0/YR1nEev9qQFRMqr+062qU0=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-7Yytlc3p6WVZIh6VyiV0/YR1nEev9qQFRMqr+062qU0="
+        }
+      ]
+    },
+    {
+      "Route": "js/notifications.js",
+      "AssetFile": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\js\\notifications.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2236"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"7Yytlc3p6WVZIh6VyiV0/YR1nEev9qQFRMqr+062qU0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 16 May 2025 20:12:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-7Yytlc3p6WVZIh6VyiV0/YR1nEev9qQFRMqr+062qU0="
+        }
+      ]
+    },
+    {
+      "Route": "js/notifications.js.gz",
+      "AssetFile": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Debug\\net9.0\\compressed\\pbuc1jkoe4-9d9yxuz059.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "786"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"o7hKit9vXc7TWIbPy/mYH6p/izBfA1FAppOQYRO7XgM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 16 May 2025 20:12:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-o7hKit9vXc7TWIbPy/mYH6p/izBfA1FAppOQYRO7XgM="
+        }
+      ]
+    }
+  ]
+}

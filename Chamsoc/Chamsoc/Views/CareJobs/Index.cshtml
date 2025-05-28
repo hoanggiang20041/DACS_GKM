@@ -1,0 +1,164 @@
+﻿@model IEnumerable<Chamsoc.Models.CareJobViewModel>
+
+@{
+    ViewData["Title"] = "Danh sách công việc";
+    var userRole = Context.Session.GetString("UserRole");
+}
+
+<style>
+    .avatar-xs {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Danh sách công việc</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Người cần chăm sóc</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Người chăm sóc</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dịch vụ</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thời gian</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng thái</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tổng tiền</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="align-middle text-center">
+                                            <span class="text-secondary text-xs font-weight-bold">#@item.Id</span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div>
+                                                    <img src="@(string.IsNullOrEmpty(item.Senior?.AvatarUrl) ? "/images/default-avatar.png" : item.Senior.AvatarUrl)" 
+                                                         class="avatar-xs me-3" alt="@item.SeniorName">
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">@item.SeniorName</h6>
+                                                    <p class="text-xs text-secondary mb-0">@item.SeniorPhone</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                @if (item.Caregiver != null)
+                                                {
+                                                    <div>
+                                                        <img src="@(string.IsNullOrEmpty(item.Caregiver?.AvatarUrl) ? "/images/default-avatar.png" : item.Caregiver.AvatarUrl)" 
+                                                             class="avatar-xs me-3" alt="@item.CaregiverName">
+                                                    </div>
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm">@item.CaregiverName</h6>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-xs text-secondary">Chưa có người chăm sóc</span>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0">@GetServiceTypeName(item.ServiceType)</p>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0">@item.StartTime?.ToString("dd/MM/yyyy HH:mm")</p>
+                                        </td>
+                                        <td>
+                                            <span class="badge @GetStatusBadgeClass(item.Status)">@GetStatusDisplayText(item.Status, userRole)</span>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0">@item.TotalBill.ToString("N0") VNĐ</p>
+                                        </td>
+                                        <td>
+                                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-link text-primary text-gradient px-3 mb-0">
+                                                <i class="fas fa-eye me-2"></i>Chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Đang chờ xác nhận từ Caregiver" => "bg-warning",
+            "Đang chờ xác nhận từ Senior" => "bg-warning",
+            "Đang chờ Người chăm sóc thanh toán cọc" => "bg-warning",
+            "Đang thực hiện" => "bg-primary",
+            "Đang chờ xác nhận hoàn thành" => "bg-info",
+            "Hoàn thành" => "bg-success",
+            "Hủy" => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetStatusDisplayText(string status, string userRole)
+    {
+        if (userRole == "Caregiver")
+        {
+            return status switch
+            {
+                "Đang chờ xác nhận từ Caregiver" => "Đang chờ bạn chấp nhận",
+                "Đang chờ xác nhận từ Senior" => "Đang chờ người cần chăm sóc xác nhận",
+                "Đang chờ Người chăm sóc thanh toán cọc" => "Đang chờ bạn thanh toán cọc",
+                "Đang thực hiện" => "Đang thực hiện",
+                "Đang chờ xác nhận hoàn thành" => "Đang chờ xác nhận hoàn thành",
+                "Hoàn thành" => "Hoàn thành",
+                "Hủy" => "Hủy",
+                _ => status
+            };
+        }
+        else if (userRole == "Senior")
+        {
+            return status switch
+            {
+                "Đang chờ xác nhận từ Caregiver" => "Đang chờ người chăm sóc chấp nhận",
+                "Đang chờ xác nhận từ Senior" => "Đang chờ bạn xác nhận",
+                "Đang chờ Người chăm sóc thanh toán cọc" => "Đang chờ người chăm sóc thanh toán cọc",
+                "Đang thực hiện" => "Đang thực hiện",
+                "Đang chờ xác nhận hoàn thành" => "Đang chờ bạn xác nhận hoàn thành",
+                "Hoàn thành" => "Hoàn thành",
+                "Hủy" => "Hủy",
+                _ => status
+            };
+        }
+        return status;
+    }
+
+    string GetServiceTypeName(string serviceType)
+    {
+        return serviceType?.ToLower() switch
+        {
+            "comprehensive" => "Chăm sóc toàn diện",
+            "physiotherapy" => "Vật lí trị liệu",
+            "medical" => "Chăm sóc y tế",
+            "rehabilitation" => "Phục hồi chức năng",
+            _ => serviceType
+        };
+    }
+}

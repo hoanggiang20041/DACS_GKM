@@ -1,0 +1,148 @@
+﻿@{
+    ViewData["Title"] = "Chăm Sóc Sức Khỏe - GKM Support and Care System";
+}
+
+<style>
+    .service-section {
+        padding: 40px 20px;
+        background-color: #f8f9fa;
+    }
+
+    .service-section h1 {
+        color: #007bff;
+        font-weight: bold;
+        margin-bottom: 40px;
+        text-align: center;
+        font-size: 2.2rem;
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+    .service-section h1::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background-color: #007bff;
+    }
+
+    .service-content {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .service-item {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        margin-bottom: 40px;
+        background-color: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .service-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .service-item:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+
+    .service-item .text {
+        flex: 1;
+    }
+
+    .service-item .text p {
+        color: #666;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+
+    .service-item .image {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+    }
+
+    .service-item .image img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+    }
+
+    .service-item:hover .image img {
+        transform: scale(1.05);
+    }
+
+    @@media (max-width: 768px) {
+        .service-item {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .service-item:nth-child(even) {
+            flex-direction: column;
+        }
+
+        .service-item .image img {
+            height: 250px;
+        }
+    }
+</style>
+
+<div class="service-section">
+    <h1>Dịch Vụ Chăm Sóc Sức Khỏe</h1>
+    <div class="service-content">
+        <div class="service-item">
+            <div class="text">
+                <p>
+                    Dịch vụ chăm sóc sức khỏe toàn diện tại GKM - Support and Care System mang đến sự hỗ trợ chuyên nghiệp và tận tâm, giúp bạn duy trì sức khỏe tối ưu. Chúng tôi cung cấp dịch vụ đặt lịch chăm sóc sức khỏe tại nhà hoặc tại các cơ sở y tế, với đội ngũ nhân viên giàu kinh nghiệm.
+                </p>
+            </div>
+            <div class="image">
+                <img src="https://bcp.cdnchinhphu.vn/334894974524682240/2024/1/23/dich-vu-cham-soc-suc-khoe-tai-nha-o-hue-2-1705997085435801677711.jpg" alt="Chăm sóc sức khỏe" />
+            </div>
+        </div>
+        <div class="service-item">
+            <div class="text">
+                <p>
+                    Đội ngũ nhân viên của chúng tôi được đào tạo bài bản, có chuyên môn cao trong việc theo dõi sức khỏe, hỗ trợ sinh hoạt hàng ngày, và chăm sóc dinh dưỡng. Chúng tôi đảm bảo mang đến sự thoải mái và an tâm cho bạn và gia đình.
+                </p>
+            </div>
+            <div class="image">
+                <img src="https://static1.cafeland.vn/cafelandData/upload/tintuc/khoinghiep/2020/02/tuan-03/cohoikhoinghiep-1582277136.jpg" alt="Hỗ trợ sức khỏe" />
+            </div>
+        </div>
+        <div class="service-item">
+            <div class="text">
+                <p>
+                    GKM - Support and Care System hoạt động trên toàn quốc, giúp bạn dễ dàng đặt lịch chăm sóc sức khỏe ở bất kỳ đâu, từ thành phố lớn như Hồ Chí Minh, Hà Nội, Đà Nẵng đến các tỉnh thành nhỏ. Chúng tôi cam kết mang đến dịch vụ chất lượng cao, minh bạch và đáng tin cậy.
+                </p>
+            </div>
+            <div class="image">
+                <img src="https://isofhcare-backup.s3-ap-southeast-1.amazonaws.com/images/kham-benh-tai-nha-isofhcare-jpg_0e6824c5_3440_4346_ba1d_b8ae2fce54cf.png" alt="Chăm sóc toàn quốc" />
+            </div>
+        </div>
+        <div class="service-item">
+            <div class="text">
+                <p>
+                    Hãy để GKM - Support and Care System đồng hành cùng bạn trong hành trình chăm sóc sức khỏe. Đặt lịch ngay hôm nay để nhận được sự hỗ trợ tốt nhất!
+                </p>
+            </div>
+            <div class="image">
+                <img src="https://vietmyclinic.com.vn/wp-content/uploads/2019/12/8.jpg" alt="Chăm sóc tận tâm" />
+            </div>
+        </div>
+    </div>
+</div>

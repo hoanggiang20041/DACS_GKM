@@ -1,0 +1,40 @@
+﻿@model Chamsoc.Models.FileComplaintViewModel
+
+<div class="container my-5">
+    <h2 class="text-center mb-4 text-warning">Gửi Khiếu Nại</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-warning text-white">
+                    <h5 class="card-title mb-0">Khiếu Nại Về @Model.CaregiverName</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="FileComplaint" method="post">
+                        <input type="hidden" asp-for="JobId" />
+                        <input type="hidden" asp-for="CaregiverId" />
+                        <input type="hidden" asp-for="SeniorId" />
+                        <input type="hidden" asp-for="CaregiverName" />
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Nội Dung Khiếu Nại:</label>
+                            <textarea asp-for="Description" class="form-control" rows="5" placeholder="Nhập nội dung khiếu nại của bạn..." required></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-exclamation-triangle me-2"></i>Gửi Khiếu Nại
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+}

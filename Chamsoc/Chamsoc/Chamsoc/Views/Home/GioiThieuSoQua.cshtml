@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Giới Thiệu Sơ Qua - GKM Care";
+}
+
+<style>
+    .intro-section {
+        background-color: #f8f9fa;
+        padding: 40px 20px;
+        border-radius: 10px;
+        margin: 30px auto;
+        max-width: 900px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .intro-section h2 {
+        position: relative;
+        text-align: center;
+        color: #007bff;
+        font-weight: bold;
+        margin-bottom: 30px;
+        font-size: 2rem;
+        padding-bottom: 15px;
+    }
+
+    .intro-section h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background-color: #007bff;
+    }
+
+    .intro-section p {
+        color: #666;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        text-align: justify;
+    }
+
+    .intro-section ul {
+        list-style-type: none;
+        padding-left: 0;
+        margin-bottom: 25px;
+    }
+
+    .intro-section ul li {
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 10px;
+        color: #666;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .intro-section ul li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: #007bff;
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+
+    .intro-section .btn-primary {
+        display: inline-block;
+        background-color: #007bff;
+        border: none;
+        padding: 10px 25px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: white;
+    }
+
+    .intro-section .btn-primary:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .text-center {
+        text-align: center;
+        margin-top: 25px;
+    }
+</style>
+
+<div class="intro-section">
+    <h2><span>Giới thiệu</span></h2>
+    <p>
+        Dịch vụ chăm sóc sức khỏe toàn diện và vật lý trị liệu, chăm sóc sức khỏe nguồn gốc tại nhà và tại bệnh viện theo yêu cầu – an toàn. Cung cấp nhân viên chăm sóc với 3 vùng miền: Bắc – Trung – Nam, Đội ngũ nhân viên chăm sóc sức khỏe tại GKM Care luôn sẵn sàng 24/7 phục vụ gia đình quý khách hàng. NuoiBenh.com luôn đảm bảo sự triệt để trong từng CHUYỆN NGHIỆP – TẬN TÂM mà phục vụ.
+    </p>
+    <p><strong>Phạm vi chăm sóc người cao tuổi – chăm sóc sức khỏe nguồn gốc:</strong></p>
+    <ul>
+        <li>Nguồn gốc: Đảm bảo minh bạch, trong sáng, rõ ràng, đội ngũ chính nhân viên, không qua trung gian.</li>
+        <li>Tính cách: Đảm bảo tận tâm, trách nhiệm với nghề, nhiệt huyết, lành tính và thân thiện.</li>
+        <li>Chuyên môn: Đảm bảo nghiệp vụ chuyên nghiệp và được đào tạo kỹ năng chăm sóc sức khỏe.</li>
+    </ul>
+    <p>
+        <strong>Khu vực chăm sóc sức khỏe:</strong> Hồ Chí Minh, Hà Nội, Đà Nẵng, Bà Rịa – Vũng Tàu, Bình Dương, Bình Phước, Biên Hòa – Đồng Nai, Tây Ninh, An Giang, Bạc Liêu, Bến Tre, Cà Mau, Cần Thơ, Đồng Tháp, Hậu Giang, Kien Giang, Long An, Sóc Trăng, Tiền Giang, Trà Vinh, Vĩnh Long, Lâm Đồng – Đà Lạt, Ninh Thuận, Bình Thuận, Thanh Hóa, Vĩnh Nghiêm, Hà Tĩnh, Đồng Hới – Quảng Bình, Quảng Trị, Thừa Thiên-Huế.
+    </p>
+    <div class="text-center">
+        <a asp-controller="Home" asp-action="About" class="btn btn-primary">Xem chi tiết</a>
+    </div>
+</div>

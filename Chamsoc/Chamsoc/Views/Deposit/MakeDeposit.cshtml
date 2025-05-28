@@ -1,0 +1,144 @@
+@model Chamsoc.Models.CareJob
+
+<div class="container my-5">
+    <h2 class="text-center mb-4 text-primary">Nạp Tiền Cọc</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Thông Tin Thanh Toán</h4>
+                </div>
+                <div class="card-body">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                    }
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                    }
+
+                    <div class="mb-4">
+                        <h5>Thông tin công việc</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>ID:</strong> @Model.Id</p>
+                                <p><strong>Dịch vụ:</strong> @Model.ServiceType</p>
+                                <p><strong>Người chăm sóc:</strong> @Model.CaregiverName</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Thời gian bắt đầu:</strong> @(Model.StartTime.HasValue ? Model.StartTime.Value.ToString("dd/MM/yyyy HH:mm") : "Chưa xác định")</p>
+                                <p><strong>Tổng chi phí:</strong> @Model.TotalBill.ToString("N0") VNĐ</p>
+                                <p><strong>Số tiền cọc (30%):</strong> @ViewBag.Amount.ToString("N0") VNĐ</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Thông tin chuyển khoản</h5>
+                                    <div class="mb-2">
+                                        <label class="fw-bold">Ngân hàng:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" value="@ViewBag.BankName" readonly>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard(this)" data-bs-toggle="tooltip" title="Sao chép">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="fw-bold">Số tài khoản:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" value="@ViewBag.AccountNo" readonly>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard(this)" data-bs-toggle="tooltip" title="Sao chép">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="fw-bold">Tên tài khoản:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" value="@ViewBag.AccountName" readonly>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard(this)" data-bs-toggle="tooltip" title="Sao chép">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="fw-bold">Số tiền:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" value="@ViewBag.Amount.ToString("N0")" readonly>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard(this)" data-bs-toggle="tooltip" title="Sao chép">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="fw-bold">Nội dung:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" value="@ViewBag.Description" readonly>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard(this)" data-bs-toggle="tooltip" title="Sao chép">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Mã QR</h5>
+                                    <img src="@ViewBag.QRUrl" alt="QR Code" class="img-fluid mb-2" style="max-width: 200px;" />
+                                    <p class="text-muted small">Quét mã QR để chuyển khoản tự động</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form method="post" asp-action="MakeDeposit" id="depositForm">
+                        <input type="hidden" name="jobId" value="@Model.Id" />
+                        <input type="hidden" name="amount" value="@ViewBag.Amount" />
+
+                        <div class="text-end">
+                            <a href="@Url.Action("Index", "CareJobs")" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Quay lại
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Xác nhận nạp cọc
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function copyToClipboard(button) {
+            const input = button.parentElement.querySelector('input');
+            input.select();
+            document.execCommand('copy');
+            
+            // Show tooltip
+            const originalTitle = button.getAttribute('title');
+            button.setAttribute('title', 'Đã sao chép!');
+            $(button).tooltip('show');
+            
+            // Reset tooltip after 1 second
+            setTimeout(() => {
+                button.setAttribute('title', originalTitle);
+                $(button).tooltip('hide');
+            }, 1000);
+        }
+
+        // Initialize tooltips
+        $(document).ready(function(){
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+    </script>
+} 

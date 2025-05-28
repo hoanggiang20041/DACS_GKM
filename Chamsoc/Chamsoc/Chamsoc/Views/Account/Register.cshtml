@@ -1,0 +1,617 @@
+﻿@{
+    ViewData["Title"] = "Đăng Ký";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-person-plus-circle text-primary" style="font-size: 3rem;"></i>
+                        <h2 class="fw-bold text-primary mt-2">Đăng Ký Tài Khoản</h2>
+                    </div>
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger d-flex align-items-center py-2" role="alert">
+                            <i class="bi bi-exclamation-circle me-2"></i>
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success d-flex align-items-center py-2" role="alert">
+                            <i class="bi bi-check-circle me-2"></i>
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    <form asp-action="Register" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <div class="card bg-light mb-3">
+                            <div class="card-body">
+                                <h6 class="card-title fw-semibold mb-3">
+                                    <i class="bi bi-person-badge me-2"></i>Thông tin đăng nhập
+                                </h6>
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white">
+                                            <i class="bi bi-person"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="username" name="username" placeholder="Tên đăng nhập" required />
+                                    </div>
+                                    <div class="invalid-feedback">Vui lòng nhập tên đăng nhập.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white">
+                                            <i class="bi bi-envelope"></i>
+                                        </span>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" required />
+                                    </div>
+                                    <div class="invalid-feedback">Vui lòng nhập email hợp lệ.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white">
+                                            <i class="bi bi-lock"></i>
+                                        </span>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Mật khẩu" required />
+                                    </div>
+                                    <div class="invalid-feedback">Vui lòng nhập mật khẩu.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card bg-light mb-3">
+                            <div class="card-body">
+                                <h6 class="card-title fw-semibold mb-3">
+                                    <i class="bi bi-person-vcard me-2"></i>Thông tin cá nhân
+                                </h6>
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white">
+                                            <i class="bi bi-person-badge"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Họ và tên" required />
+                                    </div>
+                                    <div class="invalid-feedback">Vui lòng nhập họ và tên.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white">
+                                            <i class="bi bi-telephone"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Số điện thoại" required maxlength="10" pattern="\d{10}" />
+                                    </div>
+                                    <div class="invalid-feedback">Vui lòng nhập số điện thoại gồm đúng 10 chữ số.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card bg-light mb-3">
+                            <div class="card-body">
+                                <h6 class="card-title fw-semibold mb-3">
+                                    <i class="bi bi-gear me-2"></i>Vai trò và thông tin bổ sung
+                                </h6>
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white">
+                                            <i class="bi bi-person-badge"></i>
+                                        </span>
+                                        <select class="form-select" id="role" name="role" required onchange="toggleRoleFields()">
+                                            <option value="">Chọn vai trò</option>
+                                            <option value="Senior">Người cần chăm sóc (Senior)</option>
+                                            <option value="Caregiver">Người chăm sóc (Caregiver)</option>
+                                        </select>
+                                    </div>
+                                    <div class="invalid-feedback">Vui lòng chọn vai trò.</div>
+                                </div>
+
+                                <div id="commonFields">
+                                    <div class="mb-3" id="ageField" style="display: none;">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white">
+                                                <i class="bi bi-calendar"></i>
+                                            </span>
+                                            <input type="number" class="form-control" id="age" name="age" placeholder="Tuổi" min="1" />
+                                        </div>
+                                        <div class="invalid-feedback">Vui lòng nhập tuổi hợp lệ (lớn hơn 0).</div>
+                                    </div>
+
+                                    <div class="mb-3" id="careNeedsField" style="display: none;">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white">
+                                                <i class="bi bi-heart-pulse"></i>
+                                            </span>
+                                            <input type="text" class="form-control" id="careNeeds" name="careNeeds" placeholder="Tình trạng bệnh" />
+                                        </div>
+                                        <div class="invalid-feedback">Vui lòng nhập tình trạng bệnh.</div>
+                                    </div>
+
+                                    <div class="mb-3" id="skillsField" style="display: none;">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white">
+                                                <i class="bi bi-tools"></i>
+                                            </span>
+                                            <select class="form-select" id="skills" name="skills">
+                                                <option value="">Chọn kỹ năng</option>
+                                                <option value="Khám toàn diện">Khám toàn diện</option>
+                                                <option value="Khám vật lý trị liệu">Khám vật lý trị liệu</option>
+                                            </select>
+                                        </div>
+                                        <div class="invalid-feedback">Vui lòng chọn kỹ năng chăm sóc.</div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white">
+                                                <i class="bi bi-currency-dollar"></i>
+                                            </span>
+                                            <input type="text" class="form-control" id="priceDisplay" placeholder="Chi phí/Thù lao mong muốn (VNĐ)" required />
+                                            <input type="hidden" id="priceHidden" name="price" />
+                                        </div>
+                                        <div class="invalid-feedback">Vui lòng nhập chi phí/thù lao (lớn hơn 500.000 VND).</div>
+                                    </div>
+
+                                    <div class="mb-3" id="statusField" style="display: none;">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white">
+                                                <i class="bi bi-toggle-on"></i>
+                                            </span>
+                                            <select class="form-select" id="status" name="status">
+                                                <option value="true">Hoạt động</option>
+                                                <option value="false">Không hoạt động</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3" id="isAvailableField" style="display: none;">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white">
+                                                <i class="bi bi-toggle-on"></i>
+                                            </span>
+                                            <select class="form-select" id="isAvailable" name="isAvailable">
+                                                <option value="true">Sẵn sàng</option>
+                                                <option value="false">Đang bận</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3" id="identityAndHealthDocsField" style="display: none;">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white">
+                                                <i class="bi bi-file-earmark-text"></i>
+                                            </span>
+                                            <input type="file" class="form-control" id="identityAndHealthDocs" name="identityAndHealthDocs" accept=".pdf,.jpg,.jpeg,.png" multiple />
+                                        </div>
+                                        <small class="form-text text-muted">Tải lên nhiều file PDF, JPG, JPEG, hoặc PNG.</small>
+                                        <div class="invalid-feedback">Chỉ chấp nhận file PDF, JPG, JPEG, hoặc PNG.</div>
+                                    </div>
+
+                                    <div class="mb-3" id="certificateField" style="display: none;">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white">
+                                                <i class="bi bi-award"></i>
+                                            </span>
+                                            <input type="file" class="form-control" id="certificate" name="certificate" accept=".pdf,.jpg,.jpeg,.png" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary px-4 py-2 me-2">
+                                <i class="bi bi-person-plus me-2"></i>Đăng Ký
+                            </button>
+                            <a asp-action="Login" class="btn btn-secondary px-4 py-2">
+                                <i class="bi bi-x-circle me-2"></i>Hủy
+                            </a>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="text-muted mb-0">Đã có tài khoản? 
+                            <a href="@Url.Action("Login", "Account")" class="text-primary text-decoration-none">
+                                <i class="bi bi-box-arrow-in-right me-1"></i>Đăng nhập
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+</style>
+
+<script>
+    // Danh sách các loại bệnh cho gợi ý
+    const diseases = [
+        "Tiểu đường",
+        "Cao huyết áp",
+        "Tim mạch",
+        "Hô hấp",
+        "Thần kinh",
+        "Ung thư",
+        "Béo phì",
+        "Cholesterol cao",
+        "Viêm gan",
+        "Suy thận",
+        "Nhiễm trùng đường tiểu",
+        "Hen suyễn",
+        "Dị ứng",
+        "Viêm phế quản",
+        "Viêm phổi",
+        "Đột quỵ",
+        "Bệnh Alzheimer",
+        "Bệnh Parkinson",
+        "Bệnh gout",
+        "Loãng xương",
+        "Bệnh Crohn",
+        "Viêm đại tràng",
+        "Bệnh Addison",
+        "Bệnh lupus",
+        "Viêm khớp dạng thấp",
+        "Bệnh celiac",
+        "Tiểu đường thai kỳ",
+        "Xơ cứng teo cơ",
+        "Bệnh phổi tắc nghẽn mạn tính (COPD)",
+        "Trầm cảm",
+        "Rối loạn lo âu",
+        "Viêm tủy sống",
+        "Bệnh tim thiếu máu cục bộ",
+        "Bệnh van tim",
+        "Bệnh mạch vành",
+        "Bệnh thận đa nang",
+        "Viêm gan siêu vi B",
+        "Viêm gan siêu vi C",
+        "Nhiễm HIV/AIDS",
+        "Viêm khớp",
+        "Bệnh tăng nhãn áp",
+        "Bệnh tiểu đường loại 1",
+        "Bệnh tiểu đường loại 2",
+        "Bệnh mạch máu não",
+        "Bệnh hạch bạch huyết",
+        "Bệnh tiểu đường không kiểm soát",
+        "Bệnh tâm thần phân liệt",
+        "Rối loạn lưỡng cực",
+        "Bệnh tự miễn",
+        "Viêm loét đại tràng",
+        "Bệnh động kinh",
+        "Rối loạn ăn uống",
+        "Bệnh tim bẩm sinh",
+        "Bệnh phình động mạch",
+        "Bệnh thận mạn tính",
+        "Bệnh gan nhiễm mỡ",
+        "Bệnh xơ gan",
+        "Bệnh loãng xương",
+        "Rối loạn giấc ngủ",
+        "Bệnh vảy nến",
+        "Bệnh eczema",
+        "Bệnh trào ngược dạ dày thực quản",
+        "Bệnh tiêu chảy mãn tính",
+        "Bệnh viêm tụy",
+        "Bệnh viêm mũi dị ứng",
+        "Bệnh viêm xoang",
+        "Bệnh nhiễm trùng nấm",
+        "Bệnh nhiễm trùng ký sinh trùng",
+        "Bệnh u xơ tử cung",
+        "Bệnh u nang buồng trứng",
+        "Bệnh sỏi thận",
+        "Bệnh sỏi mật",
+        "Bệnh trĩ",
+        "Bệnh viêm dạ dày",
+        "Bệnh viêm ruột thừa",
+        "Bệnh suy giảm miễn dịch",
+        "Bệnh viêm da",
+        "Bệnh mề đay",
+        "Bệnh chàm",
+        "Bệnh mụn trứng cá",
+        "Bệnh hôi miệng",
+        "Bệnh viêm lợi",
+        "Bệnh sâu răng",
+        "Bệnh hẹp động mạch",
+        "Bệnh suy tim",
+        "Bệnh nhồi máu cơ tim",
+        "Bệnh suy thượng thận",
+        "Bệnh viêm màng não",
+        "Bệnh viêm tim",
+        "Bệnh rối loạn tiêu hóa",
+        "Bệnh hội chứng ruột kích thích",
+        "Bệnh viêm bàng quang",
+        "Bệnh viêm thực quản",
+        "Bệnh viêm gan tự miễn",
+        "Bệnh rối loạn thần kinh",
+        "Bệnh viêm phổi do vi khuẩn",
+        "Bệnh viêm phổi do virus",
+        "Bệnh viêm màng phổi",
+        "Bệnh viêm phổi kẽ",
+        "Bệnh hen phế quản",
+        "Bệnh xơ phổi",
+        "Bệnh viêm mạch máu",
+        "Bệnh xơ cứng",
+        "Bệnh viêm khớp gối",
+        "Bệnh viêm khớp cổ tay",
+        "Bệnh viêm khớp vai",
+        "Bệnh viêm khớp ngón tay",
+        "Bệnh viêm khớp hông",
+        "Bệnh viêm khớp cột sống",
+        "Bệnh viêm khớp lưng",
+        "Bệnh viêm khớp gót chân",
+        "Bệnh viêm khớp bàn chân",
+        "Bệnh viêm gân",
+        "Bệnh đau thần kinh tọa",
+        "Bệnh thoát vị đĩa đệm",
+        "Bệnh thoái hóa cột sống",
+        "Bệnh đau lưng mãn tính",
+        "Bệnh đau đầu",
+        "Bệnh đau nửa đầu",
+        "Bệnh chóng mặt",
+        "Bệnh ù tai",
+        "Bệnh viêm tai giữa",
+        "Bệnh viêm mũi",
+        "Bệnh viêm họng",
+        "Bệnh viêm amidan",
+        "Bệnh viêm phổi tắc nghẽn mạn tính",
+        "Bệnh viêm phế quản cấp tính",
+        "Bệnh viêm phế quản mạn tính",
+        "Bệnh viêm phổi do hóa chất",
+        "Bệnh viêm phổi do dị ứng",
+        "Bệnh viêm gan do rượu",
+        "Bệnh viêm gan do thuốc",
+        "Bệnh viêm gan do virus",
+        "Bệnh viêm gan do ký sinh trùng",
+        "Bệnh viêm tuyến giáp",
+        "Bệnh cường giáp",
+        "Bệnh suy giáp",
+        "Bệnh u tuyến giáp",
+        "Bệnh viêm thận",
+        "Bệnh viêm niệu đạo",
+        "Bệnh viêm bàng quang mãn tính",
+        "Bệnh viêm bàng quang cấp tính",
+        "Bệnh viêm kết mạc",
+        "Bệnh mù màu",
+        "Bệnh đục thủy tinh thể",
+        "Bệnh glaucom",
+        "Bệnh khô mắt",
+        "Bệnh thoái hóa điểm vàng",
+        "Bệnh ưa chảy máu",
+        "Bệnh thiếu máu",
+        "Bệnh thalassemia",
+        "Bệnh huyết tán",
+        "Bệnh thiếu vitamin B12",
+        "Bệnh thiếu sắt",
+        "Bệnh viêm tắc tĩnh mạch",
+        "Bệnh trào ngược thực quản",
+        "Bệnh loét dạ dày",
+        "Bệnh viêm túi mật",
+        "Bệnh tràn dịch màng phổi",
+        "Bệnh viêm màng phổi",
+        "Bệnh tràn dịch màng tim",
+        "Bệnh viêm màng ngoài tim",
+        "Bệnh đau bụng",
+        "Bệnh khó tiêu",
+        "Bệnh buồn nôn",
+        "Bệnh nôn mửa"
+    ]
+
+    // Hàm toggle các trường dựa trên vai trò
+    function toggleRoleFields() {
+        const role = document.getElementById("role").value;
+        const ageField = document.getElementById("ageField");
+        const careNeedsField = document.getElementById("careNeedsField");
+        const skillsField = document.getElementById("skillsField");
+        const statusField = document.getElementById("statusField");
+        const isAvailableField = document.getElementById("isAvailableField");
+        const identityAndHealthDocsField = document.getElementById("identityAndHealthDocsField");
+        const certificateField = document.getElementById("certificateField");
+
+        ageField.style.display = "none";
+        careNeedsField.style.display = "none";
+        skillsField.style.display = "none";
+        statusField.style.display = "none";
+        isAvailableField.style.display = "none";
+        identityAndHealthDocsField.style.display = "none";
+        certificateField.style.display = "none";
+
+        const inputs = document.querySelectorAll('#commonFields input, #commonFields textarea, #commonFields select');
+        inputs.forEach(input => input.removeAttribute("required"));
+
+        if (role === "Senior") {
+            ageField.style.display = "block";
+            careNeedsField.style.display = "block";
+            statusField.style.display = "block";
+            identityAndHealthDocsField.style.display = "block";
+
+            document.getElementById("name").setAttribute("required", "required");
+            document.getElementById("age").setAttribute("required", "required");
+            document.getElementById("careNeeds").setAttribute("required", "required");
+            document.getElementById("priceDisplay").setAttribute("required", "required");
+        } else if (role === "Caregiver") {
+            skillsField.style.display = "block";
+            isAvailableField.style.display = "block";
+            certificateField.style.display = "block";
+
+            document.getElementById("name").setAttribute("required", "required");
+            document.getElementById("skills").setAttribute("required", "required");
+            document.getElementById("priceDisplay").setAttribute("required", "required");
+        }
+    }
+
+    // Định dạng giá
+    const priceDisplay = document.getElementById('priceDisplay');
+    if (priceDisplay) {
+        priceDisplay.addEventListener('input', function (e) {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            if (value) {
+                e.target.value = parseInt(value).toLocaleString('vi-VN');
+                document.getElementById('priceHidden').value = value;
+            } else {
+                e.target.value = '';
+                document.getElementById('priceHidden').value = '0';
+            }
+        });
+    }
+
+    // Autocomplete cho trường CareNeeds
+    const careNeedsInput = document.getElementById('careNeeds');
+    if (careNeedsInput) {
+        careNeedsInput.addEventListener('input', function (e) {
+            const value = e.target.value.toLowerCase();
+            const suggestions = diseases.filter(disease => disease.toLowerCase().includes(value));
+
+            const existingSuggestions = document.getElementById('careNeedsSuggestions');
+            if (existingSuggestions) {
+                existingSuggestions.remove();
+            }
+
+            if (suggestions.length > 0) {
+                const suggestionsDiv = document.createElement('div');
+                suggestionsDiv.id = 'careNeedsSuggestions';
+                suggestionsDiv.style.position = 'absolute';
+                suggestionsDiv.style.zIndex = '1000';
+                suggestionsDiv.style.backgroundColor = '#fff';
+                suggestionsDiv.style.border = '1px solid #ccc';
+                suggestionsDiv.style.width = careNeedsInput.offsetWidth + 'px';
+
+                suggestions.forEach(suggestion => {
+                    const suggestionItem = document.createElement('div');
+                    suggestionItem.textContent = suggestion;
+                    suggestionItem.style.padding = '5px';
+                    suggestionItem.style.cursor = 'pointer';
+                    suggestionItem.addEventListener('click', function () {
+                        careNeedsInput.value = suggestion;
+                        suggestionsDiv.remove();
+                    });
+                    suggestionsDiv.appendChild(suggestionItem);
+                });
+
+                careNeedsInput.parentElement.appendChild(suggestionsDiv);
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target !== careNeedsInput) {
+                const suggestionsDiv = document.getElementById('careNeedsSuggestions');
+                if (suggestionsDiv) {
+                    suggestionsDiv.remove();
+                }
+            }
+        });
+    }
+
+    // Validation định dạng file cho identityAndHealthDocs
+    document.getElementById('identityAndHealthDocs')?.addEventListener('change', function (e) {
+        const files = e.target.files;
+        if (files.length > 0) {
+            const validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+            for (let file of files) {
+                if (!validTypes.includes(file.type)) {
+                    e.target.classList.add('is-invalid');
+                    document.getElementById('identityAndHealthDocsFeedback').textContent = 'Chỉ chấp nhận file PDF, JPG, JPEG, hoặc PNG.';
+                    document.getElementById('identityAndHealthDocsMessage').style.display = 'none';
+                    return;
+                }
+            }
+            e.target.classList.remove('is-invalid');
+            document.getElementById('identityAndHealthDocsFeedback').textContent = 'Chỉ chấp nhận file PDF, JPG, JPEG, hoặc PNG.';
+            document.getElementById('identityAndHealthDocsMessage').style.display = 'block';
+        }
+    });
+
+    // Validation trước khi gửi form
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form');
+        const phoneInput = document.getElementById('phoneNumber');
+
+        // Kiểm tra real-time khi nhập số điện thoại
+        phoneInput.addEventListener('input', function (e) {
+            let value = e.target.value.replace(/[^0-9]/g, ''); // Chỉ giữ lại số
+            e.target.value = value; // Cập nhật giá trị ngay lập tức
+            if (value.length > 10) {
+                e.target.value = value.slice(0, 10); // Cắt bớt nếu vượt quá 10 số
+            }
+            if (value.length !== 10) {
+                e.target.classList.add('is-invalid');
+            } else {
+                e.target.classList.remove('is-invalid');
+            }
+        });
+
+        form.addEventListener('submit', function (e) {
+            let role = document.getElementById('role').value;
+            let price = document.getElementById('priceHidden').value;
+            let name = document.getElementById('name').value;
+            let phoneNumber = document.getElementById('phoneNumber').value;
+            let errors = [];
+
+            // Reset validation state
+            form.querySelectorAll('.is-invalid').forEach(element => element.classList.remove('is-invalid'));
+
+            // Debug giá trị của các trường
+            console.log("Role:", role);
+            console.log("Username:", document.getElementById('username').value);
+            console.log("Email:", document.getElementById('email').value);
+            console.log("PhoneNumber:", phoneNumber);
+            console.log("Password:", document.getElementById('password').value);
+            console.log("Name:", name);
+            console.log("Price:", price);
+
+            // Kiểm tra số điện thoại phải là 10 chữ số
+            const phoneRegex = /^\d{10}$/;
+            if (!phoneNumber || !phoneRegex.test(phoneNumber)) {
+                errors.push(`Số điện thoại phải gồm đúng 10 chữ số. Giá trị hiện tại: "${phoneNumber}"`);
+                document.getElementById('phoneNumber').classList.add('is-invalid');
+            }
+
+            if (role === "Senior") {
+                console.log("Age:", document.getElementById('age').value);
+                console.log("CareNeeds:", document.getElementById('careNeeds').value);
+
+                if (!name || name.trim() === '') {
+                    errors.push(`Họ và tên không hợp lệ. Giá trị hiện tại: "${name}"`);
+                    document.getElementById('name').classList.add('is-invalid');
+                }
+                if (!document.getElementById('age').value || parseInt(document.getElementById('age').value) <= 0) {
+                    errors.push(`Tuổi không hợp lệ. Giá trị hiện tại: "${document.getElementById('age').value}"`);
+                    document.getElementById('age').classList.add('is-invalid');
+                }
+                if (!document.getElementById('careNeeds').value) {
+                    errors.push(`Tình trạng bệnh không hợp lệ. Giá trị hiện tại: "${document.getElementById('careNeeds').value}"`);
+                    document.getElementById('careNeeds').classList.add('is-invalid');
+                }
+            } else if (role === "Caregiver") {
+                console.log("Skills:", document.getElementById('skills').value);
+
+                if (!name || name.trim() === '') {
+                    errors.push(`Họ và tên không hợp lệ. Giá trị hiện tại: "${name}"`);
+                    document.getElementById('name').classList.add('is-invalid');
+                }
+                if (!document.getElementById('skills').value) {
+                    errors.push(`Kỹ năng chăm sóc không hợp lệ. Giá trị hiện tại: "${document.getElementById('skills').value}"`);
+                    document.getElementById('skills').classList.add('is-invalid');
+                }
+            } else {
+                errors.push("Vui lòng chọn vai trò.");
+                document.getElementById('role').classList.add('is-invalid');
+            }
+
+            if (!price || parseInt(price) <= 500000) {
+                errors.push(`Chi phí/Thù lao phải lớn hơn 500.000. Giá trị hiện tại: "${price}"`);
+                document.getElementById('priceDisplay').classList.add('is-invalid');
+            }
+
+            if (errors.length > 0) {
+                e.preventDefault();
+                console.log("Validation Errors:", errors);
+                alert("Có lỗi xảy ra:\n" + errors.join("\n"));
+            }
+        });
+    });
+</script>

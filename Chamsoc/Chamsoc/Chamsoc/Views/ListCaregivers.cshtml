@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Chamsoc.Models.Caregiver>
+
+@{
+    ViewData["Title"] = "Danh Sách Người Chăm Sóc";
+}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Danh Sách Người Chăm Sóc</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tên</th>
+                <th>Kỹ Năng</th>
+                <th>Số Điện Thoại</th>
+                <th>Trạng Thái</th>
+                <th>Chứng Chỉ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var caregiver in Model)
+            {
+                <tr>
+                    <td>@caregiver.Name</td>
+                    <td>@caregiver.Skills</td>
+                    <td>@caregiver.Contact</td>
+                    <td>@(caregiver.IsAvailable ? "Sẵn sàng" : "Đang bận")</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(caregiver.CertificateFilePath))
+                        {
+                            <a href="@caregiver.CertificateFilePath" target="_blank">Xem chứng chỉ</a>
+                        }
+                        else
+                        {
+                            <span>Không có</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

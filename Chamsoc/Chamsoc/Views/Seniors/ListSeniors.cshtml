@@ -1,0 +1,1010 @@
+﻿@model List<Chamsoc.Models.Senior>
+@using System.Globalization
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+@{
+    ViewData["Title"] = "Danh Sách Người Cần Chăm Sóc";
+    var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "anonymous";
+    var currentUserName = User.Identity.Name ?? "Người dùng không xác định";
+}
+
+<style>
+    .card {
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-body {
+        flex: 1;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease-in;
+    }
+
+    .verified-tick {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url('/images/tick.png') no-repeat center center;
+        background-size: cover;
+        margin-left: 5px;
+        vertical-align: middle;
+        position: relative;
+    }
+
+        .verified-tick::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            animation: rainbow-border 3s linear infinite;
+        }
+
+    @@keyframes rainbow-border {
+        0% {
+            border-color: #ff0000;
+        }
+
+        16% {
+            border-color: #ff7f00;
+        }
+
+        33% {
+            border-color: #ffff00;
+        }
+
+        50% {
+            border-color: #00ff00;
+        }
+
+        66% {
+            border-color: #00ffff;
+        }
+
+        83% {
+            border-color: #0000ff;
+        }
+
+        100% {
+            border-color: #ff00ff;
+        }
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .call-popup, .active-call-popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 30px;
+        background-color: rgba(0, 0, 0, 0.8);
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        display: none;
+        max-width: 450px;
+        width: 90%;
+        color: white;
+    }
+
+        .call-popup .popup-content, .active-call-popup .popup-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .call-popup .avatar, .active-call-popup .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 2px solid #fff;
+            background: none;
+        }
+
+        .call-popup h4, .active-call-popup h4 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .call-popup .popup-buttons, .active-call-popup .popup-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+            .call-popup .popup-buttons button, .active-call-popup .popup-buttons button {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                border: none;
+                font-size: 1.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: transform 0.2s;
+            }
+
+                .call-popup .popup-buttons button:hover, .active-call-popup .popup-buttons button:hover {
+                    transform: scale(1.1);
+                }
+
+        .call-popup .btn-success {
+            background-color: #00cc00;
+        }
+
+        .call-popup .btn-danger {
+            background-color: #ff3333;
+        }
+
+        .active-call-popup .btn-secondary {
+            background-color: #555;
+        }
+
+            .active-call-popup .btn-secondary.muted {
+                background-color: #333;
+            }
+
+        .call-popup.shake {
+            animation: shake 0.5s ease-in-out infinite;
+        }
+
+    .call-timer {
+        font-size: 1.2rem;
+        color: #ccc;
+        margin-top: 10px;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #fff;
+    }
+
+    @@keyframes shake {
+        0%, 100% {
+            transform: translate(-50%, -50%) translateX(0);
+        }
+
+        25% {
+            transform: translate(-50%, -50%) translateX(-5px);
+        }
+
+        75% {
+            transform: translate(-50%, -50%) translateX(5px);
+        }
+    }
+</style>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Danh Sách Người Cần Chăm Sóc</h2>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    <!-- Search Form -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form asp-action="ListSeniors" method="get" class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Tìm kiếm theo nhu cầu</label>
+                    <select name="searchCareNeeds" class="form-select">
+                        <option value="">Tất cả nhu cầu</option>
+                        @foreach (var need in ViewBag.CareNeeds ?? new List<string>())
+                        {
+                            <option value="@need" selected="@(ViewBag.SearchCareNeeds == need)">@need</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Giá tối thiểu</label>
+                    <select name="minPrice" class="form-select">
+                        <option value="">Không giới hạn</option>
+                        <option value="100000" selected="@(ViewBag.MinPrice == 100000)">100,000 VNĐ</option>
+                        <option value="500000" selected="@(ViewBag.MinPrice == 500000)">500,000 VNĐ</option>
+                        <option value="1000000" selected="@(ViewBag.MinPrice == 1000000)">1,000,000 VNĐ</option>
+                        <option value="2000000" selected="@(ViewBag.MinPrice == 2000000)">2,000,000 VNĐ</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Giá tối đa</label>
+                    <select name="maxPrice" class="form-select">
+                        <option value="">Không giới hạn</option>
+                        <option value="1000000" selected="@(ViewBag.MaxPrice == 1000000)">1,000,000 VNĐ</option>
+                        <option value="2000000" selected="@(ViewBag.MaxPrice == 2000000)">2,000,000 VNĐ</option>
+                        <option value="5000000" selected="@(ViewBag.MaxPrice == 5000000)">5,000,000 VNĐ</option>
+                        <option value="10000000" selected="@(ViewBag.MaxPrice == 10000000)">10,000,000 VNĐ</option>
+                    </select>
+                </div>
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search me-2"></i>Tìm kiếm
+                    </button>
+                    <a asp-action="ListSeniors" class="btn btn-secondary">
+                        <i class="fas fa-redo me-2"></i>Đặt lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <div class="row">
+        @if (!Model.Any())
+        {
+            <div class="col-12 text-center">
+                <p class="text-muted">Không tìm thấy người cần chăm sóc nào phù hợp với tiêu chí tìm kiếm.</p>
+            </div>
+        }
+        else
+        {
+            @foreach (var senior in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="text-center mb-3">
+                                @if (!string.IsNullOrEmpty(senior.AvatarUrl))
+                                {
+                                    <img src="@senior.AvatarUrl" alt="Avatar" class="rounded-circle" 
+                                         style="width: 100px; height: 100px; object-fit: cover;" 
+                                         onerror="this.src='/images/placeholder.jpg';" />
+                                }
+                                else
+                                {
+                                    <img src="/images/placeholder.jpg" alt="Avatar mặc định" 
+                                         class="rounded-circle" style="width: 100px; height: 100px;" />
+                                }
+                            </div>
+                            <h5 class="card-title text-center mb-3">@senior.Name</h5>
+                            <div class="info-list">
+                                <p class="mb-2">
+                                    <i class="fas fa-user-clock me-2 text-primary"></i>
+                                    <strong>Tuổi:</strong> @senior.Age
+                                </p>
+                                <p class="mb-2">
+                                    <i class="fas fa-notes-medical me-2 text-primary"></i>
+                                    <strong>Nhu cầu:</strong> @senior.CareNeeds
+                                </p>
+                                <p class="mb-2">
+                                    <i class="fas fa-money-bill-wave me-2 text-primary"></i>
+                                    <strong>Giá mong muốn:</strong> @senior.Price.ToString("N0") VNĐ
+                                </p>
+                                <p class="mb-2">
+                                    <i class="fas fa-calendar-check me-2 text-primary"></i>
+                                    <strong>Ngày đăng ký:</strong> @senior.RegistrationDate.ToString("dd/MM/yyyy")
+                                </p>
+                                <p class="mb-2">
+                                    <i class="fas fa-check-circle me-2 text-primary"></i>
+                                    <strong>Trạng thái:</strong>
+                                    @if (senior.Status)
+                                    {
+                                        <span class="badge bg-success">Sẵn sàng</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning">Đang bận</span>
+                                    }
+                                </p>
+                                <p class="mb-2">
+                                    <i class="fas fa-shield-alt me-2 text-primary"></i>
+                                    <strong>Xác minh:</strong>
+                                    @if (senior.IsVerified)
+                                    {
+                                        <span class="badge bg-success">Đã xác minh</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Chưa xác minh</span>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0 text-center">
+                            @if (senior.Status && senior.IsVerified)
+                            {
+                                <a asp-action="BookSenior" asp-route-seniorId="@senior.Id" 
+                                   class="btn btn-primary">
+                                    <i class="fas fa-calendar-plus me-2"></i>Đặt lịch
+                                </a>
+                            }
+                            else
+                            {
+                                <button class="btn btn-secondary" disabled>
+                                    <i class="fas fa-calendar-plus me-2"></i>Không khả dụng
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<!-- Popup for Incoming Call -->
+<div id="callPopup" class="call-popup">
+    <div class="popup-content">
+        <img id="callAvatar" class="avatar" src="https://via.placeholder.com/120" alt="Avatar">
+        <h4 id="popupTitle">Cuộc gọi đến</h4>
+        <p><strong>Người gọi:</strong> <span id="caregiverName"></span></p>
+        <div class="popup-buttons">
+            <button id="answerCallBtn" class="btn btn-success" title="Nhận cuộc gọi">
+                <i class="bi bi-telephone-inbound-fill"></i>
+            </button>
+            <button id="rejectCallBtn" class="btn btn-danger" title="Từ chối cuộc gọi">
+                <i class="bi bi-telephone-x-fill"></i>
+            </button>
+        </div>
+    </div>
+    <span class="close-btn" id="closePopupBtn">×</span>
+</div>
+
+<!-- Popup for Active Call -->
+<div id="activeCallPopup" class="active-call-popup">
+    <div class="popup-content">
+        <img id="callAvatar" class="avatar" src="https://via.placeholder.com/120" alt="Avatar">
+        <h4 id="callName">Đang gọi...</h4>
+        <span id="callTimer" class="call-timer">00:00</span>
+        <div class="popup-buttons">
+            <button id="toggleMicBtn" class="btn btn-secondary" title="Tắt/Bật micro">
+                <i class="bi bi-mic-fill"></i>
+            </button>
+            <button id="toggleSpeakerBtn" class="btn btn-secondary" title="Tắt/Bật loa">
+                <i class="bi bi-volume-up-fill"></i>
+            </button>
+            <button id="endCallBtn" class="btn btn-danger" title="Kết thúc cuộc gọi">
+                <i class="bi bi-telephone-x-fill"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Audio elements -->
+<audio id="remoteAudio" autoplay></audio>
+<audio id="ringingAudio" loop>
+    <source src="/audio/ringing.mp3" type="audio/mpeg">
+    <source src="https://www.soundjay.com/phone/telephone-ring-01.mp3" type="audio/mpeg">
+</audio>
+<audio id="endCallAudio">
+    <source src="/audio/endcall.mp3" type="audio/mpeg">
+    <source src="https://www.soundjay.com/phone/telephone-end-01.mp3" type="audio/mpeg">
+</audio>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        console.log("Script đã tải và DOM sẵn sàng.");
+        const currentUserId = '@currentUserId';
+        const currentUserName = '@currentUserName';
+        console.log("Xác minh currentUserId:", currentUserId, "currentUserName:", currentUserName);
+        console.log("SignalR URL:", `/callHub?userId=${currentUserId}`);
+        let peerConnection = null;
+        let localStream = null;
+        let remoteStream = null;
+        let isMicOn = true;
+        let isSpeakerOn = true;
+        let targetUserId = null;
+        let targetUserName = null;
+        let targetAvatar = null;
+        let callTimerInterval = null;
+        let callState = 'idle';
+     const config = {
+        iceServers: [
+            { urls: "stun:stun.l.google.com:19302" },
+            { urls: "stun:stun1.l.google.com:19302" },
+            { urls: "stun:stun2.l.google.com:19302" },
+            { urls: "stun:stun3.l.google.com:19302" },
+            {
+                urls: ["turn:openrelay.metered.ca:80", "turn:openrelay.metered.ca:443"],
+                username: "openrelayproject",
+                credential: "openrelayproject"
+            }
+        ],
+        iceCandidatePoolSize: 10
+    };
+        const audioConstraints = {
+            audio: {
+                echoCancellation: true,
+                noiseSuppression: true,
+                autoGainControl: true
+            }
+        };
+
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl(` https://3acb-183-80-94-205.ngrok-free.app/callHub?userId=${currentUserId}`)
+            .withAutomaticReconnect()
+            .build();
+
+        async function startConnection() {
+            console.log("Bắt đầu kết nối SignalR tới:", `/callHub?userId=${currentUserId}`);
+            if (connection.state === signalR.HubConnectionState.Disconnected) {
+                try {
+                    await connection.start();
+                    console.log("Đã kết nối tới callHub với userId:", currentUserId, "ConnectionId:", connection.connectionId);
+                    await connection.invoke("GetUserConnections").then(connections => {
+                        console.log("userConnections từ server:", connections);
+                    }).catch(err => console.error("Lỗi lấy userConnections:", err));
+                } catch (err) {
+                    console.error("Lỗi kết nối SignalR:", err.message, "URL:", `/callHub?userId=${currentUserId}`);
+                    setTimeout(startConnection, 5000);
+                }
+            }
+        }
+
+        connection.onreconnecting(err => console.log("SignalR đang thử kết nối lại:", err));
+        connection.onreconnected(connectionId => {
+            console.log("SignalR đã kết nối lại, ConnectionId:", connectionId);
+            connection.invoke("GetUserConnections").then(connections => {
+                console.log("userConnections từ server:", connections);
+            }).catch(err => console.error("Lỗi lấy userConnections:", err));
+        });
+
+        connection.on("ReceiveCall", async (callerId, callerName, callerAvatar, offer) => {
+            console.log("Nhận được ReceiveCall từ:", callerId, "Offer:", offer, "callState:", callState);
+            if (callState !== 'idle') {
+                console.log("Đã có cuộc gọi đang hoạt động, từ chối cuộc gọi mới.");
+                await connection.invoke("RejectCall", callerId);
+                return;
+            }
+            callState = 'waiting';
+            if (!peerConnection) {
+                peerConnection = new RTCPeerConnection(config);
+                setupPeerConnection(callerId);
+            }
+            targetUserId = callerId;
+            targetUserName = callerName || "Người dùng không xác định";
+            targetAvatar = callerAvatar || 'https://via.placeholder.com/120';
+            showCallPopup(callerId, targetUserName, false);
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia(audioConstraints);
+                console.log("Local stream tracks:", localStream.getTracks());
+                if (localStream.getAudioTracks().length === 0) {
+                    console.error("Không tìm thấy track âm thanh trong localStream.");
+                    alert("Không thể truy cập micro. Vui lòng kiểm tra thiết bị hoặc quyền.");
+                    cleanupCall();
+                    return;
+                }
+                localStream.getAudioTracks().forEach(track => {
+                    track.enabled = false;
+                    console.log("Micro mặc định tắt khi nhận cuộc gọi:", track.enabled);
+                    peerConnection.addTrack(track, localStream);
+                });
+            } catch (err) {
+                console.error("Lỗi truy cập micro:", err);
+                alert("Không thể truy cập micro. Vui lòng kiểm tra quyền hoặc dùng trình duyệt Chrome/Firefox.");
+                cleanupCall();
+                return;
+            }
+            const answer = await peerConnection.createAnswer();
+            await peerConnection.setLocalDescription(answer);
+            await connection.invoke("AnswerCall", callerId, answer).catch(err => {
+                console.error("Lỗi gửi Answer:", err);
+                alert("Không thể gửi trả lời cuộc gọi.");
+                cleanupCall();
+            });
+        });
+
+        connection.on("ReceiveAnswer", async (answer) => {
+            console.log("Nhận được Answer:", answer);
+            if (callState !== 'waiting') {
+                console.warn("Nhận Answer khi không ở trạng thái waiting, bỏ qua:", callState);
+                return;
+            }
+            if (peerConnection) {
+                try {
+                    await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+                    callState = 'active';
+                    stopAudio('ringingAudio');
+                    showActiveCallPopup(targetUserId, targetUserName, targetAvatar);
+                    startCallTimer();
+                } catch (err) {
+                    console.error("Lỗi xử lý Answer:", err);
+                    cleanupCall();
+                }
+            }
+        });
+
+        connection.on("ReceiveIceCandidate", async (candidate) => {
+            console.log("Nhận được ICE Candidate:", candidate);
+            if (peerConnection && candidate) {
+                try {
+                    await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+                } catch (err) {
+                    console.error("Lỗi thêm ICE candidate:", err);
+                }
+            }
+        });
+
+        connection.on("CallRejected", () => {
+            console.log("Cuộc gọi bị từ chối.");
+            alert("Cuộc gọi bị từ chối.");
+            callState = 'ended';
+            stopAudio('ringingAudio');
+            playAudio('endCallAudio');
+            cleanupCall();
+        });
+
+        connection.on("CallEnded", () => {
+            console.log("Cuộc gọi đã kết thúc.");
+            alert("Cuộc gọi đã kết thúc.");
+            callState = 'ended';
+            playAudio('endCallAudio');
+            cleanupCall();
+        });
+
+        connection.on("CallFailed", (message) => {
+            console.log("Cuộc gọi thất bại:", message);
+            alert(message);
+            callState = 'ended';
+            stopAudio('ringingAudio');
+            playAudio('endCallAudio');
+            cleanupCall();
+        });
+
+        document.querySelectorAll('.start-audio-call').forEach(button => {
+            button.addEventListener('click', async () => {
+                console.log("Nút Gọi được nhấn cho userId:", button.getAttribute('data-userid'));
+                if (callState !== 'idle') {
+                    alert("Bạn đang trong một cuộc gọi khác. Vui lòng kết thúc cuộc gọi hiện tại trước.");
+                    return;
+                }
+                targetUserId = button.getAttribute('data-userid');
+                targetUserName = button.getAttribute('data-username');
+                targetAvatar = button.getAttribute('data-avatar') || 'https://placehold.co/120x120';
+                console.log("Bắt đầu gọi tới targetUserId:", targetUserId, "UserName:", targetUserName);
+                if (!targetUserId) {
+                    console.error("Không tìm thấy targetUserId trên nút gọi.");
+                    alert("Không thể gọi: ID người dùng không hợp lệ.");
+                    return;
+                }
+                await createOfferAndCall(targetUserId, targetUserName);
+            });
+        });
+
+        async function createOfferAndCall(targetUserId, targetUserName, retryCount = 0) {
+            console.log("Tạo Offer cho:", targetUserId, "callState:", callState);
+            if (callState !== 'idle') {
+                console.warn("Đã có cuộc gọi đang hoạt động, không thể bắt đầu cuộc gọi mới:", callState);
+                return;
+            }
+            callState = 'waiting';
+            if (connection.state !== signalR.HubConnectionState.Connected) {
+                console.error("SignalR chưa kết nối. Thử lại...");
+                await startConnection();
+                if (connection.state !== signalR.HubConnectionState.Connected) {
+                    alert("Không thể kết nối tới server. Vui lòng kiểm tra mạng hoặc thử lại.");
+                    callState = 'idle';
+                    return;
+                }
+            }
+            if (peerConnection) peerConnection.close();
+            peerConnection = new RTCPeerConnection(config);
+            setupPeerConnection(targetUserId);
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia(audioConstraints);
+                console.log("Local stream tracks:", localStream.getTracks());
+                if (localStream.getAudioTracks().length === 0) {
+                    console.error("Không tìm thấy track âm thanh trong localStream.");
+                    alert("Không thể truy cập micro. Vui lòng kiểm tra thiết bị hoặc quyền.");
+                    cleanupCall();
+                    return;
+                }
+                localStream.getAudioTracks().forEach(track => {
+                    track.enabled = false;
+                    console.log("Micro mặc định tắt khi bắt đầu cuộc gọi:", track.enabled);
+                    peerConnection.addTrack(track, localStream);
+                });
+                const offer = await peerConnection.createOffer();
+                await peerConnection.setLocalDescription(offer);
+                console.log("Offer được tạo:", offer);
+                try {
+                    await connection.invoke("CallUser", targetUserId, offer, currentUserId, currentUserName);
+                    showCallPopup(targetUserId, targetUserName, true);
+                    playAudio('ringingAudio');
+                } catch (err) {
+                    console.error("Lỗi gửi CallUser:", err);
+                    if (retryCount < 2) {
+                        console.log(`Thử lại CallUser lần ${retryCount + 1}...`);
+                        setTimeout(() => createOfferAndCall(targetUserId, targetUserName, retryCount + 1), 2000);
+                    } else {
+                        alert(`Không thể gửi yêu cầu gọi: ${err.message}. Vui lòng kiểm tra kết nối hoặc thử lại sau.`);
+                        cleanupCall();
+                    }
+                }
+            } catch (err) {
+                console.error("Lỗi tạo Offer:", err);
+                alert("Không thể bắt đầu cuộc gọi. Vui lòng kiểm tra micro hoặc dùng trình duyệt Chrome/Firefox.");
+                cleanupCall();
+            }
+        }
+
+        function setupPeerConnection(targetUserId) {
+            peerConnection.onicecandidate = event => {
+                if (event.candidate) {
+                    console.log("Gửi ICE Candidate tới:", targetUserId, "Candidate:", event.candidate);
+                    connection.invoke("SendIceCandidate", targetUserId, event.candidate)
+                        .catch(err => console.error("Lỗi gửi ICE candidate:", err));
+                }
+            };
+            peerConnection.ontrack = event => {
+                console.log("Nhận được track:", event.streams[0]);
+                if (event.streams[0] && event.streams[0] !== localStream) {
+                    remoteStream = event.streams[0];
+                    const remoteAudio = document.getElementById("remoteAudio");
+                    if (remoteAudio) {
+                        remoteAudio.srcObject = remoteStream;
+                        remoteAudio.muted = !isSpeakerOn;
+                        console.log("Gán remoteStream vào remoteAudio:", remoteStream);
+                    }
+                } else {
+                    console.warn("Track nhận được là localStream, bỏ qua để tránh echo.");
+                }
+            };
+            peerConnection.oniceconnectionstatechange = () => {
+                console.log("ICE connection state:", peerConnection.iceConnectionState);
+                if (peerConnection.iceConnectionState === "failed") {
+                    console.error("Kết nối ICE thất bại, thử khởi động lại ICE...");
+                    peerConnection.restartIce();
+                } else if (peerConnection.iceConnectionState === "disconnected") {
+                    console.warn("Kết nối ICE bị ngắt, thử kết thúc cuộc gọi sau 10s...");
+                    setTimeout(() => {
+                        if (peerConnection && peerConnection.iceConnectionState === "disconnected") {
+                            console.log("Kết nối ICE vẫn ngắt, dọn dẹp...");
+                            playAudio('endCallAudio');
+                            cleanupCall();
+                        }
+                    }, 10000);
+                } else if (peerConnection.iceConnectionState === "connected" && callState === 'active') {
+                    console.log("Kết nối ICE thành công.");
+                } else if (peerConnection.iceConnectionState === "closed") {
+                    console.log("Kết nối ICE đã đóng.");
+                }
+            };
+        }
+
+        function showCallPopup(userId, userName, isOutgoing) {
+            console.log("Hiển thị popup cho userId:", userId, "isOutgoing:", isOutgoing, "callState:", callState);
+            if (callState !== 'waiting') {
+                console.warn("Không thể hiển thị callPopup vì callState không phải waiting:", callState);
+                return;
+            }
+            const popup = document.getElementById('callPopup');
+            const avatar = document.getElementById('callAvatar');
+            const title = document.getElementById('popupTitle');
+            const nameSpan = document.getElementById('caregiverName');
+            const answerBtn = document.getElementById('answerCallBtn');
+            const rejectBtn = document.getElementById('rejectCallBtn');
+
+            avatar.src = targetAvatar || 'https://via.placeholder.com/120';
+            avatar.style.background = 'none';
+            if (isOutgoing) {
+                title.textContent = "Đang gọi...";
+                nameSpan.textContent = userName || "Người dùng không xác định";
+                answerBtn.style.display = 'none';
+                rejectBtn.innerHTML = '<i class="bi bi-telephone-x-fill"></i>';
+                rejectBtn.title = "Hủy cuộc gọi";
+                popup.classList.remove('shake');
+                playAudio('ringingAudio');
+            } else {
+                title.textContent = "Cuộc gọi đến";
+                nameSpan.textContent = userName || "Người dùng không xác định";
+                answerBtn.style.display = 'inline-flex';
+                rejectBtn.innerHTML = '<i class="bi bi-telephone-x-fill"></i>';
+                rejectBtn.title = "Từ chối cuộc gọi";
+                popup.classList.add('shake');
+                playAudio('ringingAudio');
+            }
+
+            popup.style.display = 'block';
+
+            answerBtn.onclick = async () => {
+                console.log("Chấp nhận cuộc gọi từ:", userId);
+                if (callState !== 'waiting') {
+                    console.warn("Không thể chấp nhận cuộc gọi vì callState không phải waiting:", callState);
+                    return;
+                }
+                callState = 'active';
+                popup.style.display = 'none';
+                stopAudio('ringingAudio');
+                if (localStream) {
+                    localStream.getAudioTracks().forEach(track => {
+                        track.enabled = true;
+                        console.log("Micro bật khi chấp nhận cuộc gọi:", track.enabled);
+                    });
+                }
+                showActiveCallPopup(userId, userName, targetAvatar);
+                startCallTimer();
+            };
+
+            rejectBtn.onclick = () => {
+                console.log("Từ chối/Hủy cuộc gọi với:", userId);
+                if (callState !== 'waiting') {
+                    console.warn("Không thể từ chối cuộc gọi vì callState không phải waiting:", callState);
+                    return;
+                }
+                callState = 'ended';
+                connection.invoke(isOutgoing ? "EndCall" : "RejectCall", userId)
+                    .catch(err => console.error("Lỗi gửi Reject/End:", err));
+                popup.style.display = 'none';
+                stopAudio('ringingAudio');
+                playAudio('endCallAudio');
+                cleanupCall();
+            };
+
+            document.getElementById('closePopupBtn').onclick = () => {
+                console.log("Đóng popup, gửi", isOutgoing ? "EndCall" : "RejectCall", "tới:", userId);
+                if (callState !== 'waiting') {
+                    console.warn("Không thể đóng popup vì callState không phải waiting:", callState);
+                    return;
+                }
+                callState = 'ended';
+                popup.style.display = 'none';
+                if (isOutgoing) connection.invoke("EndCall", userId).catch(err => console.error("Lỗi gửi EndCall:", err));
+                else connection.invoke("RejectCall", userId).catch(err => console.error("Lỗi gửi Reject:", err));
+                stopAudio('ringingAudio');
+                playAudio('endCallAudio');
+                cleanupCall();
+            };
+        }
+
+        function showActiveCallPopup(userId, userName, avatarUrl) {
+            console.log("Hiển thị popup cuộc gọi đang hoạt động cho userId:", userId, "callState:", callState);
+            if (callState !== 'active') {
+                console.warn("Không thể hiển thị activeCallPopup vì callState không phải active:", callState);
+                return;
+            }
+            const popup = document.getElementById('activeCallPopup');
+            const avatar = document.getElementById('callAvatar');
+            const name = document.getElementById('callName');
+            const micBtn = document.getElementById('toggleMicBtn');
+            const speakerBtn = document.getElementById('toggleSpeakerBtn');
+            const endBtn = document.getElementById('endCallBtn');
+
+            avatar.src = avatarUrl || 'https://via.placeholder.com/120';
+            avatar.style.background = 'none';
+            name.textContent = userName || "Người dùng không xác định";
+            popup.style.display = 'block';
+
+            micBtn.onclick = () => {
+                if (callState !== 'active') {
+                    console.warn("Không thể thay đổi micro vì callState không phải active:", callState);
+                    return;
+                }
+                isMicOn = !isMicOn;
+                if (localStream) {
+                    localStream.getAudioTracks().forEach(track => track.enabled = isMicOn);
+                }
+                micBtn.innerHTML = `<i class="bi bi-mic${isMicOn ? '-fill' : '-mute-fill'}"></i>`;
+                micBtn.title = isMicOn ? "Tắt micro" : "Bật micro";
+                micBtn.classList.toggle('muted', !isMicOn);
+                console.log("Micro:", isMicOn ? "Bật" : "Tắt");
+            };
+
+            speakerBtn.onclick = () => {
+                if (callState !== 'active') {
+                    console.warn("Không thể thay đổi loa vì callState không phải active:", callState);
+                    return;
+                }
+                isSpeakerOn = !isSpeakerOn;
+                const remoteAudio = document.getElementById('remoteAudio');
+                remoteAudio.muted = !isSpeakerOn;
+                speakerBtn.innerHTML = `<i class="bi bi-volume-${isSpeakerOn ? 'up-fill' : 'mute-fill'}"></i>`;
+                speakerBtn.title = isSpeakerOn ? "Tắt loa" : "Bật loa";
+                speakerBtn.classList.toggle('muted', !isSpeakerOn);
+                console.log("Loa:", isSpeakerOn ? "Bật" : "Tắt");
+            };
+
+            endBtn.onclick = () => {
+                console.log("Kết thúc cuộc gọi với:", userId);
+                callState = 'ended';
+                connection.invoke("EndCall", userId).catch(err => console.error("Lỗi gửi EndCall:", err));
+                popup.style.display = 'none';
+                playAudio('endCallAudio');
+                cleanupCall();
+            };
+        }
+
+        function startCallTimer() {
+            const timerElement = document.getElementById('callTimer');
+            let seconds = 0;
+            clearInterval(callTimerInterval);
+            callTimerInterval = setInterval(() => {
+                seconds++;
+                const minutes = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function playAudio(audioId) {
+            const audio = document.getElementById(audioId);
+            if (audio) {
+                audio.play().catch(err => console.error(`Lỗi phát ${audioId}:`, err));
+            } else {
+                console.error(`Không tìm thấy audio element: ${audioId}`);
+            }
+        }
+
+        function stopAudio(audioId) {
+            const audio = document.getElementById(audioId);
+            if (audio && !audio.paused) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        }
+
+        function cleanupCall() {
+            console.log("Dọn dẹp cuộc gọi, callState:", callState);
+            if (peerConnection) {
+                peerConnection.close();
+                peerConnection = null;
+            }
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+                localStream = null;
+            }
+            if (remoteStream) {
+                remoteStream.getTracks().forEach(track => track.stop());
+                remoteStream = null;
+            }
+            document.getElementById('callPopup').style.display = 'none';
+            document.getElementById('activeCallPopup').style.display = 'none';
+            stopAudio('ringingAudio');
+            clearInterval(callTimerInterval);
+            const timerElement = document.getElementById('callTimer');
+            if (timerElement) timerElement.textContent = '00:00';
+            isMicOn = true;
+            isSpeakerOn = true;
+            callState = 'idle';
+            targetUserId = null;
+            targetUserName = null;
+            targetAvatar = null;
+        }
+
+        const locations = ["Hà Nội", "TP.HCM", "Đà Nẵng"];
+        function showSuggestions(inputElement, suggestions) {
+            const existingSuggestions = document.getElementById('searchLocationSuggestions');
+            if (existingSuggestions) existingSuggestions.remove();
+            if (suggestions.length > 0) {
+                const suggestionsDiv = document.createElement('div');
+                suggestionsDiv.id = 'searchLocationSuggestions';
+                suggestionsDiv.style.position = 'absolute';
+                suggestionsDiv.style.zIndex = '1000';
+                suggestionsDiv.style.backgroundColor = '#fff';
+                suggestionsDiv.style.border = '1px solid #ccc';
+                suggestionsDiv.style.width = inputElement.offsetWidth + 'px';
+                suggestions.forEach(suggestion => {
+                    const suggestionItem = document.createElement('div');
+                    suggestionItem.textContent = suggestion;
+                    suggestionItem.style.padding = '5px';
+                    suggestionItem.style.cursor = 'pointer';
+                    suggestionItem.addEventListener('click', () => {
+                        inputElement.value = suggestion;
+                        suggestionsDiv.remove();
+                    });
+                    suggestionsDiv.appendChild(suggestionItem);
+                });
+                inputElement.parentElement.appendChild(suggestionsDiv);
+            }
+        }
+
+        const searchLocationInput = document.getElementById('searchLocation');
+        if (searchLocationInput) {
+            searchLocationInput.addEventListener('focus', () => showSuggestions(searchLocationInput, locations));
+            searchLocationInput.addEventListener('input', e => {
+                const value = e.target.value.toLowerCase();
+                const suggestions = locations.filter(location => location.toLowerCase().includes(value));
+                showSuggestions(searchLocationInput, suggestions);
+            });
+            document.addEventListener('click', e => {
+                if (e.target !== searchLocationInput) {
+                    const suggestionsDiv = document.getElementById('searchLocationSuggestions');
+                    if (suggestionsDiv) suggestionsDiv.remove();
+                }
+            });
+        }
+
+        const maxPriceSelect = document.getElementById('maxPrice');
+        const customMaxPriceField = document.getElementById('customMaxPriceField');
+        if (maxPriceSelect) {
+            maxPriceSelect.addEventListener('change', function () {
+                customMaxPriceField.style.display = this.value === '-1' ? 'block' : 'none';
+                if (this.value !== '-1') {
+                    document.getElementById('customMaxPrice').value = '';
+                    document.getElementById('customMaxPriceHidden').value = '';
+                }
+            });
+        }
+
+        const customMaxPriceInput = document.getElementById('customMaxPrice');
+        const customMaxPriceHidden = document.getElementById('customMaxPriceHidden');
+        const customMaxPriceError = document.getElementById('customMaxPriceError');
+
+        function formatNumber(value) {
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
+        function parseNumber(value) {
+            return parseFloat(value.replace(/\./g, '')) || 0;
+        }
+
+        if (customMaxPriceInput && customMaxPriceInput.value) {
+            customMaxPriceInput.value = formatNumber(parseFloat(customMaxPriceInput.value.replace(/\./g, '')));
+        }
+
+        if (customMaxPriceInput) {
+            customMaxPriceInput.addEventListener('input', function () {
+                let rawValue = parseNumber(this.value);
+                if (isNaN(rawValue) || rawValue < 0) {
+                    customMaxPriceError.textContent = 'Giá phải là số không âm.';
+                    customMaxPriceHidden.value = '';
+                } else {
+                    customMaxPriceError.textContent = '';
+                    this.value = formatNumber(rawValue);
+                    customMaxPriceHidden.value = rawValue;
+                }
+            });
+
+            customMaxPriceInput.addEventListener('change', function () {
+                let rawValue = parseNumber(this.value);
+                this.value = formatNumber(rawValue);
+                customMaxPriceHidden.value = rawValue;
+            });
+        }
+
+        const searchForm = document.getElementById('searchForm');
+        const searchButton = document.getElementById('searchButton');
+        const searchText = document.getElementById('searchText');
+        const searchSpinner = document.getElementById('searchSpinner');
+        const seniorsList = document.getElementById('seniorsList');
+
+        if (searchForm) {
+            searchForm.addEventListener('submit', () => {
+                searchText.style.display = 'none';
+                searchSpinner.style.display = 'inline-block';
+                seniorsList.style.transition = 'opacity 0.3s';
+                seniorsList.style.opacity = '0';
+            });
+        }
+
+        window.addEventListener('load', () => {
+            if (seniorsList) seniorsList.classList.add('fade-in');
+        });
+
+        startConnection();
+    });
+</script>

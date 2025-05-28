@@ -1,0 +1,148 @@
+﻿@{
+    ViewData["Title"] = "Chăm Sóc Vật Lý Trị Liệu - GKM Support and Care System";
+}
+
+<style>
+    .service-section {
+        padding: 40px 20px;
+        background-color: #f8f9fa;
+    }
+
+    .service-section h1 {
+        color: #007bff;
+        font-weight: bold;
+        margin-bottom: 40px;
+        text-align: center;
+        font-size: 2.2rem;
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+    .service-section h1::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background-color: #007bff;
+    }
+
+    .service-content {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .service-item {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        margin-bottom: 40px;
+        background-color: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .service-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .service-item:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+
+    .service-item .text {
+        flex: 1;
+    }
+
+    .service-item .text p {
+        color: #666;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+
+    .service-item .image {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+    }
+
+    .service-item .image img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+    }
+
+    .service-item:hover .image img {
+        transform: scale(1.05);
+    }
+
+    @@media (max-width: 768px) {
+        .service-item {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .service-item:nth-child(even) {
+            flex-direction: column;
+        }
+
+        .service-item .image img {
+            height: 250px;
+        }
+    }
+</style>
+
+<div class="service-section">
+    <h1>Dịch Vụ Chăm Sóc Vật Lý Trị Liệu</h1>
+    <div class="service-content">
+        <div class="service-item">
+            <div class="text">
+                <p>
+                    Dịch vụ chăm sóc vật lý trị liệu tại GKM - Support and Care System mang đến sự hỗ trợ chuyên nghiệp, giúp bạn phục hồi chức năng và cải thiện sức khỏe một cách hiệu quả. Chúng tôi cung cấp dịch vụ đặt lịch vật lý trị liệu tại nhà hoặc tại các cơ sở y tế.
+                </p>
+            </div>
+            <div class="image">
+                <img src="https://vietmec.com/wp-content/uploads/2023/12/cham-soc-vat-ly-tri-lieu-phuc-hoi-chuc-nang-1.jpg" alt="Vật lý trị liệu" />
+            </div>
+        </div>
+        <div class="service-item">
+            <div class="text">
+                <p>
+                    Đội ngũ chuyên gia vật lý trị liệu của chúng tôi được đào tạo bài bản, có kinh nghiệm trong việc hỗ trợ phục hồi chức năng cho các bệnh nhân sau chấn thương, phẫu thuật, hoặc mắc các bệnh lý về xương khớp. Chúng tôi sử dụng các phương pháp trị liệu hiện đại để đảm bảo hiệu quả tối ưu.
+                </p>
+            </div>
+            <div class="image">
+                <img src="https://dichvuxecuuthuong115.com/upload/images/dich-vu-vat-ly-tri-lieu-tai-nha-2.jpg" alt="Hỗ trợ vật lý trị liệu" />
+            </div>
+        </div>
+        <div class="service-item">
+            <div class="text">
+                <p>
+                    GKM - Support and Care System hoạt động trên toàn quốc, giúp bạn dễ dàng đặt lịch vật lý trị liệu ở bất kỳ đâu, từ thành phố lớn như Hồ Chí Minh, Hà Nội, Đà Nẵng đến các tỉnh thành nhỏ. Chúng tôi cam kết mang đến dịch vụ chất lượng cao, minh bạch và đáng tin cậy.
+                </p>
+            </div>
+            <div class="image">
+                <img src="https://5go.vn/wp-content/uploads/2024/06/Image-Vat-ly-tri-lieu.jpg" alt="Chăm sóc toàn quốc" />
+            </div>
+        </div>
+        <div class="service-item">
+            <div class="text">
+                <p>
+                    Hãy để GKM - Support and Care System đồng hành cùng bạn trong hành trình phục hồi chức năng và cải thiện sức khỏe. Đặt lịch ngay hôm nay để nhận được sự hỗ trợ tốt nhất!
+                </p>
+            </div>
+            <div class="image">
+                <img src="https://dichvuxecuuthuong115.com/upload/images/dich-vu-vat-ly-tri-lieu-tai-nha-4.jpg" alt="Chăm sóc tận tâm" />
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,145 @@
+@model dynamic
+@{
+    ViewData["Title"] = "Dashboard Quản Trị";
+}
+
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-4 text-center text-primary">
+                <i class="fas fa-tachometer-alt me-2"></i>Dashboard Quản Trị
+            </h1>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tổng Người Dùng</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TotalUsers</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Người Chăm Sóc</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TotalCaregivers</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-user-nurse fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Công Việc Đang Chờ</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.PendingJobs</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-tasks fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Khiếu Nại Chờ Xử Lý</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.PendingComplaints</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Tác Vụ Nhanh</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <a href="/Admin/ManageUsers" class="btn btn-primary btn-block w-100">
+                                <i class="fas fa-users-cog me-2"></i>Quản Lý Người Dùng
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a href="/Admin/ManagePayments" class="btn btn-success btn-block w-100">
+                                <i class="fas fa-money-check-alt me-2"></i>Quản lý giao dịch
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a href="/Admin/ManageComplaints" class="btn btn-warning btn-block w-100">
+                                <i class="fas fa-exclamation-triangle me-2"></i>Khiếu Nại
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a href="/Admin/TransactionStats" class="btn btn-info btn-block w-100">
+                                <i class="fas fa-chart-pie me-2"></i>Thống Kê
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Hoạt Động Gần Đây</h6>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        @if (ViewBag.RecentActivities != null)
+                        {
+                            foreach (var activity in ViewBag.RecentActivities)
+                            {
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">@activity.Title</h6>
+                                        <small>@activity.Time</small>
+                                    </div>
+                                    <p class="mb-1">@activity.Description</p>
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted">Không có hoạt động gần đây</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+﻿@model Chamsoc.Models.CareJob
+
+@{
+    ViewData["Title"] = "Đặt cọc thành công";
+}
+
+<div class="container">
+    <div class="alert alert-success">
+        <h4 class="alert-heading">Đặt cọc thành công!</h4>
+        <p>Bạn đã đặt cọc thành công cho công việc #@Model.Id</p>
+        <hr>
+        <p class="mb-0">
+            Số tiền đặt cọc: @Model.Deposit.ToString("N0") VNĐ<br>
+            Thời gian: @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")<br>
+            Trạng thái: @Model.Status
+        </p>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="Index" class="btn btn-primary">Quay lại danh sách</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Optional: Add a countdown timer for the redirect
+        let countdown = 10;
+        const countdownElement = document.createElement('p');
+        countdownElement.className = 'text-center text-muted mt-3';
+        countdownElement.innerHTML = `Chuyển hướng trong ${countdown} giây...`;
+        document.querySelector('.container').appendChild(countdownElement);
+
+        const timer = setInterval(() => {
+            countdown--;
+            countdownElement.innerHTML = `Chuyển hướng trong ${countdown} giây...`;
+            if (countdown <= 0) {
+                clearInterval(timer);
+                window.location.href = '@Url.Action("Index", "CareJobs")';
+            }
+        }, 1000);
+    </script>
+}

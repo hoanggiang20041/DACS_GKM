@@ -1,0 +1,32 @@
+﻿@model Chamsoc.Models.CareJob
+
+<div class="container my-5">
+    <h2 class="text-center mb-4 text-primary">Xác Nhận Nạp Cọc</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Thông Tin Công Việc</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Dịch vụ:</strong> @Model.ServiceType</p>
+                            <p><strong>Thời gian bắt đầu:</strong> @Model.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
+                            <p><strong>Thời gian kết thúc:</strong> @(Model.EndTime?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa xác định")</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Tổng bill:</strong> @Model.TotalBill.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</p>
+                            <p><strong>Số tiền cọc (30%):</strong> @Model.Deposit.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a asp-action="ConfirmDepositGet" asp-route-jobId="@Model.Id" class="btn btn-warning btn-lg">
+                            <i class="fas fa-coins me-2"></i>Tiếp Tục Thanh Toán
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

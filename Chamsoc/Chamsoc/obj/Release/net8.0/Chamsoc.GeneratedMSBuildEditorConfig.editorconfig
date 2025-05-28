@@ -1,0 +1,233 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Chamsoc
+build_property.RootNamespace = Chamsoc
+build_property.ProjectDir = C:\Users\admin\Desktop\DACS_GKM\Chamsoc\Chamsoc\Chamsoc\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\admin\Desktop\DACS_GKM\Chamsoc\Chamsoc\Chamsoc
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Account/LoginDangsua.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbkRhbmdzdWEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Account/ProfileCaregiver.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxQcm9maWxlQ2FyZWdpdmVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Account/ProfileSenior.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxQcm9maWxlU2VuaW9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Account/ViewProfileAdmin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxWaWV3UHJvZmlsZUFkbWluLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Account/ViewProfileCaregiver.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxWaWV3UHJvZmlsZUNhcmVnaXZlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Account/ViewProfileSenior.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxWaWV3UHJvZmlsZVNlbmlvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Admin/AddUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWRkVXNlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Admin/BalanceHistory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQmFsYW5jZUhpc3RvcnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Admin/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Admin/HandleComplaint.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSGFuZGxlQ29tcGxhaW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Admin/ManageComplaints.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTWFuYWdlQ29tcGxhaW50cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Admin/ManagePayments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTWFuYWdlUGF5bWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Admin/ManageUsers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTWFuYWdlVXNlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Admin/TransactionStats.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVHJhbnNhY3Rpb25TdGF0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Admin/UpdateProfileAdmin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXBkYXRlUHJvZmlsZUFkbWluLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Caregivers/BookCaregiver.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZWdpdmVyc1xCb29rQ2FyZWdpdmVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Caregivers/Deposit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZWdpdmVyc1xEZXBvc2l0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Caregivers/DepositSuccess.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZWdpdmVyc1xEZXBvc2l0U3VjY2Vzcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Caregivers/ListCaregivers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZWdpdmVyc1xMaXN0Q2FyZWdpdmVycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/CareJobs/BookCaregiver.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZUpvYnNcQm9va0NhcmVnaXZlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/CareJobs/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZUpvYnNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/CareJobs/FileComplaint.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZUpvYnNcRmlsZUNvbXBsYWludC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/CareJobs/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZUpvYnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/CareJobs/RateCaregiver.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZUpvYnNcUmF0ZUNhcmVnaXZlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/CareJobs/SubmitComplaint.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZUpvYnNcU3VibWl0Q29tcGxhaW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Deposit/MakeDeposit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVwb3NpdFxNYWtlRGVwb3NpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Home/About.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBYm91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Home/ChamSocSucKhoe.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDaGFtU29jU3VjS2hvZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Home/ChamSocVatLyTriLieu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDaGFtU29jVmF0THlUcmlMaWV1LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Home/GioiThieuSoQua.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxHaW9pVGhpZXVTb1F1YS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/ListCaregivers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlzdENhcmVnaXZlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Notifications/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpY2F0aW9uc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Notifications/ViewNotification.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpY2F0aW9uc1xWaWV3Tm90aWZpY2F0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Seniors/BookSenior.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VuaW9yc1xCb29rU2VuaW9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Seniors/ListSeniors.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VuaW9yc1xMaXN0U2VuaW9ycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Shared/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEFjY2Vzc0RlbmllZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Shared/ProfileAdmin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFByb2ZpbGVBZG1pbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Shared/UpdateProfileCaregiver.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFVwZGF0ZVByb2ZpbGVDYXJlZ2l2ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Shared/UpdateProfileSenior.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFVwZGF0ZVByb2ZpbGVTZW5pb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Shared/_AdminLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Shared/_NotificationPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Ob3RpZmljYXRpb25QYXJ0aWFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Shared/_Notifications.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Ob3RpZmljYXRpb25zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Shared/_PopupNotification.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Qb3B1cE5vdGlmaWNhdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/VietQR/GenerateQR.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlldFFSXEdlbmVyYXRlUVIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/DACS_GKM/Chamsoc/Chamsoc/Chamsoc/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-lnb44fxg0a

@@ -1,0 +1,51 @@
+﻿@model Chamsoc.Models.Senior
+
+@{
+    ViewData["Title"] = "Đặt Lịch Chăm Sóc";
+    var defaultStartTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+    var serviceLabel = string.IsNullOrEmpty(Model.CareNeeds) ? "Dịch vụ" : Model.CareNeeds;
+}
+
+<div class="container my-5">
+    @if (Model == null)
+    {
+        <h2 class="text-center mb-4 text-danger">Không tìm thấy người cần chăm sóc.</h2>
+    }
+    else
+    {
+        <h2 class="text-center mb-4">Đặt Lịch Chăm Sóc Với @Model.Name</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h4 class="mb-3">Bảng Giá Dịch Vụ Của Bệnh @serviceLabel</h4>
+                <table class="table table-bordered mb-4">
+                    <tbody>
+                        <tr><td>Giá dịch vụ của bệnh @serviceLabel / 1 giờ</td><td>1,000,000 VNĐ</td></tr>
+                        <tr><td>Giá dịch vụ của bệnh @serviceLabel / 2 giờ</td><td>1,800,000 VNĐ</td></tr>
+                        <tr><td>Gói 5 buổi</td><td>4,500,000 VNĐ</td></tr>
+                    </tbody>
+                </table>
+
+                <form asp-action="BookSenior" method="post">
+                    <input type="hidden" name="seniorId" value="@Model.Id" />
+                    <div class="mb-3">
+                        <label for="serviceType" class="form-label">Loại @serviceLabel</label>
+                        <select class="form-control" id="serviceType" name="serviceType" required>
+                            <option value="">Chọn loại dịch vụ của bệnh @serviceLabel.ToLower()</option>
+                            <option value="1Hour">Giá dịch vụ của bệnh @serviceLabel / 1 giờ (1,000,000 VNĐ)</option>
+                            <option value="2Hours">Giá dịch vụ của bệnh @serviceLabel / 2 giờ (1,800,000 VNĐ)</option>
+                            <option value="5Sessions">Gói 5 buổi (4,500,000 VNĐ)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="startTime" class="form-label">Thời Gian Bắt Đầu</label>
+                        <input type="datetime-local" class="form-control" id="startTime" name="startTime" value="@defaultStartTime" required />
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Chốt Lịch</button>
+                        <a asp-action="ListSeniors" class="btn btn-secondary">Quay Lại</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,984 @@
+﻿@inject Chamsoc.Data.AppDbContext DbContext
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        /* Banner */
+        .banner {
+            position: relative;
+            text-align: center;
+            color: white;
+            height: 400px;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-in-out forwards;
+        }
+
+            .banner img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+
+        .banner-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 80%;
+            opacity: 0;
+            animation: slideIn 1s ease-in-out 0.5s forwards;
+        }
+
+            .banner-text h1 {
+                font-size: 3rem;
+                font-weight: bold;
+                color: white;
+                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+                background: rgba(0, 0, 0, 0.5);
+                padding: 10px 20px;
+                border-radius: 8px;
+                margin-bottom: 10px;
+            }
+
+            .banner-text p {
+                font-size: 1.25rem;
+                color: white;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+                background: rgba(0, 0, 0, 0.5);
+                padding: 5px 15px;
+                border-radius: 5px;
+            }
+
+        @@keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @@keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -70%);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        .navbar {
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+        }
+
+            .nav-link:hover {
+                color: #007bff;
+            }
+
+        .dropdown-menu {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .dropdown-item {
+            color: #333;
+            font-weight: 500;
+        }
+
+            .dropdown-item:hover {
+                background-color: #007bff;
+                color: white;
+            }
+
+        .hotline-bar {
+            background-color: #ff6200;
+            color: white;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            text-align: center;
+        }
+
+            .hotline-bar a {
+                color: white;
+                font-weight: bold;
+                margin: 0 10px;
+            }
+
+        /* Bong bóng chat Zalo */
+        .zalo-chat-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #0068ff; /* Màu Zalo */
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            cursor: move;
+            user-select: none;
+            transition: transform 0.2s;
+        }
+
+            .zalo-chat-btn:hover {
+                transform: scale(1.1);
+            }
+
+            .zalo-chat-btn i {
+                font-size: 24px;
+            }
+
+        .footer {
+            background-color: #1a252f;
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 50px;
+        }
+
+            .footer a {
+                color: #ff6200;
+                text-decoration: none;
+            }
+
+                .footer a:hover {
+                    text-decoration: underline;
+                }
+
+        .login-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+            .login-btn:hover {
+                background-color: #0056b3;
+                color: white;
+            }
+
+        .notification-dropdown {
+            max-height: 400px;
+            overflow-y: auto;
+            width: 350px;
+        }
+
+        .notification-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .notification-item:last-child {
+                border-bottom: none;
+            }
+
+        .notification-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">GKM Care</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="GioiThieuSoQua">Giới thiệu</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Dịch vụ
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                            <li><a class="dropdown-item" asp-controller="Home" asp-action="ChamSocSucKhoe">Chăm sóc sức khỏe toàn diện</a></li>
+                            <li><a class="dropdown-item" asp-controller="Home" asp-action="ChamSocVatLyTriLieu">Chăm sóc vật lý trị liệu</a></li>
+                        </ul>
+                    </li>
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Account" asp-action="Register">Đăng ký chăm sóc</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Account" asp-action="Register">Người cần chăm sóc</a>
+                        </li>
+                    }
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Hồ sơ
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="ViewUserProfile" asp-route-id="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value">Xem hồ sơ</a></li>
+                                <li>
+                                    @if (User.IsInRole("Senior"))
+                                    {
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="UpdateProfileSenior" asp-route-id="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value">Cập nhật hồ sơ</a>
+                                    }
+                                    else if (User.IsInRole("Caregiver"))
+                                    {
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="UpdateProfileCaregiver" asp-route-id="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value">Cập nhật hồ sơ</a>
+                                    }
+                                    else if (User.IsInRole("Admin"))
+                                    {
+                                        <a class="dropdown-item" asp-controller="Admin" asp-action="UpdateProfileAdmin" asp-route-id="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value">Cập nhật hồ sơ</a>
+                                    }
+                                </li>
+                            </ul>
+                        </li>
+                    }
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @if (Context.Session != null && Context.Session.GetString("UserRole") == "Admin")
+                        {
+                            <li class="nav-item position-relative">
+                                @{
+                                    var adminUserId = Context.Session.GetString("UserId");
+                                    var adminUnreadCount = 0;
+                                    var adminNotifications = new List<Chamsoc.Models.Notification>();
+                                    if (!string.IsNullOrEmpty(adminUserId) && DbContext != null)
+                                    {
+                                        try
+                                        {
+                                            adminUnreadCount = DbContext.Notifications
+                                            .Where(n => n.UserId == adminUserId && !n.IsRead)
+                                            .Count();
+                                            if (adminUnreadCount > 0)
+                                            {
+                                                adminNotifications = DbContext.Notifications
+                                                .Where(n => n.UserId == adminUserId && !n.IsRead)
+                                                .OrderByDescending(n => n.CreatedAt)
+                                                .ToList();
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-danger">Lỗi khi tải thông báo: @ex.Message</a>
+                                        </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (string.IsNullOrEmpty(adminUserId))
+                                        {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-danger">Lỗi: UserId không được thiết lập trong session.</a>
+                                        </li>
+                                        }
+                                        if (DbContext == null)
+                                        {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-danger">Lỗi: DbContext là null.</a>
+                                        </li>
+                                        }
+                                    }
+                                }
+                            <a class="nav-link dropdown-toggle" href="#" id="adminNotificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Thông Báo
+                                    @if (adminUnreadCount > 0)
+                                    {
+                                    <span class="notification-badge">@adminUnreadCount</span>
+                                    }
+                            </a>
+                            <ul class="dropdown-menu notification-dropdown" aria-labelledby="adminNotificationsDropdown">
+                                    @if (adminUnreadCount > 0 && adminNotifications != null)
+                                    {
+                                        foreach (var notification in adminNotifications)
+                                        {
+                                            if (notification != null)
+                                            {
+                                            <li class="notification-item">
+                                                <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
+                                                <p>@(notification.Message ?? "Không có nội dung")</p>
+                                            </li>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                    <li class="dropdown-item text-center">Không có thông báo mới</li>
+                                    }
+                            </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="adminManageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Quản Lý
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="adminManageDropdown">
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="ManageUsers">Quản lý người dùng</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="ManageComplaints">Quản Lý Khiếu Nại</a></li>
+                                    <li><a class="dropdown-item" asp-controller="CareJobs" asp-action="TransactionStats">Thống Kê Giao Dịch</a></li>
+                                    <li class="dropdown-item">
+                                        @{
+                                            var userId = Context.Session.GetString("UserId");
+                                            var admin = DbContext?.Users.FirstOrDefault(u => u.Id == userId && u.Role == "Admin");
+                                            if (admin != null)
+                                            {
+                                                <span>Số dư: @admin.Balance.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-danger">Lỗi: Không thể tải số dư.</span>
+                                            }
+                                        }
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        @if (Context.Session != null && Context.Session.GetString("UserRole") == "Senior")
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="seniorManageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Quản Lý
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="seniorManageDropdown">
+                                    <li><a class="dropdown-item" asp-controller="Caregivers" asp-action="ListCaregivers">Tìm kiếm Người chăm sóc</a></li>
+                                    <li><a class="dropdown-item" asp-controller="CareJobs" asp-action="Index">Lịch chăm sóc & Yêu cầu chăm sóc</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item position-relative">
+                                @{
+                                    var seniorUserId = Context.Session.GetString("UserId");
+                                    var seniorUnreadCount = 0;
+                                    var seniorNotifications = new List<Chamsoc.Models.Notification>();
+                                    if (!string.IsNullOrEmpty(seniorUserId) && DbContext != null)
+                                    {
+                                        try
+                                        {
+                                            seniorUnreadCount = DbContext.Notifications
+                                            .Where(n => n.UserId == seniorUserId && !n.IsRead && !n.Message.Contains("Khiếu nại"))
+                                            .Count();
+                                            if (seniorUnreadCount > 0)
+                                            {
+                                                seniorNotifications = DbContext.Notifications
+                                                .Where(n => n.UserId == seniorUserId && !n.IsRead && !n.Message.Contains("Khiếu nại"))
+                                                .OrderByDescending(n => n.CreatedAt)
+                                                .ToList();
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-danger">Lỗi khi tải thông báo: @ex.Message</a>
+                                        </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (string.IsNullOrEmpty(seniorUserId))
+                                        {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-danger">Lỗi: UserId không được thiết lập trong session.</a>
+                                        </li>
+                                        }
+                                        if (DbContext == null)
+                                        {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-danger">Lỗi: DbContext là null.</a>
+                                        </li>
+                                        }
+                                    }
+                                }
+                            <a class="nav-link dropdown-toggle" href="#" id="seniorNotificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Thông Báo
+                                    @if (seniorUnreadCount > 0)
+                                    {
+                                    <span class="notification-badge">@seniorUnreadCount</span>
+                                    }
+                            </a>
+                            <ul class="dropdown-menu notification-dropdown" aria-labelledby="seniorNotificationsDropdown">
+                                    @if (seniorUnreadCount > 0 && seniorNotifications != null)
+                                    {
+                                        foreach (var notification in seniorNotifications)
+                                        {
+                                            if (notification != null)
+                                            {
+                                            <li class="notification-item">
+                                                <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
+                                                <p>@(notification.Message ?? "Không có nội dung")</p>
+                                            </li>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                    <li class="dropdown-item text-center">Không có thông báo mới</li>
+                                    }
+                            </ul>
+                            </li>
+                            <li class="nav-item position-relative">
+                                @{
+                                    var seniorComplaintCount = 0;
+                                    var seniorComplaints = new List<Chamsoc.Models.Notification>();
+                                    if (!string.IsNullOrEmpty(seniorUserId) && DbContext != null)
+                                    {
+                                        try
+                                        {
+                                            seniorComplaintCount = DbContext.Notifications
+                                            .Where(n => n.UserId == seniorUserId && !n.IsRead && n.Message.Contains("Khiếu nại"))
+                                            .Count();
+                                            if (seniorComplaintCount > 0)
+                                            {
+                                                seniorComplaints = DbContext.Notifications
+                                                .Where(n => n.UserId == seniorUserId && !n.IsRead && n.Message.Contains("Khiếu nại"))
+                                                .OrderByDescending(n => n.CreatedAt)
+                                                .ToList();
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-danger">Lỗi khi tải thông báo khiếu nại: @ex.Message</a>
+                                        </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (string.IsNullOrEmpty(seniorUserId))
+                                        {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-danger">Lỗi: UserId không được thiết lập trong session.</a>
+                                        </li>
+                                        }
+                                        if (DbContext == null)
+                                        {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-danger">Lỗi: DbContext là null.</a>
+                                        </li>
+                                        }
+                                    }
+                                }
+                            <a class="nav-link dropdown-toggle" href="#" id="seniorComplaintsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Khiếu Nại
+                                    @if (seniorComplaintCount > 0)
+                                    {
+                                    <span class="notification-badge">@seniorComplaintCount</span>
+                                    }
+                            </a>
+                            <ul class="dropdown-menu notification-dropdown" aria-labelledby="seniorComplaintsDropdown">
+                                    @if (seniorComplaintCount > 0 && seniorComplaints != null)
+                                    {
+                                        foreach (var notification in seniorComplaints)
+                                        {
+                                            if (notification != null)
+                                            {
+                                            <li class="notification-item">
+                                                <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
+                                                <p>@(notification.Message ?? "Không có nội dung")</p>
+                                            </li>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                    <li class="dropdown-item text-center">Không có thông báo khiếu nại mới</li>
+                                    }
+                            </ul>
+                            </li>
+                        }
+                        @if (Context.Session != null && Context.Session.GetString("UserRole") == "Caregiver")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Seniors" asp-action="ListSeniors">Tìm kiếm Người cần chăm sóc</a>
+                            </li>
+                            <li class="nav-item position-relative">
+                                @{
+                                    var caregiverUserId = Context.Session.GetString("UserId");
+                                    var caregiverUnreadCount = 0;
+                                    var caregiverNotifications = new List<Chamsoc.Models.Notification>();
+                                    if (!string.IsNullOrEmpty(caregiverUserId) && DbContext != null)
+                                    {
+                                        try
+                                        {
+                                            caregiverUnreadCount = DbContext.Notifications
+                                            .Where(n => n.UserId == caregiverUserId && !n.IsRead)
+                                            .Count();
+                                            if (caregiverUnreadCount > 0)
+                                            {
+                                                caregiverNotifications = DbContext.Notifications
+                                                .Where(n => n.UserId == caregiverUserId && !n.IsRead)
+                                                .OrderByDescending(n => n.CreatedAt)
+                                                .ToList();
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-danger">Lỗi khi tải thông báo: @ex.Message</a>
+                                        </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (string.IsNullOrEmpty(caregiverUserId))
+                                        {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-danger">Lỗi: UserId không được thiết lập trong session.</a>
+                                        </li>
+                                        }
+                                        if (DbContext == null)
+                                        {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-danger">Lỗi: DbContext là null.</a>
+                                        </li>
+                                        }
+                                    }
+                                }
+                            <a class="nav-link dropdown-toggle" href="#" id="caregiverNotificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Thông Báo
+                                    @if (caregiverUnreadCount > 0)
+                                    {
+                                    <span class="notification-badge">@caregiverUnreadCount</span>
+                                    }
+                            </a>
+                            <ul class="dropdown-menu notification-dropdown" aria-labelledby="caregiverNotificationsDropdown">
+                                    @if (caregiverUnreadCount > 0 && caregiverNotifications != null)
+                                    {
+                                        foreach (var notification in caregiverNotifications)
+                                        {
+                                            if (notification != null)
+                                            {
+                                            <li class="notification-item">
+                                                <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
+                                                <p>@(notification.Message ?? "Không có nội dung")</p>
+                                            </li>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                    <li class="dropdown-item text-center">Không có thông báo mới</li>
+                                    }
+                            </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="CareJobs" asp-action="Index">Quản lý chăm sóc bệnh nhân</a>
+                            </li>
+                        }
+                    }
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span class="navbar-text me-3">
+                        Hotline: <a href="tel:0522336052" style="color: #007bff; font-weight: bold;">0522.336.052</a>
+                    </span>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <span class="navbar-text me-3">
+                            Xin chào, @User.Identity.Name (@(Context.Session != null ? Context.Session.GetString("UserRole") : "Session is null"))
+                        </span>
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                            <button type="submit" class="login-btn">Đăng xuất</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a class="login-btn" asp-controller="Account" asp-action="Login">Đăng nhập</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Banner -->
+    <div class="banner">
+        <img src="https://giupviecgiaphu.com/upload/images/dich-vu-cham-soc-nguoi-benh-tai-nha-benh-vien-GIA-PHU.jpg" alt="Banner" />
+        <div class="banner-text">
+            <h1>Dịch Vụ Chăm Sóc Sức Khỏe Toàn Diện Và Vật Lý Trị Liệu 24/7</h1>
+            <p>Sứ mệnh của chúng tôi: "Cuộc sống tốt hơn cho bạn và mọi người"</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        @RenderBody()
+    </div>
+
+    <!-- Hotline Bar -->
+    <div class="hotline-bar">
+        <span>Hotline: </span>
+        <a href="tel:0522336052">0522.336.052</a> -
+    </div>
+
+    <!-- Bong bóng chat Zalo -->
+    <div class="zalo-chat-btn" id="zaloChatBtn">
+        <img src="https://nhanvanauto.vn/wp-content/uploads/2024/01/a9025424-6f3f-4804-8a0e-d9f5ae2b80ff-cover.png" alt="Zalo" style="width: 45px; height: 45px;">
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h5>GKM Care</h5>
+                    <p>Được thành lập với sứ mệnh kết nối người cần chăm sóc với những người chăm sóc tận tâm.</p>
+                    <p>Ngày thành lập: 01/01/2023</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Công Ty TNHH GKMN</h5>
+                </div>
+                <div class="col-md-3">
+                    <h5>Thời gian hoạt động</h5>
+                    <p>Thứ 2 - Chủ Nhật: 7h30 - 18h00</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Thông tin liên hệ</h5>
+                    <p>Email: <a href="mailto:info@gkmcare.com">info@gkmcare.com</a></p>
+                    <p>Hotline: <a href="tel:0522336052">0522.336.052</a></p>
+                </div>
+            </div>
+            <hr style="border-color: #ffffff50;" />
+            <div class="text-center">
+                <p>© 2023 - GKM Care. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+                // JavaScript để kéo-thả bong bóng chat Zalo
+        document.addEventListener('DOMContentLoaded', function () {
+            const zaloChatBtn = document.getElementById('zaloChatBtn');
+            let isDragging = false;
+            let currentX = 0;
+            let currentY = 0;
+            let initialX = 0;
+            let initialY = 0;
+
+            // Mở link khi click (chỉ khi không kéo)
+            let wasDragging = false;
+            zaloChatBtn.addEventListener('click', function () {
+                if (!wasDragging) {
+                    window.open('https://zalo.me/0522336052', '_blank');
+                }
+            });
+
+            zaloChatBtn.addEventListener('mousedown', startDragging);
+            zaloChatBtn.addEventListener('touchstart', startDragging, { passive: false }); // Cảm ứng
+
+            function startDragging(e) {
+                e.preventDefault();
+                isDragging = true;
+                wasDragging = false;
+
+                const rect = zaloChatBtn.getBoundingClientRect();
+                currentX = rect.left;
+                currentY = rect.top;
+
+                if (e.type === 'mousedown') {
+                    initialX = e.clientX - currentX;
+                    initialY = e.clientY - currentY;
+                } else if (e.type === 'touchstart') {
+                    initialX = e.touches[0].clientX - currentX;
+                    initialY = e.touches[0].clientY - currentY;
+                }
+
+                document.addEventListener('mousemove', drag);
+                document.addEventListener('mouseup', stopDragging);
+                document.addEventListener('touchmove', drag, { passive: false });
+                document.addEventListener('touchend', stopDragging);
+            }
+
+            function drag(e) {
+                if (!isDragging) return;
+                wasDragging = true;
+                e.preventDefault();
+
+                if (e.type === 'mousemove') {
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                } else if (e.type === 'touchmove') {
+                    currentX = e.touches[0].clientX - initialX;
+                    currentY = e.touches[0].clientY - initialY;
+                }
+
+                // Giới hạn không vượt khỏi màn hình
+                currentX = Math.max(0, Math.min(currentX, window.innerWidth - zaloChatBtn.offsetWidth));
+                currentY = Math.max(0, Math.min(currentY, window.innerHeight - zaloChatBtn.offsetHeight));
+
+                zaloChatBtn.style.left = currentX + 'px';
+                zaloChatBtn.style.top = currentY + 'px';
+                zaloChatBtn.style.right = 'auto';
+                zaloChatBtn.style.bottom = 'auto';
+            }
+
+            function stopDragging() {
+                isDragging = false;
+                document.removeEventListener('mousemove', drag);
+                document.removeEventListener('mouseup', stopDragging);
+                document.removeEventListener('touchmove', drag);
+                document.removeEventListener('touchend', stopDragging);
+            }
+
+            // Khởi tạo vị trí ban đầu
+            const startX = window.innerWidth - zaloChatBtn.offsetWidth - 20;
+            const startY = window.innerHeight - zaloChatBtn.offsetHeight - 20;
+            zaloChatBtn.style.left = startX + 'px';
+            zaloChatBtn.style.top = startY + 'px';
+        });
+    </script>
+
+    <!-- Bong bóng chatbot -->
+    <div class="chatbot-toggle-btn" id="chatbotToggleBtn" title="Hỏi chăm sóc">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+
+    <!-- Khung Chatbot -->
+    <div id="chatbot-container" style="display: none;">
+        <div id="chatbot-header">
+            🩺 Tư vấn Chăm Sóc
+            <button id="close-chatbot" title="Đóng" style="float:right; background:transparent; border:none; color:white; font-size:18px; cursor:pointer;">×</button>
+        </div>
+        <div id="chatbot-messages"></div>
+        <div id="chatbot-input">
+            <input type="text" id="chatbot-question" placeholder="Nhập câu hỏi...">
+            <button onclick="sendChatbotQuestion()">Gửi</button>
+        </div>
+    </div>
+
+    <style>
+        .chatbot-toggle-btn {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            background-color: #000000;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998;
+            cursor: move;
+            font-size: 24px;
+            /* Đặt cạnh bong bóng Zalo */
+            bottom: 20px;
+            right: 90px; /* Cách bong bóng Zalo 70px để sát bên trái */
+        }
+
+        #chatbot-container {
+            position: fixed;
+            width: 300px;
+            max-height: 400px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            z-index: 10000;
+            display: none;
+            /* Đặt trước, nhưng sẽ được cập nhật bằng JS */
+            left: 0;
+            top: 0;
+        }
+
+
+        #chatbot-header {
+            background: #dc3545;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #chatbot-messages {
+            height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        #chatbot-input {
+            display: flex;
+            border-top: 1px solid #ccc;
+        }
+
+            #chatbot-input input {
+                flex: 1;
+                border: none;
+                padding: 10px;
+            }
+
+            #chatbot-input button {
+                border: none;
+                background: #dc3545;
+                color: white;
+                padding: 10px 20px;
+            }
+
+        .bot-message {
+            background-color: #f1f1f1;
+            color: #000;
+            padding: 6px 10px;
+            border-radius: 8px;
+            margin: 5px 0;
+        }
+
+        .user-message {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 6px 10px;
+            border-radius: 8px;
+            margin: 5px 0;
+            text-align: right;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btn = document.getElementById("chatbotToggleBtn");
+            const container = document.getElementById("chatbot-container");
+            const messagesContainer = document.getElementById("chatbot-messages");
+            const questionInput = document.getElementById("chatbot-question");
+            const closeBtn = document.getElementById("close-chatbot");
+
+            let isDragging = false;
+            let offsetX = 0;
+            let offsetY = 0;
+
+            btn.addEventListener("mousedown", function (e) {
+                isDragging = true;
+                offsetX = e.clientX - btn.getBoundingClientRect().left;
+                offsetY = e.clientY - btn.getBoundingClientRect().top;
+                btn.style.transition = "none";
+            });
+
+            document.addEventListener("mousemove", function (e) {
+                if (isDragging) {
+                    const x = e.clientX - offsetX;
+                    const y = e.clientY - offsetY;
+
+                    btn.style.left = `${x}px`;
+                    btn.style.top = `${y}px`;
+
+                    // Nếu khung chat đang mở, cập nhật vị trí lệch trái
+                    if (container.style.display === 'block') {
+                        const containerWidth = container.offsetWidth;
+                        container.style.left = `${x + btn.offsetWidth - containerWidth}px`;
+                        container.style.top = `${y - container.offsetHeight - 10}px`;
+                    }
+                }
+            });
+
+            document.addEventListener("mouseup", function () {
+                isDragging = false;
+                btn.style.transition = "";
+            });
+
+            btn.addEventListener("click", function () {
+                const isVisible = container.style.display === 'block';
+
+                if (!isVisible) {
+                    container.style.display = 'block';
+
+                    const rect = btn.getBoundingClientRect();
+                    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                    const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+
+                    const containerWidth = container.offsetWidth;
+
+                    // Góc phải của khung chat khớp với góc phải của bong bóng
+                    container.style.left = `${rect.right + scrollLeft - containerWidth}px`;
+                    container.style.top = `${rect.top + scrollTop - container.offsetHeight - 10}px`;
+
+                    if (messagesContainer.innerHTML.trim() === '') {
+                        messagesContainer.innerHTML = `<div class="bot-message"><strong>Bot:</strong> Xin chào! Mình là trợ lý chăm sóc sức khỏe. Bạn cần mình hỗ trợ điều gì?</div>`;
+                    }
+                } else {
+                    container.style.display = 'none';
+                }
+            });
+
+            closeBtn.addEventListener("click", function () {
+                container.style.display = 'none';
+            });
+
+            questionInput.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    sendChatbotQuestion();
+                }
+            });
+        });
+
+        async function sendChatbotQuestion() {
+            const questionInput = document.getElementById('chatbot-question');
+            const messagesContainer = document.getElementById('chatbot-messages');
+            const question = questionInput.value.trim();
+            if (!question) return;
+
+            messagesContainer.innerHTML += `<div class="user-message"><strong>Bạn:</strong> ${question}</div>`;
+            questionInput.value = '';
+
+            const response = await fetch('/Chatbot/Ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages: [
+                        {
+                            role: 'user',
+                            content: question
+                        }
+                    ]
+                })
+            });
+
+            const data = await response.json();
+            messagesContainer.innerHTML += `<div class="bot-message"><strong>Bot:</strong> ${data.reply}</div>`;
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+    </script>
+
+</body>
+</html>

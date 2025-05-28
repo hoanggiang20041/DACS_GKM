@@ -1,0 +1,193 @@
+﻿@model Chamsoc.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Hồ Sơ - Quản Trị Viên";
+}
+
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .profile-header h2 {
+        color: #2c3e50;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .admin-card {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 25px;
+        transition: transform 0.3s ease;
+    }
+
+    .admin-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .admin-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .admin-title h5 {
+        color: #2c3e50;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .verified-tick {
+        width: 25px;
+        height: 25px;
+        background: #4CAF50;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 14px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .info-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .info-label {
+        flex: 0 0 150px;
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    .info-value {
+        flex: 1;
+        color: #2c3e50;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .btn {
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-primary {
+        background: #2196f3;
+        border: none;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #1976d2;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+    }
+
+    .btn-success {
+        background: #4CAF50;
+        border: none;
+        color: white;
+    }
+
+    .btn-success:hover {
+        background: #388E3C;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+    }
+
+    @@media (max-width: 768px) {
+        .profile-container {
+            margin: 20px;
+            padding: 20px;
+        }
+
+        .info-item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .info-label {
+            margin-bottom: 5px;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            margin: 5px 0;
+        }
+    }
+</style>
+
+<div class="profile-container">
+    <div class="profile-header">
+        <h2>Hồ Sơ - Quản Trị Viên</h2>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-title">
+            <h5>@Model.UserName</h5>
+            <div class="verified-tick">
+                <img src="~/images/tick.png" alt="Verified" style="width: 15px; height: 15px;" />
+            </div>
+        </div>
+
+        <div class="info-item">
+            <div class="info-label">Email:</div>
+            <div class="info-value">@Model.Email</div>
+        </div>
+
+        <div class="info-item">
+            <div class="info-label">Số điện thoại:</div>
+            <div class="info-value">@(Model.PhoneNumber ?? "Không có")</div>
+        </div>
+
+        <div class="info-item">
+            <div class="info-label">Vai trò:</div>
+            <div class="info-value">Quản trị viên</div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <a asp-action="UpdateProfileAdmin" asp-controller="Admin" asp-route-id="@Model.Id" class="btn btn-primary">Cập nhật hồ sơ</a>
+        <a asp-action="ManageUsers" asp-controller="Admin" class="btn btn-success">Quản lý người dùng</a>
+    </div>
+</div>
