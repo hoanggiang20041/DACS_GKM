@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <p><strong><i class="fas fa-concierge-bell me-2"></i>Dịch vụ:</strong> @Model.ServiceType</p>
                     <p><strong><i class="fas fa-user me-2"></i>Người chăm sóc:</strong> @Model.CaregiverName</p>
-                    <p><strong><i class="fas fa-clock me-2"></i>Thời gian bắt đầu:</strong> @Model.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
+                    <p><strong><i class="fas fa-clock me-2"></i>Thời gian bắt đầu:</strong> @(Model.StartTime.HasValue ? Model.StartTime.Value.ToString("dd/MM/yyyy HH:mm") : "Chưa xác định")</p>
                     <p><strong><i class="fas fa-clock me-2"></i>Thời gian kết thúc:</strong> @(Model.EndTime?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa xác định")</p>
                     <p><strong><i class="fas fa-money-bill-wave me-2"></i>Tổng bill:</strong> @Model.TotalBill.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</p>
 

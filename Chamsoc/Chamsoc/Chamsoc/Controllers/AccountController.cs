@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Chamsoc.Data;
 using Chamsoc.Models;
+using Chamsoc.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -78,7 +79,7 @@ namespace Chamsoc.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,Senior,Caregiver")]
-        public async Task<IActionResult> UpdateProfileSenior(string id, string name, int age, string careNeeds, bool status, string email, string contact, string currentPassword, string newPassword, IFormFile avatar, decimal price)
+        public async Task<IActionResult> UpdateProfileSenior(string id, string name, int age, string careNeeds, bool status, string email, string contact, string currentPassword, string newPassword, IFormFile avatar, decimal price, IFormFileCollection identityAndHealthDocs)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null || user.Role != "Senior")
@@ -171,6 +172,78 @@ namespace Chamsoc.Controllers
                 return RedirectToAction("Index");
             }
 
+            // Xử lý upload giấy tờ tùy thân và giấy khám sức khỏe
+            if (identityAndHealthDocs != null && identityAndHealthDocs.Count > 0)
+            {
+                var filePaths = new List<string>();
+                foreach (var file in identityAndHealthDocs)
+                {
+                    if (file != null && file.Length > 0)
+                    {
+                        // Kiểm tra định dạng file
+                        var allowedExtensions = new[] { ".pdf", ".jpg", ".jpeg", ".png" };
+                        var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
+                        
+                        if (!allowedExtensions.Contains(fileExtension))
+                        {
+                            TempData["ErrorMessage"] = "Chỉ chấp nhận file có định dạng: .pdf, .jpg, .jpeg, .png";
+                            ViewBag.User = user;
+                            return View(seniorToUpdate);
+                        }
+
+                        // Kiểm tra kích thước file (giới hạn 10MB)
+                        if (file.Length > 10 * 1024 * 1024)
+                        {
+                            TempData["ErrorMessage"] = "Kích thước file không được vượt quá 10MB";
+                            ViewBag.User = user;
+                            return View(seniorToUpdate);
+                        }
+
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "identityAndHealthDocs");
+                        if (!Directory.Exists(uploadsFolder))
+                        {
+                            Directory.CreateDirectory(uploadsFolder);
+                        }
+
+                        var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
+
+                        filePaths.Add($"/uploads/identityAndHealthDocs/{uniqueFileName}");
+                    }
+                }
+
+                if (filePaths.Any())
+                {
+                    // Xóa các file cũ nếu có
+                    if (!string.IsNullOrEmpty(seniorToUpdate.IdentityAndHealthDocs))
+                    {
+                        var oldFiles = seniorToUpdate.IdentityAndHealthDocs.Split(',');
+                        foreach (var oldFile in oldFiles)
+                        {
+                            var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", oldFile.TrimStart('/'));
+                            if (System.IO.File.Exists(oldFilePath))
+                            {
+                                try
+                                {
+                                    System.IO.File.Delete(oldFilePath);
+                                }
+                                catch
+                                {
+                                    // Bỏ qua lỗi khi xóa file cũ
+                                }
+                            }
+                        }
+                    }
+
+                    seniorToUpdate.IdentityAndHealthDocs = string.Join(",", filePaths);
+                }
+            }
+
             if (avatar != null && avatar.Length > 0)
             {
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/avatars");
@@ -202,7 +275,10 @@ namespace Chamsoc.Controllers
             seniorToUpdate.Age = age;
             seniorToUpdate.CareNeeds = careNeeds;
             seniorToUpdate.Status = status;
-            seniorToUpdate.Price = price; // Cập nhật giá mong muốn
+            if (price > 0)
+            {
+                seniorToUpdate.Price = price;
+            }
 
             try
             {
@@ -252,57 +328,74 @@ namespace Chamsoc.Controllers
             return View("UpdateProfileSenior", senior);
         }
 
-        [HttpGet]
         [Authorize(Roles = "Admin,Senior,Caregiver")]
         public async Task<IActionResult> ViewUserProfile(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
+            try
             {
-                return NotFound();
-            }
-
-            // Truyền vai trò của người dùng được xem
-            ViewBag.UserRole = user.Role;
-
-            // Truyền vai trò của người dùng hiện tại (người đăng nhập)
-            var currentUser = await _userManager.GetUserAsync(User);
-            ViewBag.CurrentUserRole = currentUser?.Role;
-
-            // Chỉ cần kiểm tra xem người dùng hiện tại có tồn tại hay không
-            if (currentUser == null)
-            {
-                return Unauthorized(); // Nếu không tìm thấy người dùng hiện tại
-            }
-
-            // Truyền thông tin người dùng vào ViewBag
-            ViewBag.User = user;
-
-            // Kiểm tra vai trò và trả về view tương ứng
-            if (user.Role == "Senior")
-            {
-                var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.UserId == user.Id);
-                if (senior == null)
+                if (string.IsNullOrEmpty(id))
                 {
-                    return NotFound();
+                    TempData["ErrorMessage"] = "Không tìm thấy ID người dùng.";
+                    return RedirectToAction("Index", "Home");
                 }
-                return View("ProfileSenior", senior);
-            }
-            else if (user.Role == "Caregiver")
-            {
-                var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == user.Id);
-                if (caregiver == null)
-                {
-                    return NotFound();
-                }
-                return View("ProfileCaregiver", caregiver);
-            }
-            else if (user.Role == "Admin")
-            {
-                return View("ProfileAdmin", user);
-            }
 
-            return RedirectToAction("About", "Home");
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy người dùng.";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Truyền vai trò của người dùng được xem
+                ViewBag.UserRole = user.Role;
+
+                // Truyền vai trò của người dùng hiện tại (người đăng nhập)
+                var currentUser = await _userManager.GetUserAsync(User);
+                if (currentUser == null)
+                {
+                    TempData["ErrorMessage"] = "Vui lòng đăng nhập để xem hồ sơ.";
+                    return RedirectToAction("Login");
+                }
+                ViewBag.CurrentUserRole = currentUser.Role;
+
+                // Truyền thông tin người dùng vào ViewBag
+                ViewBag.User = user;
+
+                // Kiểm tra vai trò và trả về view tương ứng
+                if (user.Role == "Senior")
+                {
+                    var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.UserId == user.Id);
+                    if (senior == null)
+                    {
+                        TempData["ErrorMessage"] = "Không tìm thấy thông tin Người cần chăm sóc.";
+                        return RedirectToAction("Index", "Home");
+                    }
+                    return View("ProfileSenior", senior);
+                }
+                else if (user.Role == "Caregiver")
+                {
+                    var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == user.Id);
+                    if (caregiver == null)
+                    {
+                        TempData["ErrorMessage"] = "Không tìm thấy thông tin người chăm sóc.";
+                        return RedirectToAction("Index", "Home");
+                    }
+                    var viewModel = await CreateCaregiverViewModel(caregiver);
+                    return View("ProfileCaregiver", viewModel);
+                }
+                else if (user.Role == "Admin")
+                {
+                    return View("ProfileAdmin", user);
+                }
+
+                TempData["ErrorMessage"] = "Vai trò người dùng không hợp lệ.";
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Lỗi: {ex.Message}";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpGet]
@@ -317,7 +410,6 @@ namespace Chamsoc.Controllers
             return View();
         }
 
-        [HttpPost]
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
@@ -372,227 +464,251 @@ namespace Chamsoc.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(string username, string email, string phoneNumber, string password, string role, string name, int age, string careNeeds, bool status, string skills, bool isAvailable, IFormFile certificate, IFormFileCollection identityAndHealthDocs, decimal price)
         {
-            // Kiểm tra định dạng email
-            if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            try
             {
-                TempData["ErrorMessage"] = $"Email không hợp lệ. Giá trị hiện tại: \"{email}\".";
-                return View();
-            }
-
-            // Kiểm tra trùng lặp username
-            if (await _userManager.FindByNameAsync(username) != null)
-            {
-                TempData["ErrorMessage"] = $"Tên đăng nhập đã tồn tại. Giá trị hiện tại: \"{username}\".";
-                return View();
-            }
-
-            // Kiểm tra trùng lặp email
-            if (await _userManager.FindByEmailAsync(email) != null)
-            {
-                TempData["ErrorMessage"] = $"Email đã tồn tại. Giá trị hiện tại: \"{email}\".";
-                return View();
-            }
-
-            // Kiểm tra trùng lặp số điện thoại
-            if (!string.IsNullOrEmpty(phoneNumber) && _context.Users.Any(u => u.PhoneNumber == phoneNumber))
-            {
-                TempData["ErrorMessage"] = $"Số điện thoại đã tồn tại. Giá trị hiện tại: \"{phoneNumber}\".";
-                return View();
-            }
-
-            // Kiểm tra các trường bắt buộc
-            if (string.IsNullOrEmpty(name))
-            {
-                TempData["ErrorMessage"] = $"Vui lòng nhập họ và tên. Giá trị hiện tại: \"{name}\".";
-                return View();
-            }
-
-            if (role == "Senior")
-            {
-                if (age <= 0)
+                // Kiểm tra định dạng email
+                if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
                 {
-                    TempData["ErrorMessage"] = $"Vui lòng nhập tuổi hợp lệ. Giá trị hiện tại: \"{age}\".";
-                    return View();
-                }
-                if (string.IsNullOrEmpty(careNeeds))
-                {
-                    TempData["ErrorMessage"] = $"Vui lòng nhập tình trạng bệnh. Giá trị hiện tại: \"{careNeeds}\".";
-                    return View();
-                }
-            }
-            else if (role == "Caregiver")
-            {
-                if (string.IsNullOrEmpty(skills))
-                {
-                    TempData["ErrorMessage"] = $"Vui lòng chọn kỹ năng chăm sóc. Giá trị hiện tại: \"{skills}\".";
+                    TempData["ErrorMessage"] = $"Email không hợp lệ. Giá trị hiện tại: \"{email}\".";
                     return View();
                 }
 
-                // Kiểm tra giá trị skills hợp lệ
-                var validSkills = new List<string> { "Khám toàn diện", "Khám vật lý trị liệu" };
-                if (!validSkills.Contains(skills))
+                // Kiểm tra trùng lặp username
+                if (await _userManager.FindByNameAsync(username) != null)
                 {
-                    TempData["ErrorMessage"] = $"Kỹ năng không hợp lệ. Giá trị hiện tại: \"{skills}\". Kỹ năng phải là: {string.Join(", ", validSkills)}.";
+                    TempData["ErrorMessage"] = $"Tên đăng nhập đã tồn tại. Giá trị hiện tại: \"{username}\".";
                     return View();
                 }
-            }
-            else
-            {
-                TempData["ErrorMessage"] = $"Vui lòng chọn vai trò. Giá trị hiện tại: \"{role}\".";
-                return View();
-            }
 
-            // Kiểm tra giá (Price)
-            if (price <= 0)
-            {
-                TempData["ErrorMessage"] = $"Giá mong muốn phải lớn hơn 0. Giá trị hiện tại: \"{price}\".";
-                return View();
-            }
-
-            // Tạo đối tượng Senior hoặc Caregiver dựa trên vai trò
-            string roleId;
-            var user = new ApplicationUser
-            {
-                UserName = username,
-                Email = email,
-                PhoneNumber = phoneNumber,
-                Role = role,
-                IsLocked = false,
-                Balance = role == "Admin" ? 0 : 0 // Khởi tạo số dư cho Admin
-            };
-
-            var result = await _userManager.CreateAsync(user, password);
-            if (!result.Succeeded)
-            {
-                TempData["ErrorMessage"] = "Đăng ký thất bại: " + string.Join(", ", result.Errors.Select(e => e.Description));
-                return View();
-            }
-
-            // Gán vai trò cho người dùng trong hệ thống Identity
-            await _userManager.AddToRoleAsync(user, role);
-
-            if (role == "Senior")
-            {
-                // Xử lý tải lên nhiều file cho giấy tờ tùy thân và giấy khám sức khỏe
-                string? identityAndHealthDocsPaths = null;
-                if (identityAndHealthDocs != null && identityAndHealthDocs.Count > 0)
+                // Kiểm tra trùng lặp email
+                if (await _userManager.FindByEmailAsync(email) != null)
                 {
-                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/identityAndHealthDocs");
-                    if (!Directory.Exists(uploadsFolder))
+                    TempData["ErrorMessage"] = $"Email đã tồn tại. Giá trị hiện tại: \"{email}\".";
+                    return View();
+                }
+
+                // Kiểm tra trùng lặp số điện thoại
+                if (!string.IsNullOrEmpty(phoneNumber) && _context.Users.Any(u => u.PhoneNumber == phoneNumber))
+                {
+                    TempData["ErrorMessage"] = $"Số điện thoại đã tồn tại. Giá trị hiện tại: \"{phoneNumber}\".";
+                    return View();
+                }
+
+                // Kiểm tra các trường bắt buộc
+                if (string.IsNullOrEmpty(name))
+                {
+                    TempData["ErrorMessage"] = $"Vui lòng nhập họ và tên. Giá trị hiện tại: \"{name}\".";
+                    return View();
+                }
+
+                if (role == "Senior")
+                {
+                    if (age <= 0)
                     {
-                        Directory.CreateDirectory(uploadsFolder);
+                        TempData["ErrorMessage"] = $"Vui lòng nhập tuổi hợp lệ. Giá trị hiện tại: \"{age}\".";
+                        return View();
+                    }
+                    if (string.IsNullOrEmpty(careNeeds))
+                    {
+                        TempData["ErrorMessage"] = $"Vui lòng nhập tình trạng bệnh. Giá trị hiện tại: \"{careNeeds}\".";
+                        return View();
+                    }
+                }
+                else if (role == "Caregiver")
+                {
+                    if (string.IsNullOrEmpty(skills))
+                    {
+                        TempData["ErrorMessage"] = $"Vui lòng chọn chuyên môn. Giá trị hiện tại: \"{skills}\".";
+                        return View();
                     }
 
-                    var filePaths = new List<string>();
-                    foreach (var file in identityAndHealthDocs)
+                    // Kiểm tra chuyên môn hợp lệ
+                    var validSkills = new[] { "Bác sĩ", "Y tá", "Điều dưỡng", "Vật lý trị liệu", "Dinh dưỡng" };
+                    if (!validSkills.Contains(skills))
                     {
-                        if (file.Length > 0)
+                        TempData["ErrorMessage"] = $"Chuyên môn không hợp lệ. Giá trị hiện tại: \"{skills}\". Chuyên môn phải là một trong các giá trị sau: {string.Join(", ", validSkills)}.";
+                        return View();
+                    }
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = $"Vai trò không hợp lệ. Giá trị hiện tại: \"{role}\".";
+                    return View();
+                }
+
+                // Kiểm tra giá (Price)
+                if (price <= 0)
+                {
+                    TempData["ErrorMessage"] = $"Giá mong muốn phải lớn hơn 0. Giá trị hiện tại: \"{price}\".";
+                    return View();
+                }
+
+                // Tạo user mới
+                var user = new ApplicationUser
+                {
+                    UserName = username,
+                    Email = email,
+                    PhoneNumber = phoneNumber,
+                    Role = role,
+                    IsLocked = false,
+                    Balance = 0,
+                    FullName = name,
+                    Address = "Chưa cập nhật",
+                    DateOfBirth = new DateTime(1990, 1, 1),
+                    Gender = "Chưa cập nhật",
+                    IsActive = true,
+                    CreatedAt = DateTime.UtcNow,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    NormalizedUserName = username.ToUpper(),
+                    NormalizedEmail = email.ToUpper(),
+                    RoleId = "0" // Giá trị mặc định
+                };
+
+                var result = await _userManager.CreateAsync(user, password);
+                if (!result.Succeeded)
+                {
+                    TempData["ErrorMessage"] = "Đăng ký thất bại: " + string.Join(", ", result.Errors.Select(e => e.Description));
+                    return View();
+                }
+
+                // Gán vai trò cho người dùng
+                await _userManager.AddToRoleAsync(user, role);
+
+                if (role == "Senior")
+                {
+                    // Xử lý tải lên nhiều file cho giấy tờ tùy thân và giấy khám sức khỏe
+                    string identityAndHealthDocsPaths = null;
+                    if (identityAndHealthDocs != null && identityAndHealthDocs.Count > 0)
+                    {
+                        var filePaths = new List<string>();
+                        foreach (var file in identityAndHealthDocs)
                         {
-                            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                            var filePath = Path.Combine(uploadsFolder, fileName);
-
-                            using (var fileStream = new FileStream(filePath, FileMode.Create))
+                            var filePath = await SaveFile(file, "identityAndHealthDocs");
+                            if (filePath != null)
                             {
-                                await file.CopyToAsync(fileStream);
+                                filePaths.Add(filePath);
                             }
-
-                            filePaths.Add($"/uploads/identityAndHealthDocs/{fileName}");
                         }
+                        identityAndHealthDocsPaths = string.Join(",", filePaths);
                     }
 
-                    // Lưu danh sách đường dẫn file dưới dạng chuỗi phân tách bằng dấu phẩy
-                    identityAndHealthDocsPaths = string.Join(",", filePaths);
-                }
-
-                var senior = new Senior
-                {
-                    UserId = user.Id, // Lưu GUID từ AspNetUsers
-                    Name = name,
-                    Age = age,
-                    CareNeeds = careNeeds,
-                    RegistrationDate = DateTime.Now,
-                    Status = status,
-                    IsVerified = false,
-                    AvatarUrl = "https://via.placeholder.com/150",
-                    Price = price,
-                    IdentityAndHealthDocs = identityAndHealthDocsPaths
-                };
-                _context.Seniors.Add(senior);
-                await _context.SaveChangesAsync();
-                roleId = senior.Id.ToString(); // Chuyển int thành string
-            }
-            else if (role == "Caregiver")
-            {
-                string? certificateFilePath = null;
-                if (certificate != null && certificate.Length > 0)
-                {
-                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/certificates");
-                    if (!Directory.Exists(uploadsFolder))
+                    var senior = new Senior
                     {
-                        Directory.CreateDirectory(uploadsFolder);
-                    }
-
-                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(certificate.FileName);
-                    var filePath = Path.Combine(uploadsFolder, fileName);
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        UserId = user.Id,
+                        Name = name,
+                        Age = age,
+                        CareNeeds = careNeeds,
+                        RegistrationDate = DateTime.Now,
+                        Status = status,
+                        IsVerified = false,
+                        AvatarUrl = "https://via.placeholder.com/150",
+                        Price = price,
+                        IdentityAndHealthDocs = identityAndHealthDocsPaths
+                    };
+                    _context.Seniors.Add(senior);
+                    await _context.SaveChangesAsync();
+                    user.RoleId = senior.Id.ToString();
+                }
+                else if (role == "Caregiver")
+                {
+                    string certificateFilePath = null;
+                    if (certificate != null && certificate.Length > 0)
                     {
-                        await certificate.CopyToAsync(fileStream);
+                        certificateFilePath = await SaveFile(certificate, "certificates");
                     }
 
-                    certificateFilePath = $"/uploads/certificates/{fileName}";
+                    // Khởi tạo bảng giá mặc định dựa trên chuyên môn
+                    string pricing = null;
+                    if (skills == "Bác sĩ")
+                    {
+                        pricing = "{\"1Hour\": 2000000, \"2Hours\": 3500000, \"5Sessions\": 8000000}";
+                    }
+                    else if (skills == "Y tá")
+                    {
+                        pricing = "{\"1Hour\": 1500000, \"2Hours\": 2500000, \"5Sessions\": 6000000}";
+                    }
+                    else if (skills == "Điều dưỡng")
+                    {
+                        pricing = "{\"1Hour\": 1200000, \"2Hours\": 2000000, \"5Sessions\": 5000000}";
+                    }
+                    else if (skills == "Vật lý trị liệu")
+                    {
+                        pricing = "{\"1Hour\": 1800000, \"2Hours\": 3000000, \"5Sessions\": 7000000}";
+                    }
+                    else if (skills == "Dinh dưỡng")
+                    {
+                        pricing = "{\"1Hour\": 1000000, \"2Hours\": 1800000, \"5Sessions\": 4000000}";
+                    }
+
+                    var caregiver = new Caregiver
+                    {
+                        UserId = user.Id,
+                        Name = name,
+                        Skills = skills,
+                        Contact = phoneNumber,
+                        IsAvailable = isAvailable,
+                        CertificateFilePath = certificateFilePath,
+                        IsVerified = false,
+                        AvatarUrl = "https://via.placeholder.com/150",
+                        Price = price,
+                        Pricing = pricing,
+                        Experience = "Chưa có kinh nghiệm",
+                        Degree = skills // Sử dụng chuyên môn làm bằng cấp mặc định
+                    };
+                    _context.Caregivers.Add(caregiver);
+                    await _context.SaveChangesAsync();
+                    user.RoleId = caregiver.Id.ToString();
                 }
 
-                // Khởi tạo bảng giá mặc định dựa trên kỹ năng
-                string? pricing = null;
-                if (skills == "Khám toàn diện")
-                {
-                    pricing = "{\"1Hour\": 1500000, \"2Hours\": 2500000, \"5Sessions\": 6000000}";
-                }
-                else if (skills == "Trị liệu")
-                {
-                    pricing = "{\"1Hour\": 1200000, \"2Hours\": 2000000, \"5Sessions\": 5000000}";
-                }
+                // Cập nhật RoleId của user
+                await _userManager.UpdateAsync(user);
 
-                var caregiver = new Caregiver
-                {
-                    UserId = user.Id, // Lưu GUID từ AspNetUsers
-                    Name = name,
-                    Skills = skills,
-                    Contact = phoneNumber,
-                    IsAvailable = isAvailable,
-                    CertificateFilePath = certificateFilePath,
-                    IsVerified = false,
-                    AvatarUrl = "https://via.placeholder.com/150",
-                    Price = price,
-                    Pricing = pricing
-                };
-                _context.Caregivers.Add(caregiver);
-                await _context.SaveChangesAsync();
-                roleId = caregiver.Id.ToString(); // Chuyển int thành string
+                // Lưu thông tin người dùng vào session
+                HttpContext.Session.SetString("UserId", user.Id);
+                HttpContext.Session.SetString("UserRole", user.Role ?? string.Empty);
+
+                TempData["SuccessMessage"] = "Đăng ký thành công! Vui lòng đăng nhập.";
+                return RedirectToAction("Login");
             }
-            else
+            catch (Exception ex)
             {
-                TempData["ErrorMessage"] = $"Vai trò không hợp lệ. Giá trị hiện tại: \"{role}\".";
-                await _userManager.DeleteAsync(user); // Xóa user nếu có lỗi
+                TempData["ErrorMessage"] = $"Lỗi không xác định: {ex.Message}";
+                if (ex.InnerException != null)
+                {
+                    TempData["ErrorMessage"] += $" - {ex.InnerException.Message}";
+                }
                 return View();
             }
+        }
 
-            // Cập nhật RoleId của user
-            user.RoleId = roleId;
-            await _context.SaveChangesAsync();
+        private async Task<string> SaveFile(IFormFile file, string folderName)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return null;
+            }
 
-            // Lưu thông tin người dùng vào session
-            HttpContext.Session.SetString("UserId", user.Id);
-            HttpContext.Session.SetString("UserRole", user.Role ?? string.Empty);
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads", folderName);
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }
 
-            TempData["SuccessMessage"] = "Đăng ký thành công! Vui lòng đăng nhập.";
-            return RedirectToAction("Login");
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(uploadsFolder, fileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+
+            return $"/uploads/{folderName}/{fileName}";
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Senior,Caregiver")]
-        public async Task<IActionResult> UpdateProfileCaregiver(string id, string name, string skills, string email, string contact, bool isAvailable, string currentPassword, string newPassword, IFormFile avatar, decimal price)
+        [Authorize(Roles = "Admin,Caregiver")]
+        public async Task<IActionResult> UpdateProfileCaregiver(string id, string name, string skills, string email, string contact, bool isAvailable, string currentPassword, string newPassword, IFormFile avatar, decimal price, IFormFile certificate, IFormFile degree)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null || user.Role != "Caregiver")
@@ -601,151 +717,202 @@ namespace Chamsoc.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Kiểm tra quyền: Chỉ Admin hoặc chính người dùng đó mới được phép chỉnh sửa
             var currentUser = await _userManager.GetUserAsync(User);
             if (!User.IsInRole("Admin") && currentUser?.Id != id)
             {
-                return View("~/Views/Shared/AccessDenied.cshtml");
-            }
-
-            // Xử lý đổi mật khẩu nếu có
-            if (!string.IsNullOrEmpty(newPassword))
-            {
-                if (User.IsInRole("Admin"))
-                {
-                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                    var changePasswordResult = await _userManager.ResetPasswordAsync(user, token, newPassword);
-                    if (!changePasswordResult.Succeeded)
-                    {
-                        TempData["ErrorMessage"] = "Đổi mật khẩu thất bại: " + string.Join(", ", changePasswordResult.Errors.Select(e => e.Description));
-                        ViewBag.User = user;
-                        var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == user.Id);
-                        return View(caregiver ?? new Caregiver());
-                    }
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(currentPassword))
-                    {
-                        TempData["ErrorMessage"] = "Vui lòng nhập mật khẩu hiện tại để đổi mật khẩu.";
-                        ViewBag.User = user;
-                        var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == user.Id);
-                        return View(caregiver ?? new Caregiver());
-                    }
-
-                    var passwordCheck = await _userManager.CheckPasswordAsync(user, currentPassword);
-                    if (!passwordCheck)
-                    {
-                        TempData["ErrorMessage"] = "Mật khẩu hiện tại không đúng.";
-                        ViewBag.User = user;
-                        var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == user.Id);
-                        return View(caregiver ?? new Caregiver());
-                    }
-
-                    var changePasswordResult = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
-                    if (!changePasswordResult.Succeeded)
-                    {
-                        TempData["ErrorMessage"] = "Đổi mật khẩu thất bại: " + string.Join(", ", changePasswordResult.Errors.Select(e => e.Description));
-                        ViewBag.User = user;
-                        var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == user.Id);
-                        return View(caregiver ?? new Caregiver());
-                    }
-                }
-            }
-
-            // Cập nhật email nếu thay đổi
-            if (user.Email != email)
-            {
-                if (await _userManager.FindByEmailAsync(email) != null)
-                {
-                    TempData["ErrorMessage"] = "Email đã tồn tại. Vui lòng chọn email khác.";
-                    ViewBag.User = user;
-                    var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == user.Id);
-                    return View(caregiver ?? new Caregiver());
-                }
-                user.Email = email;
-                await _userManager.UpdateAsync(user);
-            }
-
-            // Cập nhật số điện thoại nếu thay đổi
-            if (contact != null && user.PhoneNumber != contact)
-            {
-                if (_context.Users.Any(u => u.PhoneNumber == contact && u.Id != user.Id))
-                {
-                    TempData["ErrorMessage"] = "Số điện thoại đã tồn tại. Vui lòng chọn số khác.";
-                    ViewBag.User = user;
-                    var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == user.Id);
-                    return View(caregiver ?? new Caregiver());
-                }
-                user.PhoneNumber = contact;
-                await _userManager.UpdateAsync(user);
-            }
-
-            // Tìm và cập nhật thông tin Caregiver
-            var caregiverToUpdate = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == user.Id);
-            if (caregiverToUpdate == null)
-            {
-                TempData["ErrorMessage"] = "Không tìm thấy thông tin Caregiver.";
+                TempData["ErrorMessage"] = "Bạn không có quyền chỉnh sửa hồ sơ của người dùng này.";
                 return RedirectToAction("Index");
             }
 
-            // Xử lý upload avatar nếu có
-            if (avatar != null && avatar.Length > 0)
+            var caregiverToUpdate = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == user.Id);
+            if (caregiverToUpdate == null)
             {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/avatars");
-                if (!Directory.Exists(uploadsFolder))
+                TempData["ErrorMessage"] = "Không tìm thấy thông tin người chăm sóc.";
+                return RedirectToAction("Index");
+            }
+
+            // Kiểm tra email
+            if (user.Email != email)
+            {
+                if (!string.IsNullOrEmpty(email) && _context.Users.Any(u => u.Email == email && u.Id != user.Id))
                 {
-                    Directory.CreateDirectory(uploadsFolder);
+                    TempData["ErrorMessage"] = "Email đã tồn tại. Vui lòng chọn email khác.";
+                    var viewModel = await CreateCaregiverViewModel(caregiverToUpdate);
+                    ViewBag.User = user;
+                    return View(viewModel);
                 }
+                user.Email = email;
+            }
 
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(avatar.FileName);
-                var filePath = Path.Combine(uploadsFolder, fileName);
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+            // Kiểm tra số điện thoại
+            if (user.PhoneNumber != contact)
+            {
+                if (!string.IsNullOrEmpty(contact) && _context.Users.Any(u => u.PhoneNumber == contact && u.Id != user.Id))
                 {
-                    await avatar.CopyToAsync(fileStream);
+                    TempData["ErrorMessage"] = "Số điện thoại đã tồn tại. Vui lòng chọn số khác.";
+                    var viewModel = await CreateCaregiverViewModel(caregiverToUpdate);
+                    ViewBag.User = user;
+                    return View(viewModel);
                 }
-
-                caregiverToUpdate.AvatarUrl = $"/uploads/avatars/{fileName}";
+                user.PhoneNumber = contact;
             }
 
             // Kiểm tra giá (Price)
             if (price <= 0)
             {
                 TempData["ErrorMessage"] = "Giá mong muốn phải lớn hơn 0.";
+                var viewModel = await CreateCaregiverViewModel(caregiverToUpdate);
                 ViewBag.User = user;
-                return View(caregiverToUpdate);
+                return View(viewModel);
+            }
+
+            // Xử lý tải lên chứng chỉ hành nghề
+            if (certificate != null && certificate.Length > 0)
+            {
+                var certificatePath = await SaveFile(certificate, "certificates");
+                if (certificatePath != null)
+                {
+                    caregiverToUpdate.CertificateFilePath = certificatePath;
+                }
+            }
+
+            // Xử lý tải lên bằng cấp chuyên môn
+            if (degree != null && degree.Length > 0)
+            {
+                var degreePath = await SaveFile(degree, "degrees");
+                if (degreePath != null)
+                {
+                    caregiverToUpdate.Degree = degreePath;
+                }
             }
 
             // Cập nhật thông tin Caregiver
             caregiverToUpdate.Name = name;
-            caregiverToUpdate.Skills = skills;
+            if (!string.IsNullOrEmpty(skills))
+            {
+                caregiverToUpdate.Skills = skills;
+            }
             caregiverToUpdate.Contact = contact;
             caregiverToUpdate.IsAvailable = isAvailable;
-            caregiverToUpdate.Price = price;
+            if (price > 0)
+            {
+                caregiverToUpdate.Price = price;
+            }
+
+            // Xử lý avatar nếu có
+            if (avatar != null && avatar.Length > 0)
+            {
+                try
+                {
+                    // Kiểm tra định dạng file
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                    var fileExtension = Path.GetExtension(avatar.FileName).ToLowerInvariant();
+                    
+                    if (!allowedExtensions.Contains(fileExtension))
+                    {
+                        TempData["ErrorMessage"] = "Chỉ chấp nhận file ảnh có định dạng: .jpg, .jpeg, .png, .gif";
+                        var viewModel = await CreateCaregiverViewModel(caregiverToUpdate);
+                        ViewBag.User = user;
+                        return View(viewModel);
+                    }
+
+                    // Kiểm tra kích thước file (giới hạn 5MB)
+                    if (avatar.Length > 5 * 1024 * 1024)
+                    {
+                        TempData["ErrorMessage"] = "Kích thước file không được vượt quá 5MB";
+                        var viewModel = await CreateCaregiverViewModel(caregiverToUpdate);
+                        ViewBag.User = user;
+                        return View(viewModel);
+                    }
+
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "avatars");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    // Xóa ảnh cũ nếu có
+                    if (!string.IsNullOrEmpty(caregiverToUpdate.AvatarUrl) && caregiverToUpdate.AvatarUrl != "/images/default-avatar.png")
+                    {
+                        var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", caregiverToUpdate.AvatarUrl.TrimStart('/'));
+                        if (System.IO.File.Exists(oldFilePath))
+                        {
+                            try
+                            {
+                                System.IO.File.Delete(oldFilePath);
+                            }
+                            catch
+                            {
+                                // Bỏ qua lỗi khi xóa file cũ
+                            }
+                        }
+                    }
+
+                    // Tạo tên file mới
+                    var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    // Lưu file mới
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await avatar.CopyToAsync(fileStream);
+                    }
+
+                    caregiverToUpdate.AvatarUrl = "/uploads/avatars/" + uniqueFileName;
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = "Lỗi khi upload ảnh: " + ex.Message;
+                    var viewModel = await CreateCaregiverViewModel(caregiverToUpdate);
+                    ViewBag.User = user;
+                    return View(viewModel);
+                }
+            }
+
+            // Cập nhật mật khẩu nếu có
+            if (!string.IsNullOrEmpty(currentPassword) && !string.IsNullOrEmpty(newPassword))
+            {
+                var passwordCheck = await _userManager.CheckPasswordAsync(user, currentPassword);
+                if (!passwordCheck)
+                {
+                    TempData["ErrorMessage"] = "Mật khẩu hiện tại không đúng.";
+                    var viewModel = await CreateCaregiverViewModel(caregiverToUpdate);
+                    ViewBag.User = user;
+                    return View(viewModel);
+                }
+
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+
+                if (!result.Succeeded)
+                {
+                    TempData["ErrorMessage"] = "Lỗi khi đổi mật khẩu: " + string.Join(", ", result.Errors.Select(e => e.Description));
+                    var viewModel = await CreateCaregiverViewModel(caregiverToUpdate);
+                    ViewBag.User = user;
+                    return View(viewModel);
+                }
+            }
 
             try
             {
+                await _userManager.UpdateAsync(user);
                 _context.Caregivers.Update(caregiverToUpdate);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Lỗi khi lưu dữ liệu: " + ex.Message;
+                var viewModel = await CreateCaregiverViewModel(caregiverToUpdate);
                 ViewBag.User = user;
-                return View(caregiverToUpdate);
+                return View(viewModel);
             }
 
             TempData["SuccessMessage"] = "Cập nhật hồ sơ thành công!";
-            if (User.IsInRole("Admin"))
-            {
-                return RedirectToAction("ManageUsers", "Admin");
-            }
-            return RedirectToAction("Profile");
+            return RedirectToAction("ViewUserProfile", new { id = user.Id });
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,Senior,Caregiver")]
+        [Authorize(Roles = "Admin,Caregiver")]
         public async Task<IActionResult> UpdateProfileCaregiver(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -767,8 +934,9 @@ namespace Chamsoc.Controllers
                 return NotFound();
             }
 
+            var viewModel = await CreateCaregiverViewModel(caregiver);
             ViewBag.User = user;
-            return View("UpdateProfileCaregiver", caregiver);
+            return View("UpdateProfileCaregiver", viewModel);
         }
 
         public async Task<IActionResult> Logout()
@@ -785,6 +953,166 @@ namespace Chamsoc.Controllers
         public IActionResult AccessDenied()
         {
             return View("~/Views/Shared/AccessDenied.cshtml");
+        }
+
+        private async Task<CaregiverViewModel> CreateCaregiverViewModel(Caregiver caregiver)
+        {
+            var ratings = await _context.Ratings.Where(r => r.CaregiverId == caregiver.Id).ToListAsync();
+            return new CaregiverViewModel
+            {
+                Id = caregiver.Id,
+                UserId = caregiver.UserId,
+                Name = caregiver.Name,
+                Skills = caregiver.Skills,
+                Contact = caregiver.Contact,
+                Price = caregiver.Price,
+                IsAvailable = caregiver.IsAvailable,
+                IsVerified = caregiver.IsVerified,
+                AvatarUrl = caregiver.AvatarUrl,
+                CertificateFilePath = caregiver.CertificateFilePath,
+                AverageRating = ratings.Any() ? ratings.Average(r => r.Stars) : 0,
+                RatingCount = ratings.Count,
+                RecentRatings = ratings.OrderByDescending(r => r.CreatedAt).Take(3).ToList(),
+                Caregiver = caregiver
+            };
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUserDetails(string id)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy người dùng" });
+                }
+
+                object userData;
+                if (user.Role == "Senior")
+                {
+                    var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.UserId == user.Id);
+                    if (senior != null)
+                    {
+                        userData = new
+                        {
+                            name = user.FullName,
+                            email = user.Email,
+                            phoneNumber = user.PhoneNumber,
+                            isLocked = user.IsLocked,
+                            avatarUrl = senior.AvatarUrl,
+                            role = user.Role,
+                            careNeeds = senior.CareNeeds,
+                            price = senior.Price,
+                            isVerified = senior.IsVerified,
+                            age = senior.Age,
+                            status = senior.Status,
+                            identityDocs = senior.IdentityAndHealthDocs
+                        };
+                    }
+                    else
+                    {
+                        userData = new
+                        {
+                            name = user.FullName,
+                            email = user.Email,
+                            phoneNumber = user.PhoneNumber,
+                            isLocked = user.IsLocked,
+                            avatarUrl = "/images/default-avatar.png",
+                            role = user.Role
+                        };
+                    }
+                }
+                else if (user.Role == "Caregiver")
+                {
+                    var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == user.Id);
+                    if (caregiver != null)
+                    {
+                        userData = new
+                        {
+                            name = user.FullName,
+                            email = user.Email,
+                            phoneNumber = user.PhoneNumber,
+                            isLocked = user.IsLocked,
+                            avatarUrl = caregiver.AvatarUrl,
+                            role = user.Role,
+                            skills = caregiver.Skills,
+                            price = caregiver.Price,
+                            isVerified = caregiver.IsVerified,
+                            experience = caregiver.Experience,
+                            isAvailable = caregiver.IsAvailable,
+                            degree = caregiver.Degree,
+                            certificate = caregiver.CertificateFilePath,
+                            identityDocs = caregiver.IdentityAndHealthDocs
+                        };
+                    }
+                    else
+                    {
+                        userData = new
+                        {
+                            name = user.FullName,
+                            email = user.Email,
+                            phoneNumber = user.PhoneNumber,
+                            isLocked = user.IsLocked,
+                            avatarUrl = "/images/default-avatar.png",
+                            role = user.Role
+                        };
+                    }
+                }
+                else
+                {
+                    userData = new
+                    {
+                        name = user.FullName,
+                        email = user.Email,
+                        phoneNumber = user.PhoneNumber,
+                        isLocked = user.IsLocked,
+                        avatarUrl = "/images/default-avatar.png",
+                        role = user.Role
+                    };
+                }
+
+                return Json(new { success = true, data = userData });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Senior")]
+        public async Task<IActionResult> ResetComplaintNotifications()
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login");
+            }
+
+            // Lấy tất cả thông báo chưa đọc của user
+            var notifications = await _context.Notifications
+                .Where(n => n.UserId == userId && !n.IsRead && n.Type == "Complaint")
+                .ToListAsync();
+
+            // Đánh dấu tất cả thông báo là đã đọc
+            foreach (var notification in notifications)
+            {
+                notification.IsRead = true;
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log lỗi nếu cần
+                System.Diagnostics.Debug.WriteLine($"Error resetting notifications: {ex.Message}");
+            }
+
+            // Chuyển hướng đến trang khiếu nại
+            return RedirectToAction("FileComplaint", "CareJobs");
         }
     }
 }

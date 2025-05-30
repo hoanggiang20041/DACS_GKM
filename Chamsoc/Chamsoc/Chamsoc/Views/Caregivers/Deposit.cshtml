@@ -1,32 +1,116 @@
-﻿@model Chamsoc.Models.CareJob
+@model Chamsoc.Models.CareJob
 
 <div class="container my-5">
-    <h2 class="text-center mb-4 text-primary">Xác Nhận Nạp Cọc</h2>
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="card-title mb-0">Thông Tin Công Việc</h5>
+            <div class="card border-0 shadow-lg rounded-4">
+                <div class="card-header bg-gradient-primary text-white py-4 rounded-top-4">
+                    <h4 class="mb-0 text-center">
+                        <i class="fas fa-wallet me-2"></i>Xác Nhận Nạp Cọc
+                    </h4>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong>Dịch vụ:</strong> @Model.ServiceType</p>
-                            <p><strong>Thời gian bắt đầu:</strong> @Model.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
-                            <p><strong>Thời gian kết thúc:</strong> @(Model.EndTime?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa xác định")</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p><strong>Tổng bill:</strong> @Model.TotalBill.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</p>
-                            <p><strong>Số tiền cọc (30%):</strong> @Model.Deposit.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</p>
+                <div class="card-body p-4">
+                    <!-- Job Info Section -->
+                    <div class="job-info mb-4 p-3 bg-light rounded-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-info-circle me-2"></i>Thông Tin Công Việc
+                                </h6>
+                                <p class="mb-2">
+                                    <i class="fas fa-tasks me-2 text-muted"></i>
+                                    <strong>Dịch vụ:</strong> @Model.ServiceType
+                                </p>
+                                <p class="mb-2">
+                                    <i class="fas fa-clock me-2 text-muted"></i>
+                                    <strong>Thời gian:</strong> @(Model.StartTime.HasValue ? Model.StartTime.Value.ToString("dd/MM/yyyy HH:mm") : "Chưa xác định")
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-money-bill-wave me-2"></i>Thông Tin Thanh Toán
+                                </h6>
+                                <p class="mb-2">
+                                    <i class="fas fa-coins me-2 text-muted"></i>
+                                    <strong>Tổng bill:</strong> @Model.TotalBill.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ
+                                </p>
+                                <p class="mb-2">
+                                    <i class="fas fa-hand-holding-usd me-2 text-muted"></i>
+                                    <strong>Số tiền cọc (30%):</strong> @Model.Deposit.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ
+                                </p>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Payment QR Section -->
+                    <div class="payment-qr mb-4 p-3 bg-light rounded-3">
+                        <h6 class="text-primary mb-3">
+                            <i class="fas fa-qrcode me-2"></i>Mã QR Thanh Toán
+                        </h6>
+                        <div class="row align-items-center">
+                            <div class="col-md-6 text-center">
+                                <img src="@ViewBag.QRUrl" alt="VietQR Code" class="img-fluid mb-3" style="max-width: 200px;">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bank-info">
+                                    <p class="mb-2">
+                                        <strong>Ngân hàng:</strong> @ViewBag.BankName
+                                    </p>
+                                    <p class="mb-2">
+                                        <strong>Số tài khoản:</strong> 
+                                        <span class="copy-text" data-text="@ViewBag.AccountNo">
+                                            @ViewBag.AccountNo
+                                            <i class="fas fa-copy ms-2 text-primary" style="cursor: pointer;"></i>
+                                        </span>
+                                    </p>
+                                    <p class="mb-2">
+                                        <strong>Tên tài khoản:</strong> @ViewBag.AccountName
+                                    </p>
+                                    <p class="mb-2">
+                                        <strong>Số tiền:</strong> @ViewBag.Amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ
+                                    </p>
+                                    <p class="mb-2">
+                                        <strong>Nội dung:</strong> 
+                                        <span class="copy-text" data-text="@ViewBag.Description">
+                                            @ViewBag.Description
+                                            <i class="fas fa-copy ms-2 text-primary" style="cursor: pointer;"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Confirmation Section -->
                     <div class="text-center mt-4">
-                        <a asp-action="ConfirmDepositGet" asp-route-jobId="@Model.Id" class="btn btn-warning btn-lg">
-                            <i class="fas fa-coins me-2"></i>Tiếp Tục Thanh Toán
-                        </a>
+                        <form asp-action="ConfirmDeposit" method="post">
+                            <input type="hidden" name="jobId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-sm">
+                                <i class="fas fa-check-circle me-2"></i>Xác Nhận Đã Thanh Toán
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Copy text functionality
+        document.querySelectorAll('.copy-text').forEach(element => {
+            element.querySelector('.fa-copy').addEventListener('click', function() {
+                const textToCopy = element.getAttribute('data-text');
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    // Show a temporary success message
+                    const originalIcon = this.className;
+                    this.className = 'fas fa-check ms-2 text-success';
+                    setTimeout(() => {
+                        this.className = originalIcon;
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+} 

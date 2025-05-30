@@ -1,0 +1,401 @@
+@{
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <style>
+        /* Sidebar styles */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            padding-top: 60px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 250px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            will-change: width, transform;
+        }
+
+        /* Collapsed state */
+        #sidebar.collapsed {
+            width: 60px !important;
+        }
+
+        #sidebar.collapsed .menu-title,
+        #sidebar.collapsed .sidebar-title,
+        #sidebar.collapsed .sidebar-heading,
+        #sidebar.collapsed .nav-link span {
+            display: none !important;
+        }
+
+        #sidebar.collapsed .nav-link {
+            justify-content: center !important;
+            padding: 0.75rem 0.5rem !important;
+        }
+
+        #sidebar.collapsed .nav-link i {
+            margin: 0 !important;
+            min-width: auto !important;
+        }
+
+        /* Main content */
+        .main-content {
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-left: 250px;
+            padding-top: 1rem;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body.sidebar-collapsed .main-content {
+            margin-left: 60px !important;
+            width: calc(100% - 60px) !important;
+        }
+
+        /* Navigation links */
+        #sidebar .nav-link {
+            padding: 0.75rem 1rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            border-radius: 4px;
+            margin: 0 0.5rem;
+        }
+
+        #sidebar .nav-link i {
+            min-width: 24px;
+            text-align: center;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+        }
+
+        #sidebar .nav-link:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #007bff;
+        }
+
+        #sidebar .nav-link.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Toggle button */
+        .sidebar-toggle {
+            cursor: pointer;
+            padding: 0.5rem;
+            font-size: 1.25rem;
+            border: none;
+            background: transparent;
+            color: #333;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar-toggle:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #007bff;
+        }
+
+        .sidebar-toggle i {
+            transition: transform 0.3s ease;
+            display: block;
+        }
+
+        #sidebar.collapsed .sidebar-toggle i {
+            transform: rotate(180deg);
+        }
+
+        /* Section headings */
+        .sidebar-heading {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6c757d;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* Responsive styles */
+        @@media (max-width: 768px) {
+            #sidebar {
+                margin-left: -250px;
+                position: fixed;
+                height: 100vh;
+                transform: translateX(0);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                width: 250px !important;
+            }
+
+            #sidebar.show {
+                transform: translateX(250px);
+                margin-left: 0;
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+                width: 100% !important;
+                transition: none;
+            }
+
+            body.sidebar-collapsed .main-content {
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+
+            #mobileSidebarToggle {
+                display: block !important;
+            }
+
+            #sidebar .nav-link {
+                padding: 0.75rem 1rem !important;
+                justify-content: flex-start !important;
+            }
+
+            #sidebar .menu-title,
+            #sidebar .sidebar-title,
+            #sidebar .sidebar-heading,
+            #sidebar .nav-link span {
+                display: block !important;
+            }
+        }
+
+        @@media (min-width: 769px) {
+            #mobileSidebarToggle {
+                display: none !important;
+            }
+        }
+    </style>
+    @await RenderSectionAsync("Styles", required: false)
+}
+
+<div class="container-fluid p-0">
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="bg-white">
+            <div class="position-sticky">
+                <!-- Sidebar Toggle Button -->
+                <div class="d-flex justify-content-between align-items-center px-3 mb-3">
+                    <h6 class="mb-0 sidebar-title">Menu Quản Lý</h6>
+                    <button class="btn btn-link text-dark p-0 sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+
+                <!-- Rest of your sidebar content -->
+                <div class="nav-section mb-3">
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mb-2 text-muted">
+                        <span class="menu-title">Quản Lý Chung</span>
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "ManageUsers" ? "active" : "")"
+                               asp-controller="Admin" asp-action="ManageUsers">
+                                <i class="fas fa-users"></i>
+                                <span class="menu-title">Người dùng</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "ManageComplaints" ? "active" : "")"
+                               asp-controller="Admin" asp-action="ManageComplaints">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span class="menu-title">Khiếu nại</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mb-2 text-muted">
+                        <span class="menu-title">Quản Lý Tài Chính</span>
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "TransactionStats" ? "active" : "")"
+                               asp-controller="Admin" asp-action="TransactionStats">
+                                <i class="fas fa-chart-line"></i>
+                                <span class="menu-title">Thống kê</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "ManagePayments" ? "active" : "")"
+                               asp-controller="Admin" asp-action="ManagePayments">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span class="menu-title">Giao dịch</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "BalanceHistory" ? "active" : "")"
+                               asp-controller="Admin" asp-action="BalanceHistory">
+                                <i class="fas fa-wallet"></i>
+                                <span class="menu-title">Số dư</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="main-content px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-3">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-link text-dark p-0 d-md-none me-3" id="mobileSidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="h2 mb-0">@ViewData["Title"]</h1>
+                </div>
+                <div class="btn-toolbar mb-md-0">
+                    @RenderSection("Toolbar", required: false)
+                </div>
+            </div>
+
+            @RenderBody()
+        </main>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Debug function
+            function logSidebarState(action) {
+                console.log(`[${action}] Sidebar state:`, {
+                    width: $('#sidebar').width(),
+                    hasCollapsedClass: $('#sidebar').hasClass('collapsed'),
+                    hasShowClass: $('#sidebar').hasClass('show'),
+                    bodyHasCollapsedClass: $('body').hasClass('sidebar-collapsed'),
+                    isMobile: window.innerWidth < 768,
+                    savedState: localStorage.getItem('sidebarCollapsed')
+                });
+            }
+
+            // Initialize sidebar state
+            const initializeSidebar = () => {
+                const savedState = localStorage.getItem('sidebarCollapsed');
+                const isMobile = window.innerWidth < 768;
+                const $sidebar = $('#sidebar');
+                const $body = $('body');
+                
+                if (!isMobile && savedState === 'true') {
+                    $sidebar.addClass('collapsed');
+                    $body.addClass('sidebar-collapsed');
+                }
+
+                // Force reflow
+                $sidebar[0].offsetHeight;
+                
+                logSidebarState('Initialize');
+            };
+
+            // Function to toggle sidebar and update body class
+            function toggleSidebar(e) {
+                if (e) e.preventDefault();
+                e.stopPropagation();
+                
+                const $sidebar = $('#sidebar');
+                const $body = $('body');
+                const isMobile = window.innerWidth < 768;
+
+                logSidebarState('Before Toggle');
+
+                if (isMobile) {
+                    $sidebar.toggleClass('show');
+                    // Reset any desktop-specific classes in mobile view
+                    $sidebar.removeClass('collapsed');
+                    $body.removeClass('sidebar-collapsed');
+                } else {
+                    $sidebar.toggleClass('collapsed');
+                    $body.toggleClass('sidebar-collapsed');
+                    
+                    // Store the state only for desktop view
+                    const isCollapsed = $sidebar.hasClass('collapsed');
+                    localStorage.setItem('sidebarCollapsed', isCollapsed);
+                }
+
+                // Force reflow
+                $sidebar[0].offsetHeight;
+
+                logSidebarState('After Toggle');
+            }
+
+            // Desktop sidebar toggle
+            $('#sidebarToggle').on('click', toggleSidebar);
+
+            // Mobile sidebar toggle
+            $('#mobileSidebarToggle').on('click', toggleSidebar);
+
+            // Close mobile sidebar when clicking outside
+            $(document).on('click', function(e) {
+                const $sidebar = $('#sidebar');
+                if (window.innerWidth < 768 && 
+                    !$(e.target).closest('#sidebar').length && 
+                    !$(e.target).closest('#mobileSidebarToggle').length && 
+                    $sidebar.hasClass('show')) {
+                    $sidebar.removeClass('show');
+                    logSidebarState('Outside Click Close');
+                }
+            });
+
+            // Handle window resize
+            let resizeTimer;
+            $(window).on('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    const isMobile = window.innerWidth < 768;
+                    const $sidebar = $('#sidebar');
+                    const $body = $('body');
+                    
+                    logSidebarState('Before Resize Handler');
+                    
+                    if (isMobile) {
+                        // Reset desktop state in mobile
+                        $sidebar.removeClass('collapsed');
+                        $body.removeClass('sidebar-collapsed');
+                        
+                        // Ensure proper mobile state
+                        if (!$sidebar.hasClass('show')) {
+                            $sidebar.css('margin-left', '-250px');
+                        }
+                    } else {
+                        // Reset mobile state in desktop
+                        $sidebar.removeClass('show');
+                        $sidebar.css('margin-left', '');
+                        
+                        // Restore desktop state
+                        const savedState = localStorage.getItem('sidebarCollapsed');
+                        if (savedState === 'true') {
+                            $sidebar.addClass('collapsed');
+                            $body.addClass('sidebar-collapsed');
+                        }
+                    }
+
+                    // Force reflow
+                    $sidebar[0].offsetHeight;
+                    
+                    logSidebarState('After Resize Handler');
+                }, 250);
+            });
+
+            // Initialize on page load
+            initializeSidebar();
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+} 

@@ -1,51 +1,352 @@
-﻿@model Chamsoc.Models.Senior
+﻿@model Chamsoc.Models.BookSeniorViewModel
+@using System.Globalization
 
 @{
-    ViewData["Title"] = "Đặt Lịch Chăm Sóc";
-    var defaultStartTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
-    var serviceLabel = string.IsNullOrEmpty(Model.CareNeeds) ? "Dịch vụ" : Model.CareNeeds;
+    ViewData["Title"] = "Đặt lịch chăm sóc";
+    var defaultStartTime = DateTime.Now.AddHours(1);
+    var minDateTime = DateTime.Now.AddHours(1);
+    var defaultEndTime = DateTime.Now.AddHours(2).ToString("yyyy-MM-ddTHH:mm");
+    var pricePerHour = Model.Price;
+    var price1Hour = pricePerHour * 1;
+    var price2Hours = pricePerHour * 2;
+    var price5Sessions = pricePerHour * 5;
 }
 
-<div class="container my-5">
-    @if (Model == null)
-    {
-        <h2 class="text-center mb-4 text-danger">Không tìm thấy người cần chăm sóc.</h2>
+<style>
+    .booking-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
-    else
-    {
-        <h2 class="text-center mb-4">Đặt Lịch Chăm Sóc Với @Model.Name</h2>
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h4 class="mb-3">Bảng Giá Dịch Vụ Của Bệnh @serviceLabel</h4>
-                <table class="table table-bordered mb-4">
-                    <tbody>
-                        <tr><td>Giá dịch vụ của bệnh @serviceLabel / 1 giờ</td><td>1,000,000 VNĐ</td></tr>
-                        <tr><td>Giá dịch vụ của bệnh @serviceLabel / 2 giờ</td><td>1,800,000 VNĐ</td></tr>
-                        <tr><td>Gói 5 buổi</td><td>4,500,000 VNĐ</td></tr>
-                    </tbody>
-                </table>
 
-                <form asp-action="BookSenior" method="post">
-                    <input type="hidden" name="seniorId" value="@Model.Id" />
-                    <div class="mb-3">
-                        <label for="serviceType" class="form-label">Loại @serviceLabel</label>
-                        <select class="form-control" id="serviceType" name="serviceType" required>
-                            <option value="">Chọn loại dịch vụ của bệnh @serviceLabel.ToLower()</option>
-                            <option value="1Hour">Giá dịch vụ của bệnh @serviceLabel / 1 giờ (1,000,000 VNĐ)</option>
-                            <option value="2Hours">Giá dịch vụ của bệnh @serviceLabel / 2 giờ (1,800,000 VNĐ)</option>
-                            <option value="5Sessions">Gói 5 buổi (4,500,000 VNĐ)</option>
-                        </select>
+    .booking-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .booking-header h1 {
+        color: #2c3e50;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .booking-header p {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+    }
+
+    .senior-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 15px;
+    }
+
+    .senior-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 1.5rem;
+        border: 3px solid #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .senior-details h3 {
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
+
+    .senior-details p {
+        color: #7f8c8d;
+        margin-bottom: 0.25rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        color: #2c3e50;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        border: 1px solid #e0e0e0;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    }
+
+    .price-summary {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin-top: 2rem;
+    }
+
+    .price-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .price-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .price-total {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .btn-book {
+        background: linear-gradient(45deg, #3498db, #2980b9);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        font-weight: 500;
+        width: 100%;
+        margin-top: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-book:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+    }
+
+    .btn-book:disabled {
+        background: #bdc3c7;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .alert {
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .alert-danger {
+        background-color: #fff3f3;
+        border-left: 4px solid #dc3545;
+        color: #dc3545;
+    }
+
+    .service-type {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .service-option {
+        flex: 1;
+        padding: 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .service-option:hover {
+        border-color: #3498db;
+        background-color: #f8f9fa;
+    }
+
+    .service-option.selected {
+        border-color: #3498db;
+        background-color: #ebf5fb;
+    }
+
+    .service-option i {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: #3498db;
+    }
+
+    .health-info {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+    }
+
+    .health-info h4 {
+        color: #856404;
+        margin-bottom: 0.5rem;
+    }
+
+    .health-info p {
+        color: #856404;
+        margin-bottom: 0;
+    }
+</style>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Đặt lịch chăm sóc</h4>
+                </div>
+                <div class="card-body">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                    }
+
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center">
+                            <img src="@(string.IsNullOrEmpty(Model.SeniorAvatar) ? "/images/default-avatar.png" : Model.SeniorAvatar)" 
+                                 class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;" 
+                                 alt="@Model.SeniorName">
+                            <div>
+                                <h5 class="mb-1">@Model.SeniorName</h5>
+                                <p class="text-muted mb-0">
+                                    <i class="fas fa-map-marker-alt me-2"></i>@Model.SeniorLocation
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="startTime" class="form-label">Thời Gian Bắt Đầu</label>
-                        <input type="datetime-local" class="form-control" id="startTime" name="startTime" value="@defaultStartTime" required />
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Chốt Lịch</button>
-                        <a asp-action="ListSeniors" class="btn btn-secondary">Quay Lại</a>
-                    </div>
-                </form>
+
+                    <form asp-action="BookSenior" method="post">
+                        <input type="hidden" asp-for="SeniorId" />
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Thông tin sức khỏe</label>
+                            <p class="form-control-static">@Model.HealthInfo</p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Giá dịch vụ</label>
+                            <p class="form-control-static">@Model.Price.ToString("N0") VNĐ</p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="ServiceType" class="form-label">Loại dịch vụ</label>
+                            <select asp-for="ServiceType" id="ServiceType" class="form-control" required>
+                                <option value="">-- Chọn loại dịch vụ --</option>
+                                <option value="comprehensive">Chăm sóc toàn diện</option>
+                                <option value="physiotherapy">Vật lí trị liệu</option>
+                                <option value="medical">Chăm sóc y tế</option>
+                                <option value="rehabilitation">Phục hồi chức năng</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Duration" class="form-label">Thời lượng</label>
+                            <select asp-for="Duration" id="Duration" class="form-control" required>
+                                <option value="">-- Chọn thời lượng --</option>
+                                <option value="1">1 giờ</option>
+                                <option value="2">2 giờ</option>
+                                <option value="4">4 giờ</option>
+                                <option value="6">6 giờ</option>
+                                <option value="8">8 giờ</option>
+                                <option value="12">12 giờ</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Thời gian bắt đầu</label>
+                            <input type="datetime-local" 
+                                   name="startTime" 
+                                   class="form-control" 
+                                   value="@defaultStartTime.ToString("yyyy-MM-ddTHH:mm")"
+                                   min="@minDateTime.ToString("yyyy-MM-ddTHH:mm")"
+                                   required />
+                            <small class="text-muted">Thời gian bắt đầu phải sau thời điểm hiện tại ít nhất 1 giờ</small>
+                        </div>
+
+                        <div class="price-summary mb-4">
+                            <h6 class="text-primary mb-3">Chi phí dự kiến</h6>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Giá theo giờ:</span>
+                                <span id="pricePerHour">@Model.Price.ToString("N0") VNĐ</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Số giờ:</span>
+                                <span id="totalHours">0</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Tổng chi phí:</span>
+                                <span id="totalPrice">0 VNĐ</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Tiền cọc (30%):</span>
+                                <span id="depositAmount">0 VNĐ</span>
+                            </div>
+                            <div class="d-flex justify-content-between fw-bold">
+                                <span>Số tiền còn lại:</span>
+                                <span id="remainingAmount">0 VNĐ</span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-calendar-check me-2"></i>Đặt lịch
+                            </button>
+                            <a asp-action="ListSeniors" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Quay lại
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    }
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.querySelector('input[type="datetime-local"]').min = now.toISOString().slice(0,16);
+
+            // Cập nhật tính toán giá
+            const pricePerHour = @Model.Price;
+            const durationSelect = document.getElementById('Duration');
+            const totalHoursSpan = document.getElementById('totalHours');
+            const totalPriceSpan = document.getElementById('totalPrice');
+            const depositAmountSpan = document.getElementById('depositAmount');
+            const remainingAmountSpan = document.getElementById('remainingAmount');
+
+            function updatePrice() {
+                const duration = parseInt(durationSelect.value) || 0;
+                const total = duration * pricePerHour;
+                const deposit = total * 0.3;
+                const remaining = total * 0.7;
+                
+                totalHoursSpan.textContent = duration;
+                totalPriceSpan.textContent = total.toLocaleString('vi-VN') + ' VNĐ';
+                depositAmountSpan.textContent = deposit.toLocaleString('vi-VN') + ' VNĐ';
+                remainingAmountSpan.textContent = remaining.toLocaleString('vi-VN') + ' VNĐ';
+            }
+
+            durationSelect.addEventListener('change', updatePrice);
+            updatePrice();
+        });
+    </script>
+}

@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    @await RenderSectionAsync("Styles", required: false)
     <style>
         /* Banner */
         .banner {
@@ -18,14 +21,16 @@
             height: 400px;
             opacity: 0;
             animation: fadeIn 1.5s ease-in-out forwards;
+            margin-bottom: 2rem;
         }
 
-            .banner img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                display: block;
-            }
+        .banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: brightness(0.7);
+        }
 
         .banner-text {
             position: absolute;
@@ -38,25 +43,25 @@
             animation: slideIn 1s ease-in-out 0.5s forwards;
         }
 
-            .banner-text h1 {
-                font-size: 3rem;
-                font-weight: bold;
-                color: white;
-                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
-                background: rgba(0, 0, 0, 0.5);
-                padding: 10px 20px;
-                border-radius: 8px;
-                margin-bottom: 10px;
-            }
+        .banner-text h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
 
-            .banner-text p {
-                font-size: 1.25rem;
-                color: white;
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-                background: rgba(0, 0, 0, 0.5);
-                padding: 5px 15px;
-                border-radius: 5px;
-            }
+        .banner-text p {
+            font-size: 1.25rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 15px;
+            border-radius: 5px;
+        }
 
         @@keyframes fadeIn {
             0% {
@@ -82,22 +87,32 @@
 
         body {
             font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 80px;
+            display: flex;
+            flex-direction: column;
         }
 
         .navbar {
-            background-color: #f8f9fa;
+            background-color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
         }
 
         .navbar-brand {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: #007bff;
+            padding: 0.3rem 0;
         }
 
         .nav-link {
             color: #333;
             font-weight: 500;
+            padding: 0.3rem 0.8rem;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
         }
 
             .nav-link:hover {
@@ -105,14 +120,19 @@
             }
 
         .dropdown-menu {
-            background-color: #f8f9fa;
+            background-color: #ffffff;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 0.3rem 0;
         }
 
         .dropdown-item {
             color: #333;
             font-weight: 500;
+            padding: 0.3rem 1rem;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
 
             .dropdown-item:hover {
@@ -123,19 +143,25 @@
         .hotline-bar {
             background-color: #ff6200;
             color: white;
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-            left: 0;
+            padding: 5px;
             width: 100%;
-            z-index: 1000;
             text-align: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 999;
         }
 
             .hotline-bar a {
                 color: white;
                 font-weight: bold;
                 margin: 0 10px;
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+
+            .hotline-bar a:hover {
+                color: #f8f9fa;
             }
 
         /* Bong bóng chat Zalo */
@@ -143,7 +169,7 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: #0068ff; /* Màu Zalo */
+            background-color: #0068ff;
             color: white;
             width: 60px;
             height: 60px;
@@ -151,61 +177,98 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 9998;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             cursor: move;
-            user-select: none;
-            transition: transform 0.2s;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-            .zalo-chat-btn:hover {
-                transform: scale(1.1);
-            }
+        .zalo-chat-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
 
-            .zalo-chat-btn i {
-                font-size: 24px;
-            }
+        .zalo-chat-btn img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            pointer-events: none; /* Ngăn chặn sự kiện chuột trên ảnh */
+        }
 
         .footer {
             background-color: #1a252f;
             color: white;
-            padding: 20px 0;
-            margin-bottom: 50px;
+            padding: 10px 0;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+            border-top: 1px solid #ff6200;
+            margin-top: auto;
+            position: relative;
+            z-index: 1000;
         }
 
-            .footer a {
+            .footer h5 {
                 color: #ff6200;
-                text-decoration: none;
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+                font-size: 0.9rem;
+                position: relative;
+                padding-bottom: 3px;
             }
 
-                .footer a:hover {
-                    text-decoration: underline;
-                }
+            .footer p {
+                font-size: 0.8rem;
+                margin-bottom: 0.3rem;
+                line-height: 1.2;
+            }
+
+            .footer hr {
+                margin: 5px 0;
+                border-color: #ffffff30;
+            }
+
+            .footer .text-center {
+                padding-top: 5px;
+                font-size: 0.8rem;
+            }
+
+        .footer .row {
+            margin-bottom: 0;
+        }
+
+        .footer .col-md-3 {
+            padding: 0 5px;
+        }
 
         .login-btn {
             background-color: #007bff;
             color: white;
-            padding: 8px 16px;
+            padding: 0.3rem 1rem;
             border-radius: 20px;
             text-decoration: none;
             font-weight: 500;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.9rem;
         }
 
             .login-btn:hover {
                 background-color: #0056b3;
                 color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             }
 
         .notification-dropdown {
-            max-height: 400px;
+            max-height: 300px;
             overflow-y: auto;
-            width: 350px;
+            width: 300px;
         }
 
         .notification-item {
-            padding: 10px;
+            padding: 0.5rem;
             border-bottom: 1px solid #ddd;
+            font-size: 0.9rem;
         }
 
             .notification-item:last-child {
@@ -214,17 +277,197 @@
 
         .notification-badge {
             position: absolute;
-            top: 5px;
-            right: 5px;
-            background-color: red;
+            top: 0;
+            right: 0;
+            background-color: #dc3545;
             color: white;
             border-radius: 50%;
-            padding: 2px 6px;
-            font-size: 0.75rem;
+            padding: 0.15rem 0.4rem;
+            font-size: 0.7rem;
+            transform: translate(50%, -50%);
+        }
+
+        /* Main Content */
+        .container {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+            flex: 1;
+        }
+
+        main {
+            min-height: calc(100vh - 400px);
+        }
+
+        .toast {
+            opacity: 1 !important;
+        }
+        .toast-success {
+            background-color: #28a745 !important;
+        }
+        .toast-error {
+            background-color: #dc3545 !important;
+        }
+        .toast-info {
+            background-color: #17a2b8 !important;
+        }
+        .toast-warning {
+            background-color: #ffc107 !important;
+        }
+
+        /* Bong bóng chatbot */
+        .chatbot-toggle-btn {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            background-color: #000000;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998;
+            cursor: move;
+            font-size: 24px;
+            bottom: 20px;
+            right: 90px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .chatbot-toggle-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #chatbot-container {
+            position: fixed;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            z-index: 9999;
+            display: none;
+            right: 20px;
+            bottom: 90px;
+            transition: all 0.3s ease;
+        }
+
+        #chatbot-header {
+            background: #dc3545;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            cursor: move;
+        }
+
+        #chatbot-messages {
+            height: 380px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+
+        #chatbot-input {
+            display: flex;
+            border-top: 1px solid #ccc;
+            padding: 10px;
+            background: white;
+        }
+
+        #chatbot-input input {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 8px 15px;
+            margin-right: 10px;
+            outline: none;
+        }
+
+        #chatbot-input input:focus {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+        }
+
+        #chatbot-input button {
+            border: none;
+            background: #dc3545;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #chatbot-input button:hover {
+            background: #c82333;
+        }
+
+        .bot-message {
+            background-color: #e9ecef;
+            color: #212529;
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin: 5px 0;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin: 5px 0;
+            max-width: 80%;
+            word-wrap: break-word;
+            margin-left: auto;
+        }
+
+        /* Điều chỉnh vị trí của các nút chat */
+        .footer .container {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        .footer a {
+            font-size: 0.8rem;
+            color: #ff6200;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer a:hover {
+            color: #ff8533;
+        }
+
+        /* Điều chỉnh khoảng cách giữa các phần tử trong navbar */
+        .navbar .container {
+            padding-top: 0.3rem;
+            padding-bottom: 0.3rem;
+        }
+
+        .navbar .d-flex {
+            align-items: center;
+        }
+
+        /* Điều chỉnh kích thước icon */
+        .navbar .fas {
+            font-size: 0.9rem;
+        }
+
+        /* Điều chỉnh dropdown toggle */
+        .dropdown-toggle::after {
+            margin-left: 0.3rem;
+            vertical-align: middle;
         }
     </style>
 </head>
 <body>
+    <partial name="_PopupNotification" />
     <!-- Header -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
@@ -286,6 +529,7 @@
                     {
                         @if (Context.Session != null && Context.Session.GetString("UserRole") == "Admin")
                         {
+                            <!-- Admin Notifications -->
                             <li class="nav-item position-relative">
                                 @{
                                     var adminUserId = Context.Session.GetString("UserId");
@@ -308,75 +552,86 @@
                                         }
                                         catch (Exception ex)
                                         {
-                                        <li class="nav-item">
-                                            <a class="nav-link text-danger">Lỗi khi tải thông báo: @ex.Message</a>
-                                        </li>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (string.IsNullOrEmpty(adminUserId))
-                                        {
-                                        <li class="nav-item">
-                                            <a class="nav-link text-danger">Lỗi: UserId không được thiết lập trong session.</a>
-                                        </li>
-                                        }
-                                        if (DbContext == null)
-                                        {
-                                        <li class="nav-item">
-                                            <a class="nav-link text-danger">Lỗi: DbContext là null.</a>
-                                        </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link text-danger">Lỗi khi tải thông báo: @ex.Message</a>
+                                            </li>
                                         }
                                     }
                                 }
-                            <a class="nav-link dropdown-toggle" href="#" id="adminNotificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Thông Báo
+                                <a class="nav-link dropdown-toggle" href="#" id="adminNotificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-bell me-1"></i>Thông Báo
                                     @if (adminUnreadCount > 0)
                                     {
-                                    <span class="notification-badge">@adminUnreadCount</span>
+                                        <span class="notification-badge">@adminUnreadCount</span>
                                     }
-                            </a>
-                            <ul class="dropdown-menu notification-dropdown" aria-labelledby="adminNotificationsDropdown">
+                                </a>
+                                <ul class="dropdown-menu notification-dropdown" id="admin-notifications" aria-labelledby="adminNotificationsDropdown">
                                     @if (adminUnreadCount > 0 && adminNotifications != null)
                                     {
                                         foreach (var notification in adminNotifications)
                                         {
                                             if (notification != null)
                                             {
-                                            <li class="notification-item">
-                                                <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
-                                                <p>@(notification.Message ?? "Không có nội dung")</p>
-                                            </li>
+                                                <li class="notification-item">
+                                                    <a href="@Url.Action("Index", "Notifications", new { notificationId = notification.Id })" class="text-decoration-none text-dark">
+                                                        <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
+                                                        <p>@(notification.Message ?? "Không có nội dung")</p>
+                                                    </a>
+                                                </li>
                                             }
                                         }
                                     }
                                     else
                                     {
-                                    <li class="dropdown-item text-center">Không có thông báo mới</li>
+                                        <li class="dropdown-item text-center">Không có thông báo mới</li>
                                     }
-                            </ul>
+                                </ul>
                             </li>
+
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="adminManageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Quản Lý
+                                    <i class="fas fa-cogs me-1"></i>Quản Lý
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="adminManageDropdown">
-                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="ManageUsers">Quản lý người dùng</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="ManageComplaints">Quản Lý Khiếu Nại</a></li>
-                                    <li><a class="dropdown-item" asp-controller="CareJobs" asp-action="TransactionStats">Thống Kê Giao Dịch</a></li>
-                                    <li class="dropdown-item">
-                                        @{
-                                            var userId = Context.Session.GetString("UserId");
-                                            var admin = DbContext?.Users.FirstOrDefault(u => u.Id == userId && u.Role == "Admin");
-                                            if (admin != null)
-                                            {
-                                                <span>Số dư: @admin.Balance.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</span>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Admin" asp-action="ManageUsers">
+                                            <i class="fas fa-users me-2"></i>Quản lý người dùng
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Admin" asp-action="ManageComplaints">
+                                            <i class="fas fa-exclamation-circle me-2"></i>Quản Lý Khiếu Nại
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Admin" asp-action="TransactionStats">
+                                            <i class="fas fa-chart-line me-2"></i>Thống Kê Giao Dịch
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Admin" asp-action="ManagePayments">
+                                            <i class="fas fa-money-bill-wave me-2"></i>Quản Lý Giao Dịch
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Admin" asp-action="BalanceHistory">
+                                            @{
+                                                var userId = Context.Session.GetString("UserId");
+                                                var admin = DbContext?.Users.FirstOrDefault(u => u.Id == userId && u.Role == "Admin");
+                                                if (admin != null)
+                                                {
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span><i class="fas fa-wallet me-2"></i>Số dư:</span>
+                                                        <span class="badge bg-success">@admin.Balance.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</span>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-danger">Lỗi: Không thể tải số dư.</span>
+                                                }
                                             }
-                                            else
-                                            {
-                                                <span class="text-danger">Lỗi: Không thể tải số dư.</span>
-                                            }
-                                        }
+                                        </a>
                                     </li>
                                 </ul>
                             </li>
@@ -450,8 +705,10 @@
                                             if (notification != null)
                                             {
                                             <li class="notification-item">
-                                                <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
-                                                <p>@(notification.Message ?? "Không có nội dung")</p>
+                                                <a href="@Url.Action("Index", "Notifications", new { notificationId = notification.Id })" class="text-decoration-none text-dark">
+                                                    <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
+                                                    <p>@(notification.Message ?? "Không có nội dung")</p>
+                                                </a>
                                             </li>
                                             }
                                         }
@@ -595,8 +852,10 @@
                                             if (notification != null)
                                             {
                                             <li class="notification-item">
-                                                <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
-                                                <p>@(notification.Message ?? "Không có nội dung")</p>
+                                                <a href="@Url.Action("Index", "Notifications", new { notificationId = notification.Id })" class="text-decoration-none text-dark">
+                                                    <strong>@(notification.CreatedAt != null ? notification.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</strong>
+                                                    <p>@(notification.Message ?? "Không có nội dung")</p>
+                                                </a>
                                             </li>
                                             }
                                         }
@@ -645,198 +904,274 @@
     </div>
 
     <!-- Main Content -->
-    <div class="container mt-4">
-        @RenderBody()
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
     </div>
 
-    <!-- Hotline Bar -->
-    <div class="hotline-bar">
-        <span>Hotline: </span>
-        <a href="tel:0522336052">0522.336.052</a> -
+    <!-- Footer -->
+    <div class="footer-wrapper">
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h5>GKM Care</h5>
+                        <p>Được thành lập với sứ mệnh kết nối người cần chăm sóc với những người chăm sóc tận tâm.</p>
+                        <p>Ngày thành lập: 01/01/2023</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Công Ty TNHH GKMN</h5>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Thời gian hoạt động</h5>
+                        <p>Thứ 2 - Chủ Nhật: 7h30 - 18h00</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Thông tin liên hệ</h5>
+                        <p>Email: <a href="mailto:info@gkmcare.com">info@gkmcare.com</a></p>
+                        <p>Hotline: <a href="tel:0522336052">0522.336.052</a></p>
+                    </div>
+                </div>
+                <hr style="border-color: #ffffff50;" />
+                <div class="text-center">
+                    <p>© 2023 - GKM Care. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Hotline Bar -->
+        <div class="hotline-bar">
+            <span>Hotline: </span>
+            <a href="tel:0522336052">0522.336.052</a> -
+        </div>
     </div>
 
     <!-- Bong bóng chat Zalo -->
     <div class="zalo-chat-btn" id="zaloChatBtn">
-        <img src="https://nhanvanauto.vn/wp-content/uploads/2024/01/a9025424-6f3f-4804-8a0e-d9f5ae2b80ff-cover.png" alt="Zalo" style="width: 45px; height: 45px;">
+        <img src="https://nhanvanauto.vn/wp-content/uploads/2024/01/a9025424-6f3f-4804-8a0e-d9f5ae2b80ff-cover.png" alt="Zalo">
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <h5>GKM Care</h5>
-                    <p>Được thành lập với sứ mệnh kết nối người cần chăm sóc với những người chăm sóc tận tâm.</p>
-                    <p>Ngày thành lập: 01/01/2023</p>
-                </div>
-                <div class="col-md-3">
-                    <h5>Công Ty TNHH GKMN</h5>
-                </div>
-                <div class="col-md-3">
-                    <h5>Thời gian hoạt động</h5>
-                    <p>Thứ 2 - Chủ Nhật: 7h30 - 18h00</p>
-                </div>
-                <div class="col-md-3">
-                    <h5>Thông tin liên hệ</h5>
-                    <p>Email: <a href="mailto:info@gkmcare.com">info@gkmcare.com</a></p>
-                    <p>Hotline: <a href="tel:0522336052">0522.336.052</a></p>
-                </div>
-            </div>
-            <hr style="border-color: #ffffff50;" />
-            <div class="text-center">
-                <p>© 2023 - GKM Care. All rights reserved.</p>
-            </div>
+    <!-- Bong bóng chatbot -->
+    <div class="chatbot-toggle-btn" id="chatbotToggleBtn" title="Hỏi chăm sóc">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+
+    <!-- Khung Chatbot -->
+    <div id="chatbot-container" style="display: none;">
+        <div id="chatbot-header">
+            🩺 Tư vấn Chăm Sóc
+            <button id="close-chatbot" title="Đóng" style="float:right; background:transparent; border:none; color:white; font-size:18px; cursor:pointer;">×</button>
         </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // JavaScript để kéo-thả bong bóng chat Zalo
-        document.addEventListener('DOMContentLoaded', function () {
-            const zaloChatBtn = document.getElementById('zaloChatBtn');
-            let isDragging = false;
-            let currentX;
-            let currentY;
-            let initialX;
-            let initialY;
-
-             zaloChatBtn.addEventListener('click', function() {
-            window.open('https://zalo.me/0522336052', '_blank'); // Thay your-zalo-id bằng ID Zalo của bạn
-        });
-
-            zaloChatBtn.addEventListener('mousedown', startDragging);
-            zaloChatBtn.addEventListener('touchstart', startDragging); // Hỗ trợ cảm ứng trên mobile
-
-            function startDragging(e) {
-                isDragging = true;
-                if (e.type === 'mousedown') {
-                    initialX = e.clientX - currentX;
-                    initialY = e.clientY - currentY;
-                } else if (e.type === 'touchstart') {
-                    initialX = e.touches[0].clientX - currentX;
-                    initialY = e.touches[0].clientY - currentY;
-                }
-
-                document.addEventListener('mousemove', drag);
-                document.addEventListener('mouseup', stopDragging);
-                document.addEventListener('touchmove', drag); // Hỗ trợ cảm ứng
-                document.addEventListener('touchend', stopDragging); // Hỗ trợ cảm ứng
-            }
-
-            function drag(e) {
-                if (isDragging) {
-                    e.preventDefault();
-                    if (e.type === 'mousemove') {
-                        currentX = e.clientX - initialX;
-                        currentY = e.clientY - initialY;
-                    } else if (e.type === 'touchmove') {
-                        currentX = e.touches[0].clientX - initialX;
-                        currentY = e.touches[0].clientY - initialY;
-                    }
-
-                    // Giới hạn không cho kéo ra ngoài màn hình
-                    currentX = Math.max(0, Math.min(currentX, window.innerWidth - zaloChatBtn.offsetWidth));
-                    currentY = Math.max(0, Math.min(currentY, window.innerHeight - zaloChatBtn.offsetHeight));
-
-                    zaloChatBtn.style.left = currentX + 'px';
-                    zaloChatBtn.style.top = currentY + 'px';
-                    zaloChatBtn.style.right = 'auto';
-                    zaloChatBtn.style.bottom = 'auto';
-                }
-            }
-
-            function stopDragging() {
-                isDragging = false;
-                document.removeEventListener('mousemove', drag);
-                document.removeEventListener('mouseup', stopDragging);
-                document.removeEventListener('touchmove', drag);
-                document.removeEventListener('touchend', stopDragging);
-            }
-
-            // Khởi tạo vị trí ban đầu
-            currentX = window.innerWidth - zaloChatBtn.offsetWidth - 20; // Ban đầu ở góc phải dưới
-            currentY = window.innerHeight - zaloChatBtn.offsetHeight - 20;
-            zaloChatBtn.style.left = currentX + 'px';
-            zaloChatBtn.style.top = currentY + 'px';
-        });
-    </script>
-    @RenderSection("Scripts", required: false)
-    <style>
-        #chatbot-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            background: white;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            z-index: 9999;
-        }
-
-        #chatbot-header {
-            background: #007bff;
-            color: white;
-            padding: 10px;
-            text-align: center;
-        }
-
-        #chatbot-messages {
-            height: 200px;
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-        #chatbot-input {
-            display: flex;
-            border-top: 1px solid #ccc;
-        }
-
-            #chatbot-input input {
-                flex: 1;
-                border: none;
-                padding: 10px;
-            }
-
-            #chatbot-input button {
-                border: none;
-                background: #007bff;
-                color: white;
-                padding: 10px 20px;
-            }
-    </style>
-
-    <div id="chatbot-container">
-        <div id="chatbot-header">🤖 Tư vấn Chăm Sóc</div>
         <div id="chatbot-messages"></div>
         <div id="chatbot-input">
+            @Html.AntiForgeryToken()
             <input type="text" id="chatbot-question" placeholder="Nhập câu hỏi...">
             <button onclick="sendChatbotQuestion()">Gửi</button>
         </div>
     </div>
 
+    <!-- Toast Notification -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto" id="toastTitle">Thông báo</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toastMessage">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
+        var tempData = {
+            successMessage: '@TempData["SuccessMessage"]',
+            errorMessage: '@TempData["ErrorMessage"]',
+            infoMessage: '@TempData["InfoMessage"]',
+            warningMessage: '@TempData["WarningMessage"]'
+        };
+    </script>
+    <script src="~/js/site.js"></script>
+    @RenderSection("Scripts", required: false)
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btn = document.getElementById("chatbotToggleBtn");
+            const container = document.getElementById("chatbot-container");
+            const messagesContainer = document.getElementById("chatbot-messages");
+            const questionInput = document.getElementById("chatbot-question");
+            const closeBtn = document.getElementById("close-chatbot");
+            const zaloBtn = document.getElementById("zaloChatBtn");
+
+            let isDragging = false;
+            let isDraggingZalo = false;
+            let offsetX = 0;
+            let offsetY = 0;
+            let zaloOffsetX = 0;
+            let zaloOffsetY = 0;
+            let startX = 0;
+            let startY = 0;
+            let zaloStartX = 0;
+            let zaloStartY = 0;
+
+            // Thêm sự kiện click outside để đóng chatbot
+            document.addEventListener('click', function(event) {
+                const isClickInside = container.contains(event.target) || btn.contains(event.target);
+                if (!isClickInside && container.style.display === 'block') {
+                    container.style.display = 'none';
+                }
+            });
+
+            // Xử lý kéo thả cho nút chatbot
+            btn.addEventListener("mousedown", function (e) {
+                if (e.target === btn || e.target.parentElement === btn) {
+                    isDragging = true;
+                    offsetX = e.clientX - btn.getBoundingClientRect().left;
+                    offsetY = e.clientY - btn.getBoundingClientRect().top;
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    btn.style.transition = "none";
+                }
+            });
+
+            // Xử lý kéo thả cho nút Zalo
+            zaloBtn.addEventListener("mousedown", function (e) {
+                if (e.target === zaloBtn || e.target.parentElement === zaloBtn) {
+                    isDraggingZalo = true;
+                    zaloOffsetX = e.clientX - zaloBtn.getBoundingClientRect().left;
+                    zaloOffsetY = e.clientY - zaloBtn.getBoundingClientRect().top;
+                    zaloStartX = e.clientX;
+                    zaloStartY = e.clientY;
+                    zaloBtn.style.transition = "none";
+                }
+            });
+
+            document.addEventListener("mousemove", function (e) {
+                if (isDragging) {
+                    const x = e.clientX - offsetX;
+                    const y = e.clientY - offsetY;
+
+                    btn.style.left = `${x}px`;
+                    btn.style.top = `${y}px`;
+
+                    if (container.style.display === 'block') {
+                        const containerWidth = container.offsetWidth;
+                        container.style.left = `${x + btn.offsetWidth - containerWidth}px`;
+                        container.style.top = `${y - container.offsetHeight - 10}px`;
+                    }
+                }
+
+                if (isDraggingZalo) {
+                    const x = e.clientX - zaloOffsetX;
+                    const y = e.clientY - zaloOffsetY;
+
+                    zaloBtn.style.left = `${x}px`;
+                    zaloBtn.style.top = `${y}px`;
+                }
+            });
+
+            document.addEventListener("mouseup", function (e) {
+                if (isDragging) {
+                    const endX = e.clientX;
+                    const endY = e.clientY;
+                    const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+                    
+                    if (distance < 5) { // Nếu di chuyển ít hơn 5px, coi như là click
+                        const isVisible = container.style.display === 'block';
+                        if (!isVisible) {
+                            container.style.display = 'block';
+                            if (messagesContainer.innerHTML.trim() === '') {
+                                messagesContainer.innerHTML = `<div class="bot-message"><strong>Bot:</strong> Xin chào! Mình là trợ lý chăm sóc sức khỏe. Bạn cần mình hỗ trợ điều gì?</div>`;
+                            }
+                        } else {
+                            container.style.display = 'none';
+                        }
+                    }
+                    
+                    isDragging = false;
+                    btn.style.transition = "";
+                }
+
+                if (isDraggingZalo) {
+                    const endX = e.clientX;
+                    const endY = e.clientY;
+                    const distance = Math.sqrt(Math.pow(endX - zaloStartX, 2) + Math.pow(endY - zaloStartY, 2));
+                    
+                    if (distance < 5) { // Nếu di chuyển ít hơn 5px, coi như là click
+                        window.open('https://zalo.me/0522336052', '_blank');
+                    }
+                    
+                    isDraggingZalo = false;
+                    zaloBtn.style.transition = "";
+                }
+            });
+
+            closeBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                container.style.display = 'none';
+            });
+
+            questionInput.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    sendChatbotQuestion();
+                }
+            });
+
+            // Ngăn sự kiện click trong container lan ra ngoài
+            container.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
         async function sendChatbotQuestion() {
             const questionInput = document.getElementById('chatbot-question');
             const messagesContainer = document.getElementById('chatbot-messages');
             const question = questionInput.value.trim();
-            if (!question) return;
+            
+            if (!question) {
+                messagesContainer.innerHTML += `<div class="bot-message"><strong>Bot:</strong> ❌ Vui lòng nhập nội dung câu hỏi.</div>`;
+                return;
+            }
 
-            messagesContainer.innerHTML += `<div><strong>Bạn:</strong> ${question}</div>`;
+            messagesContainer.innerHTML += `<div class="user-message"><strong>Bạn:</strong> ${question}</div>`;
             questionInput.value = '';
 
-            const response = await fetch('/Chatbot/Ask', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: question })
-            });
-            const data = await response.json();
+            try {
+                const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+                
+                const response = await fetch('/Chatbot/Ask', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token || ''
+                    },
+                    body: JSON.stringify({
+                        messages: [
+                            {
+                                role: 'user',
+                                content: question
+                            }
+                        ]
+                    })
+                });
 
-            messagesContainer.innerHTML += `<div><strong>Bot:</strong> ${data.reply}</div>`;
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                messagesContainer.innerHTML += `<div class="bot-message"><strong>Bot:</strong> ${data.reply}</div>`;
+            } catch (error) {
+                console.error('Error:', error);
+                messagesContainer.innerHTML += `<div class="bot-message"><strong>Bot:</strong> Xin lỗi, có lỗi xảy ra. Vui lòng thử lại sau.</div>`;
+            }
+
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
     </script>
-
 </body>
 </html>

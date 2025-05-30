@@ -22,38 +22,60 @@ namespace Chamsoc.Controllers
             _notificationHub = notificationHub ?? throw new ArgumentNullException(nameof(notificationHub));
         }
 
-        public async Task<IActionResult> ListSeniors(string searchNeeds)
+        public async Task<IActionResult> ListSeniors(string searchCareNeeds, decimal? minPrice, decimal? maxPrice, string requesterId = null)
         {
-            var userRole = HttpContext.Session.GetString("UserRole");
-            var userId = HttpContext.Session.GetString("UserId");
+            if (HttpContext.Session.GetString("UserRole") != "Caregiver") return AccessDenied();
 
-            // Cho phép Caregiver, Senior và Admin truy cập
-            if (userRole != "Caregiver" && userRole != "Senior" && userRole != "Admin") return AccessDenied();
+            var query = _context.Seniors
+                .Include(s => s.User)
+                .Where(s => s.IsVerified);
 
-            // Kiểm tra yêu cầu đang chờ chỉ cho Caregiver
-            if (userRole == "Caregiver")
+            // Nếu có requesterId, chỉ hiển thị người đã gửi yêu cầu
+            if (!string.IsNullOrEmpty(requesterId))
             {
-                var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == userId);
-                if (caregiver == null) return RedirectWithError("Không tìm thấy thông tin Caregiver.");
-
-                var hasPendingRequest = await _context.CareJobs.AnyAsync(j => j.CaregiverId == caregiver.Id &&
-                    (j.Status == "Đang chờ" || j.Status == "Đang chờ xác nhận từ Senior" ||
-                     j.Status == "Đang chờ xác nhận từ Caregiver" || j.Status == "Đang chờ Người chăm sóc thanh toán cọc" ||
-                     j.Status == "Đang thực hiện"));
-                if (hasPendingRequest)
-                {
-                    TempData["PendingMessage"] = "Bạn đã có một yêu cầu đang chờ xử lý hoặc đang thực hiện. Không thể chọn thêm người cần chăm sóc cho đến khi yêu cầu hiện tại hoàn tất hoặc bị hủy.";
-                }
+                query = query.Where(s => s.UserId == requesterId);
+                ViewBag.ShowingContactRequests = true;
+                ViewBag.Title = "Thông tin người cần chăm sóc";
+            }
+            else
+            {
+                ViewBag.ShowingContactRequests = false;
+                ViewBag.Title = "Danh sách người cần chăm sóc";
             }
 
-            var seniorsQuery = _context.Seniors
-                .Where(s => s.Status == true && s.IsVerified == true) // Chỉ hiển thị Seniors rảnh và đã xác minh
-                .AsQueryable();
+            // Lọc theo nhu cầu chăm sóc
+            if (!string.IsNullOrEmpty(searchCareNeeds))
+            {
+                query = query.Where(s => s.CareNeeds.Contains(searchCareNeeds));
+            }
 
-            if (!string.IsNullOrEmpty(searchNeeds))
-                seniorsQuery = seniorsQuery.Where(s => s.CareNeeds.Contains(searchNeeds));
+            // Lọc theo giá
+            if (minPrice.HasValue)
+            {
+                query = query.Where(s => s.Price >= minPrice.Value);
+            }
 
-            return View(await seniorsQuery.ToListAsync());
+            if (maxPrice.HasValue)
+            {
+                query = query.Where(s => s.Price <= maxPrice.Value);
+            }
+
+            var seniors = await query.ToListAsync();
+
+            // Lấy danh sách nhu cầu chăm sóc duy nhất
+            var careNeeds = await _context.Seniors
+                .Where(s => s.IsVerified && !string.IsNullOrEmpty(s.CareNeeds))
+                .Select(s => s.CareNeeds)
+                .Distinct()
+                .ToListAsync();
+
+            ViewBag.CareNeeds = careNeeds;
+            ViewBag.SearchCareNeeds = searchCareNeeds;
+            ViewBag.MinPrice = minPrice;
+            ViewBag.MaxPrice = maxPrice;
+            ViewBag.RequesterId = requesterId;
+
+            return View(seniors);
         }
         private IActionResult AccessDenied()
         {
@@ -62,14 +84,32 @@ namespace Chamsoc.Controllers
         }
 
         [HttpGet]
-        public IActionResult BookSenior(int seniorId)
+        public async Task<IActionResult> BookSenior(int seniorId)
         {
-            var senior = _context.Seniors.Find(seniorId);
-            if (senior == null) return NotFound();
-            return View(senior);
+            var senior = await _context.Seniors
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(s => s.Id == seniorId);
+
+            if (senior == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new BookSeniorViewModel
+            {
+                SeniorId = senior.Id,
+                SeniorName = senior.FullName,
+                SeniorAvatar = senior.AvatarUrl,
+                SeniorLocation = senior.User?.Address,
+                SeniorPhone = senior.User?.PhoneNumber,
+                HealthInfo = senior.CareNeeds,
+                Price = senior.Price
+            };
+
+            return View(viewModel);
         }
         [HttpPost]
-        public async Task<IActionResult> BookSenior(int seniorId, string serviceType, DateTime startTime)
+        public async Task<IActionResult> BookSenior(int seniorId, string serviceType, DateTime startTime, int duration)
         {
             var caregiverId = HttpContext.Session.GetString("UserId");
             var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == caregiverId);
@@ -83,64 +123,75 @@ namespace Chamsoc.Controllers
                 return RedirectToAction("ListSeniors");
             }
 
-            var (totalBill, endTime) = CalculateBillAndEndTime(serviceType, caregiver.Pricing, startTime);
-            if (totalBill == 0) return RedirectWithError("Loại dịch vụ không hợp lệ.");
+            string normalizedServiceType = NormalizeServiceType(serviceType);
+            if (string.IsNullOrEmpty(normalizedServiceType))
+            {
+                TempData["ErrorMessage"] = "Loại dịch vụ không hợp lệ.";
+                return RedirectToAction("BookSenior", new { seniorId = seniorId });
+            }
+
+            // Tính toán giá và thời gian kết thúc dựa trên thời lượng
+            decimal totalBill = CalculateTotalBill(senior.Price, duration);
+            DateTime endTime = startTime.AddHours(duration);
+
+            // Tạo một Service mới
+            var service = new Service
+            {
+                Name = normalizedServiceType,
+                Description = $"Đề xuất dịch vụ chăm sóc cho {senior.Name}",
+                BasePrice = totalBill,
+                IsActive = true,
+                CreatedAt = DateTime.Now
+            };
+            _context.Services.Add(service);
+            await _context.SaveChangesAsync();
 
             var careJob = new CareJob
             {
                 SeniorId = senior.Id,
                 CaregiverId = caregiver.Id,
-                CaregiverName = caregiver.Name,
+                CaregiverName = caregiver.Name ?? "Không có tên",
+                SeniorName = senior.Name ?? "Không có tên",
+                SeniorPhone = senior.User?.PhoneNumber ?? "Không có số điện thoại",
                 StartTime = startTime,
                 EndTime = endTime,
-                Status = "Đang chờ",
+                Status = "Đang chờ xác nhận từ Senior",
                 TotalBill = totalBill,
                 Deposit = totalBill * 0.3m,
-                RemainingAmount = 0,
-                ServiceType = serviceType,
-                CreatedByRole = "Caregiver"
+                DepositAmount = totalBill * 0.3m,
+                RemainingAmount = totalBill * 0.7m,
+                ServiceType = normalizedServiceType,
+                Description = $"Dịch vụ {normalizedServiceType} từ {startTime:dd/MM/yyyy HH:mm} đến {endTime:dd/MM/yyyy HH:mm}",
+                CreatedByRole = "Caregiver",
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+                IsDepositPaid = false,
+                DepositMade = false,
+                CaregiverAccepted = true,
+                SeniorAccepted = false,
+                DepositNote = $"NAPCOC_DV_{normalizedServiceType}_{DateTime.Now:yyyyMMddHHmmss}",
+                PaymentStatus = "Chờ thanh toán",
+                PaymentMethod = "Chưa thanh toán",
+                ServiceId = service.Id,
+                Location = senior.User?.Address ?? "Chưa cập nhật địa chỉ",
+                Latitude = 0,
+                Longitude = 0,
+                HasRated = false,
+                HasComplained = false
             };
 
             _context.CareJobs.Add(careJob);
             await _context.SaveChangesAsync();
 
-            var seniorUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == senior.UserId && u.Role == "Senior");
-            if (seniorUser != null)
-            {
-                var notification = new Notification
-                {
-                    UserId = seniorUser.Id,
-                    JobId = careJob.Id,
-                    Message = $"Bạn nhận được yêu cầu công việc từ người chăm sóc #{caregiver.Id}. Dịch vụ: {serviceType}, Thời gian: {startTime.ToString("dd/MM/yyyy HH:mm")}. Vui lòng xác nhận.",
-                    CreatedAt = DateTime.Now,
-                    IsRead = false
-                };
-                _context.Notifications.Add(notification);
-                await _context.SaveChangesAsync();
-                await _notificationHub.Clients.User(seniorUser.Id).SendAsync("ReceiveNotification", notification.Message);
-            }
+            await SendNotificationToSenior(senior, careJob);
 
-            TempData["SuccessMessage"] = "Đã gửi yêu cầu đến khách hàng. Vui lòng chờ xác nhận.";
+            TempData["SuccessMessage"] = "Đã gửi đề xuất dịch vụ đến khách hàng. Vui lòng chờ xác nhận.";
             return RedirectToAction("Index", "CareJobs");
         }
-        private (decimal, DateTime) CalculateBillAndEndTime(string serviceType, string pricingJson, DateTime startTime)
+
+        private decimal CalculateTotalBill(decimal pricePerHour, int duration)
         {
-            var pricing = new Dictionary<string, decimal>
-            {
-                { "1Hour", 1000000 }, { "2Hours", 1800000 }, { "5Sessions", 4500000 }
-            };
-            if (!string.IsNullOrEmpty(pricingJson))
-            {
-                try { pricing = JsonSerializer.Deserialize<Dictionary<string, decimal>>(pricingJson); }
-                catch { }
-            }
-            switch (serviceType)
-            {
-                case "1Hour": return (pricing["1Hour"], startTime.AddHours(1));
-                case "2Hours": return (pricing["2Hours"], startTime.AddHours(2));
-                case "5Sessions": return (pricing["5Sessions"], startTime.AddHours(5));
-                default: return (0, startTime);
-            }
+            return pricePerHour * duration;
         }
 
         private async Task SendNotificationToSenior(Senior senior, CareJob job)
@@ -152,11 +203,16 @@ namespace Chamsoc.Controllers
                 {
                     UserId = seniorUser.Id,
                     JobId = job.Id,
-                    Message = $"Bạn nhận được yêu cầu công việc #{job.Id}. Dịch vụ: {job.ServiceType}, Thời gian: {job.StartTime}. Xác nhận hoặc từ chối.",
+                    Title = "Đề xuất dịch vụ mới",
+                    Message = $"Bạn nhận được đề xuất dịch vụ từ người chăm sóc #{job.Id}. Dịch vụ: {job.ServiceType}, Thời gian: {job.StartTime}. Vui lòng xem xét và xác nhận.",
                     CreatedAt = DateTime.Now,
-                    IsRead = false
+                    IsRead = false,
+                    Type = "JobRequest",
+                    Link = $"/CareJobs/Details/{job.Id}"
                 };
                 _context.Notifications.Add(notification);
+                await _context.SaveChangesAsync();
+                await _notificationHub.Clients.User(seniorUser.Id).SendAsync("ReceiveNotification", notification.Message);
             }
         }
 
@@ -164,6 +220,70 @@ namespace Chamsoc.Controllers
         {
             TempData["ErrorMessage"] = message;
             return RedirectToAction("ListSeniors");
+        }
+
+        private string NormalizeServiceType(string serviceType)
+        {
+            return serviceType?.ToLower() switch
+            {
+                "comprehensive" => "comprehensive",
+                "physiotherapy" => "physiotherapy",
+                "medical" => "medical",
+                "rehabilitation" => "rehabilitation",
+                _ => null
+            };
+        }
+
+        public async Task<IActionResult> ListSenior(string requesterId)
+        {
+            if (string.IsNullOrEmpty(requesterId))
+            {
+                return RedirectToAction("ListSeniors");
+            }
+
+            var senior = await _context.Seniors
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(s => s.UserId == requesterId);
+
+            if (senior == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy thông tin người dùng.";
+                return RedirectToAction("ListSeniors");
+            }
+
+            var viewModel = new SeniorProfileViewModel
+            {
+                Id = senior.Id,
+                UserId = senior.UserId,
+                Name = senior.FullName,
+                AvatarUrl = senior.AvatarUrl,
+                Address = senior.User?.Address,
+                PhoneNumber = senior.User?.PhoneNumber,
+                Email = senior.User?.Email,
+                CareNeeds = senior.CareNeeds,
+                Price = senior.Price,
+                IsVerified = senior.IsVerified,
+                Status = senior.Status,
+                CreatedAt = senior.RegistrationDate
+            };
+
+            return View(viewModel);
+        }
+
+        public class SeniorProfileViewModel
+        {
+            public int Id { get; set; }
+            public string UserId { get; set; }
+            public string Name { get; set; }
+            public string AvatarUrl { get; set; }
+            public string Address { get; set; }
+            public string PhoneNumber { get; set; }
+            public string Email { get; set; }
+            public string CareNeeds { get; set; }
+            public decimal Price { get; set; }
+            public bool IsVerified { get; set; }
+            public bool Status { get; set; }
+            public DateTime CreatedAt { get; set; }
         }
     }
 }

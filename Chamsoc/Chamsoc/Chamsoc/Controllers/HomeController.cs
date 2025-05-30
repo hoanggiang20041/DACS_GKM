@@ -185,8 +185,22 @@ namespace Chamsoc.Controllers
                     {
                         return NotFound();
                     }
+                    var viewModel = new CaregiverViewModel
+                    {
+                        Id = caregiver.Id,
+                        UserId = caregiver.UserId,
+                        Name = caregiver.Name,
+                        Skills = caregiver.Skills,
+                        Contact = caregiver.Contact,
+                        Price = caregiver.Price,
+                        IsAvailable = caregiver.IsAvailable,
+                        IsVerified = caregiver.IsVerified,
+                        AvatarUrl = caregiver.AvatarUrl,
+                        CertificateFilePath = caregiver.CertificateFilePath,
+                        Caregiver = caregiver
+                    };
                     ViewBag.User = user;
-                    return View("UpdateProfileCaregiver", caregiver);
+                    return View("UpdateProfileCaregiver", viewModel);
                 }
                 else
                 {

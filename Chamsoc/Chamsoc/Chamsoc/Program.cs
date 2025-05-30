@@ -1,9 +1,8 @@
-﻿using Chamsoc.Data;
+using Chamsoc.Data;
 using Chamsoc.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Chamsoc.Filters;
 using Chamsoc.Hubs;
 using Chamsoc.Services;
 using Microsoft.Extensions.Logging;
@@ -29,7 +28,7 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
                 "https://localhost:7198",
-                "https://3acb-183-80-94-205.ngrok-free.app") // Thêm origin của ứng dụng web
+                "https://3acb-183-80-94-205.ngrok-free.app")
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials();
@@ -41,28 +40,31 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Cấu hình Identity
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
-
-// Cấu hình Identity options
-builder.Services.Configure<IdentityOptions>(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
-    options.User.RequireUniqueEmail = true;
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 6;
+    options.User.RequireUniqueEmail = true;
+})
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
+
+// Configure cookie policy
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.SlidingExpiration = true;
+    options.ExpireTimeSpan = TimeSpan.FromDays(7);
 });
 
-// Thêm global filter
-builder.Services.AddControllersWithViews(options =>
-{
-    options.Filters.Add(new CustomAuthorizationFilter());
-});
 builder.Services.AddHttpClient<OpenRouterService>();
-builder.Services.AddHttpClient<OpenAIService>();
+builder.Services.AddScoped<OpenRouterService>();
+
 // Thêm SignalR
 builder.Services.AddSignalR();
 
@@ -101,6 +103,7 @@ using (var scope = app.Services.CreateScope())
         var adminUser = await userManager.FindByNameAsync("admin");
         if (adminUser == null)
         {
+            app.Logger.LogInformation("Bắt đầu tạo tài khoản Admin...");
             adminUser = new ApplicationUser
             {
                 UserName = "admin",
@@ -109,17 +112,35 @@ using (var scope = app.Services.CreateScope())
                 Role = "Admin",
                 RoleId = "0",
                 IsLocked = false,
-                Balance = 0
+                Balance = 0,
+                FullName = "Administrator",
+                Address = "GKM Care Office",
+                DateOfBirth = new DateTime(1990, 1, 1),
+                Gender = "Male",
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow,
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+                NormalizedUserName = "ADMIN",
+                NormalizedEmail = "ADMIN@GKMCARE.COM"
             };
-            var result = await userManager.CreateAsync(adminUser, "Admin123");
+            var result = await userManager.CreateAsync(adminUser, "Admin123!");
             if (result.Succeeded)
             {
+                app.Logger.LogInformation("Tạo tài khoản Admin thành công!");
                 await userManager.AddToRoleAsync(adminUser, "Admin");
+                app.Logger.LogInformation("Gán vai trò Admin thành công!");
             }
             else
             {
-                throw new Exception("Không thể tạo tài khoản Admin: " + string.Join(", ", result.Errors.Select(e => e.Description)));
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                app.Logger.LogError("Lỗi khi tạo tài khoản Admin: {Errors}", errors);
+                throw new Exception("Không thể tạo tài khoản Admin: " + errors);
             }
+        }
+        else
+        {
+            app.Logger.LogInformation("Tài khoản Admin đã tồn tại.");
         }
     }
     catch (Exception ex)
@@ -155,7 +176,7 @@ app.MapHub<CallHub>("/callHub");
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=About}/{id?}");
+    pattern: "{controller=Home}/{action=ChamSocSucKhoe}/{id?}");
 
 app.Logger.LogInformation("Server khởi động. Lắng nghe tại https://localhost:7198");
 

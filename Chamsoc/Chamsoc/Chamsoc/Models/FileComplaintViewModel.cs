@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Chamsoc.Models
 {
@@ -6,14 +6,12 @@ namespace Chamsoc.Models
     {
         public int JobId { get; set; }
         public int CaregiverId { get; set; }
-        public string CaregiverName { get; set; }
         public int SeniorId { get; set; }
+        public string CaregiverName { get; set; }
 
-        [Required(ErrorMessage = "Vui lòng nhập nội dung khiếu nại.")]
-        [StringLength(1000, ErrorMessage = "Nội dung khiếu nại không được dài quá 1000 ký tự.")]
+        [Required(ErrorMessage = "Vui lòng nhập mô tả khiếu nại")]
         public string Description { get; set; }
-        
-        [Display(Name = "Hình ảnh đính kèm")]
-        public IFormFile ImageFile { get; set; }
+
+        public IFormFile? ImageFile { get; set; }
     }
-}
+} 

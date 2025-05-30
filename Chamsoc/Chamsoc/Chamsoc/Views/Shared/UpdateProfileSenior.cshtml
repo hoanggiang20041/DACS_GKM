@@ -4,207 +4,237 @@
     string currentUserRole = ViewBag.CurrentUserRole;
 }
 
-<style>
-    .verified-tick {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        background: url('/images/tick.png') no-repeat center center;
-        background-size: cover;
-        margin-left: 5px;
-        vertical-align: middle;
-        position: relative;
-    }
-
-        .verified-tick::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border: 2px solid transparent;
-            border-radius: 50%;
-            animation: rainbow-border 3s linear infinite;
-            background: url('/images/tick.png') no-repeat center center;
-            background-size: cover;
-            z-index: -1;
-        }
-
-    @@keyframes rainbow-border {
-        0% {
-            border-color: #ff0000;
-        }
-        /* Red */
-        16% {
-            border-color: #ff7f00;
-        }
-        /* Orange */
-        33% {
-            border-color: #ffff00;
-        }
-        /* Yellow */
-        50% {
-            border-color: #00ff00;
-        }
-        /* Green */
-        66% {
-            border-color: #00ffff;
-        }
-        /* Cyan */
-        83% {
-            border-color: #0000ff;
-        }
-        /* Blue */
-        100% {
-            border-color: #ff00ff;
-        }
-        /* Magenta */
-    }
-
-    /* CSS cho gợi ý */
-    #careNeedsSuggestions {
-        position: absolute;
-        z-index: 1000;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        max-height: 200px;
-        overflow-y: auto;
-    }
-
-        #careNeedsSuggestions div {
-            padding: 5px;
-            cursor: pointer;
-        }
-
-            #careNeedsSuggestions div:hover {
-                background-color: #f0f0f0;
-            }
-</style>
-
-<div class="container my-5">
-    <h2 class="text-center mb-4">Cập Nhật Hồ Sơ Người Cần Chăm Sóc</h2>
+<div class="container-fluid py-4">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            @if (TempData["ErrorMessage"] != null)
-            {
-                <div class="alert alert-danger" role="alert">
-                    @TempData["ErrorMessage"]
-                </div>
-            }
+        <div class="col-lg-8">
             @if (TempData["SuccessMessage"] != null)
             {
-                <div class="alert alert-success" role="alert">
-                    @TempData["SuccessMessage"]
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
-            <form asp-action="UpdateProfileSenior" asp-controller="Account" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-                <input type="hidden" name="id" value="@ViewBag.User.Id" />
-                <div class="mb-3 text-center">
-                    <h5>@Model.Name</h5>
-                    <p>
-                        <strong>Tình trạng:</strong>
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user-edit me-2"></i>Cập nhật thông tin cá nhân
+                        </h5>
                         @if (Model.IsVerified)
                         {
-                            <span>Đã xác minh <span class="verified-tick"></span></span>
+                            <span class="badge bg-success fs-6">
+                                <i class="fas fa-check-circle me-1"></i>Đã xác minh
+                            </span>
                         }
                         else
                         {
-                            <span>Chưa xác minh</span>
+                            <span class="badge bg-warning fs-6">
+                                <i class="fas fa-clock me-1"></i>Chưa xác minh
+                            </span>
                         }
-                    </p>
-                </div>
-                <div class="mb-3">
-                    <label for="name" class="form-label">Họ và tên</label>
-                    <input type="text" class="form-control" id="name" name="name" value="@Model.Name" required />
-                    <div class="invalid-feedback">
-                        Vui lòng nhập họ và tên.
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="age" class="form-label">Tuổi</label>
-                    <input type="number" class="form-control" id="age" name="age" value="@Model.Age" min="1" required />
-                    <div class="invalid-feedback">
-                        Vui lòng nhập tuổi hợp lệ (lớn hơn 0).
-                    </div>
+                <div class="card-body">
+                    <form asp-action="UpdateProfileSenior" asp-controller="Account" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <input type="hidden" name="id" value="@ViewBag.User.Id" />
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-section mb-4">
+                                    <h6 class="text-primary mb-3">
+                                        <i class="fas fa-info-circle me-2"></i>Thông tin cơ bản
+                                    </h6>
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Họ và tên</label>
+                                        <input type="text" class="form-control" id="name" name="name" value="@Model.Name" required />
+                                        <div class="invalid-feedback">
+                                            Vui lòng nhập họ và tên.
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="age" class="form-label">Tuổi</label>
+                                        <input type="number" class="form-control" id="age" name="age" value="@Model.Age" min="1" required />
+                                        <div class="invalid-feedback">
+                                            Vui lòng nhập tuổi hợp lệ (lớn hơn 0).
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 position-relative">
+                                        <label for="careNeeds" class="form-label">Tình trạng bệnh</label>
+                                        <input type="text" class="form-control" id="careNeeds" name="careNeeds" value="@Model.CareNeeds" required autocomplete="off" />
+                                        <div class="invalid-feedback">
+                                            Vui lòng nhập tình trạng bệnh.
+                                        </div>
+                                        <div id="careNeedsSuggestions" class="list-group mt-2" style="display:none;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="info-section mb-4">
+                                    <h6 class="text-primary mb-3">
+                                        <i class="fas fa-address-card me-2"></i>Thông tin liên hệ
+                                    </h6>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" value="@ViewBag.User.Email" required />
+                                        <div class="invalid-feedback">
+                                            Vui lòng nhập email hợp lệ.
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="contact" class="form-label">Số điện thoại</label>
+                                        <input type="text" class="form-control" id="contact" name="contact" value="@ViewBag.User.PhoneNumber" required maxlength="10" pattern="\d{10}" />
+                                        <div class="invalid-feedback">
+                                            Vui lòng nhập số điện thoại gồm đúng 10 chữ số.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="info-section mb-4">
+                                    <h6 class="text-primary mb-3">
+                                        <i class="fas fa-money-bill-wave me-2"></i>Thông tin chi phí
+                                    </h6>
+                                    <div class="mb-3">
+                                        <label for="price" class="form-label">Chi phí có thể chi trả (1 giờ) (VNĐ)</label>
+                                        <input type="text" class="form-control" id="price" name="priceDisplay" value="@Model.Price.ToString("N0")" required />
+                                        <input type="hidden" id="priceHidden" name="price" value="@Model.Price" />
+                                        <span class="text-danger" id="priceError"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="status" class="form-label">Trạng thái</label>
+                                        <select class="form-control" id="status" name="status">
+                                            @if (Model.Status)
+                                            {
+                                                <option value="true" selected>Sẵn sàng</option>
+                                                <option value="false">Đang bận</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="true">Sẵn sàng</option>
+                                                <option value="false" selected>Đang bận</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="info-section mb-4">
+                                    <h6 class="text-primary mb-3">
+                                        <i class="fas fa-lock me-2"></i>Bảo mật
+                                    </h6>
+                                    <div class="mb-3">
+                                        <label for="currentPassword" class="form-label">Mật khẩu hiện tại (nếu muốn đổi mật khẩu)</label>
+                                        <input type="password" class="form-control" id="currentPassword" name="currentPassword" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="newPassword" class="form-label">Mật khẩu mới (nếu muốn đổi mật khẩu)</label>
+                                        <input type="password" class="form-control" id="newPassword" name="newPassword" />
+                                    </div>
+                                </div>
+
+                                <div class="info-section mb-4">
+                                    <h6 class="text-primary mb-3">
+                                        <i class="fas fa-image me-2"></i>Ảnh đại diện
+                                    </h6>
+                                    <div class="mb-3">
+                                        <input type="file" class="form-control" id="avatar" name="avatar" accept="image/*" />
+                                        @if (!string.IsNullOrEmpty(Model.AvatarUrl))
+                                        {
+                                            <div class="mt-2">
+                                                <img src="@Model.AvatarUrl" alt="Avatar" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;" />
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2 justify-content-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Cập nhật
+                            </button>
+                            @if (currentUserRole == "Admin")
+                            {
+                                <a asp-action="ManageUsers" asp-controller="Admin" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>Quay lại
+                                </a>
+                            }
+                            else if (currentUserRole == "Senior")
+                            {
+                                <a asp-action="ListCaregivers" asp-controller="Caregivers" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>Quay lại
+                                </a>
+                            }
+                            else if (currentUserRole == "Caregiver")
+                            {
+                                <a asp-action="ListSeniors" asp-controller="Seniors" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>Quay lại
+                                </a>
+                            }
+                        </div>
+                    </form>
                 </div>
-                <div class="mb-3 position-relative">
-                    <label for="careNeeds" class="form-label">Tình trạng bệnh</label>
-                    <input type="text" class="form-control" id="careNeeds" name="careNeeds" value="@Model.CareNeeds" required autocomplete="off" />
-                    <div class="invalid-feedback">
-                        Vui lòng nhập tình trạng bệnh.
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" value="@ViewBag.User.Email" required />
-                    <div class="invalid-feedback">
-                        Vui lòng nhập email hợp lệ.
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="contact" class="form-label">Số điện thoại</label>
-                    <input type="text" class="form-control" id="contact" name="contact" value="@ViewBag.User.PhoneNumber" required maxlength="10" pattern="\d{10}" />
-                    <div class="invalid-feedback">
-                        Vui lòng nhập số điện thoại gồm đúng 10 chữ số.
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="price" class="form-label">Chi phí có thể chi trả (1 giờ) (VNĐ)</label>
-                    <input type="text" class="form-control" id="price" name="priceDisplay" value="@Model.Price.ToString("N0")" required />
-                    <input type="hidden" id="priceHidden" name="price" value="@Model.Price" />
-                    <span class="text-danger" id="priceError"></span>
-                </div>
-                <div class="mb-3">
-                    <label for="status" class="form-label">Trạng thái</label>
-                    <select class="form-control" id="status" name="status">
-                        @if (Model.Status)
-                        {
-                            <option value="true" selected>Sẵn sàng</option>
-                            <option value="false">Đang bận</option>
-                        }
-                        else
-                        {
-                            <option value="true">Sẵn sàng</option>
-                            <option value="false" selected>Đang bận</option>
-                        }
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="avatar" class="form-label">Ảnh đại diện</label>
-                    <input type="file" class="form-control" id="avatar" name="avatar" accept="image/*" />
-                    @if (!string.IsNullOrEmpty(Model.AvatarUrl))
-                    {
-                        <img src="@Model.AvatarUrl" alt="Avatar" class="mt-2" style="width: 100px; height: 100px; object-fit: cover;" />
-                    }
-                </div>
-                <div class="mb-3">
-                    <label for="currentPassword" class="form-label">Mật khẩu hiện tại (nếu muốn đổi mật khẩu)</label>
-                    <input type="password" class="form-control" id="currentPassword" name="currentPassword" />
-                </div>
-                <div class="mb-3">
-                    <label for="newPassword" class="form-label">Mật khẩu mới (nếu muốn đổi mật khẩu)</label>
-                    <input type="password" class="form-control" id="newPassword" name="newPassword" />
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Cập nhật</button>
-                    @if (currentUserRole == "Admin")
-                    {
-                        <a asp-action="ManageUsers" asp-controller="Admin" class="btn btn-secondary">Quay lại</a>
-                    }
-                    else if (currentUserRole == "Senior")
-                    {
-                        <a asp-action="ListCaregivers" asp-controller="Caregivers" class="btn btn-secondary">Quay lại</a>
-                    }
-                    else if (currentUserRole == "Caregiver")
-                    {
-                        <a asp-action="ListSeniors" asp-controller="Caregivers" class="btn btn-secondary">Quay lại</a>
-                    }
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
+
+<style>
+    .card {
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+    .card-header {
+        border-bottom: none;
+    }
+    .info-section {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+    }
+    .badge {
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+    }
+    .btn {
+        padding: 0.5rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+    }
+    .alert {
+        border-radius: 0.5rem;
+        border: none;
+    }
+    #careNeedsSuggestions {
+        position: absolute;
+        z-index: 1000;
+        width: 100%;
+        max-height: 200px;
+        overflow-y: auto;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    #careNeedsSuggestions div {
+        padding: 0.5rem;
+        cursor: pointer;
+        background: white;
+        border: 1px solid #dee2e6;
+    }
+    #careNeedsSuggestions div:hover {
+        background-color: #f8f9fa;
+    }
+</style>
 
 @section Scripts {
     <script>

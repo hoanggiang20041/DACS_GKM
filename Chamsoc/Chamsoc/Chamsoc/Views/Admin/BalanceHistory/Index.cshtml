@@ -1,0 +1,101 @@
+@model IEnumerable<Chamsoc.Models.Transaction>
+
+@{
+    ViewData["Title"] = "Lịch sử số dư hệ thống";
+    var stats = ViewBag.Stats;
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">@ViewData["Title"]</h2>
+
+    <!-- Thống kê tổng quan -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Tổng số dư hệ thống</h5>
+                    <h3 class="card-text">@stats.TotalBalance.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Tổng số giao dịch</h5>
+                    <h3 class="card-text">@stats.TotalTransactions</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Giao dịch hôm nay</h5>
+                    <h3 class="card-text">@stats.TodayTransactions</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Giao dịch tháng này</h5>
+                    <h3 class="card-text">@stats.MonthlyTransactions</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bảng lịch sử giao dịch -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Lịch sử giao dịch gần đây</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Mã giao dịch</th>
+                            <th>Người cần chăm sóc</th>
+                            <th>Người chăm sóc</th>
+                            <th>Số tiền</th>
+                            <th>Trạng thái</th>
+                            <th>Thời gian</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var transaction in Model)
+                        {
+                            <tr>
+                                <td>@transaction.Id</td>
+                                <td>@(transaction.Senior?.FullName ?? "N/A")</td>
+                                <td>@(transaction.Caregiver?.FullName ?? "N/A")</td>
+                                <td>@transaction.Amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</td>
+                                <td>
+                                    <span class="badge bg-success">@transaction.Status</span>
+                                </td>
+                                <td>@transaction.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Thêm hiệu ứng hover cho các card thống kê
+            $('.card').hover(
+                function () {
+                    $(this).css('transform', 'translateY(-5px)');
+                    $(this).css('transition', 'transform 0.3s ease');
+                },
+                function () {
+                    $(this).css('transform', 'translateY(0)');
+                }
+            );
+        });
+    </script>
+} 

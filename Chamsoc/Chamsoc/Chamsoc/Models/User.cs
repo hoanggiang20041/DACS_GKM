@@ -1,4 +1,4 @@
-﻿namespace Chamsoc.Models
+﻿namespace Chamsoc.Core.Models
 {
     public class User
     {

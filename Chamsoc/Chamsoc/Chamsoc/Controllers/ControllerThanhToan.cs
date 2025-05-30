@@ -1,4 +1,4 @@
-﻿using Chamsoc.Data;
+using Chamsoc.Data;
 using Chamsoc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,18 +7,20 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using Chamsoc.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using System;
+using Chamsoc.Models;
 
 namespace Chamsoc.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class AdminController : Controller
+    public class ControllerThanhToan : Controller
     {
         private readonly AppDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IHubContext<NotificationHub> _notificationHub;
 
-        public AdminController(AppDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IHubContext<NotificationHub> notificationHub)
+        public ControllerThanhToan(AppDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IHubContext<NotificationHub> notificationHub)
         {
             _context = context;
             _userManager = userManager;
@@ -31,36 +33,52 @@ namespace Chamsoc.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> DeleteUser(string id)
+        public IActionResult ApprovePayments()
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
+            var allPayments = _context.CareJobs
+                .OrderByDescending(j => j.StartTime)
+                .Include(j => j.Senior)
+                .Include(j => j.Caregiver)
+                .ToList();
+            return View(allPayments);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApprovePayment(int jobId)
+        {
+            var job = await _context.CareJobs.FindAsync(jobId);
+            if (job == null)
             {
                 return NotFound();
             }
 
-            if (user.Role == "Senior")
-            {
-                var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.UserId == user.Id);
-                if (senior != null)
-                {
-                    _context.Seniors.Remove(senior);
-                }
-            }
-            else if (user.Role == "Caregiver")
-            {
-                var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == user.Id);
-                if (caregiver != null)
-                {
-                    _context.Caregivers.Remove(caregiver);
-                }
-            }
-
+            job.Status = "Đang thực hiện";
+            job.PaymentStatus = "Completed";
+            job.PaymentTime = DateTime.Now;
+            _context.Update(job);
             await _context.SaveChangesAsync();
-            await _userManager.DeleteAsync(user);
 
-            return RedirectToAction("ManageUsers");
+            TempData["SuccessMessage"] = "Đã duyệt thanh toán và chuyển sang trạng thái đang thực hiện thành công!";
+            return RedirectToAction(nameof(ApprovePayments));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RejectPayment(int jobId)
+        {
+            var job = await _context.CareJobs.FindAsync(jobId);
+            if (job == null)
+            {
+                return NotFound();
+            }
+
+            job.Status = "Rejected";
+            job.PaymentStatus = "Failed";
+            job.PaymentTime = DateTime.Now;
+            _context.Update(job);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Đã từ chối thanh toán thành công!";
+            return RedirectToAction(nameof(ApprovePayments));
         }
 
         [HttpGet]
@@ -93,90 +111,6 @@ namespace Chamsoc.Controllers
 
             ViewBag.Search = search;
             return View(users.ToList());
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> LockUser(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            user.IsLocked = true;
-            await _userManager.UpdateAsync(user);
-
-            if (user.Role == "Senior")
-            {
-                var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.UserId == user.Id);
-                if (senior != null)
-                {
-                    senior.IsVerified = false; // Hủy xác minh nếu khóa tài khoản
-                    _context.Seniors.Update(senior);
-                }
-            }
-            else if (user.Role == "Caregiver")
-            {
-                var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == user.Id);
-                if (caregiver != null)
-                {
-                    caregiver.IsVerified = false; // Hủy xác minh nếu khóa tài khoản
-                    _context.Caregivers.Update(caregiver);
-                }
-            }
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("ManageUsers");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UnlockUser(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            user.IsLocked = false;
-            await _userManager.UpdateAsync(user);
-
-            return RedirectToAction("ManageUsers");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> VerifyUser(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            if (user.Role == "Senior")
-            {
-                var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.UserId == user.Id);
-                if (senior != null)
-                {
-                    senior.IsVerified = true;
-                    _context.Seniors.Update(senior);
-                }
-            }
-            else if (user.Role == "Caregiver")
-            {
-                var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == user.Id);
-                if (caregiver != null)
-                {
-                    caregiver.IsVerified = true;
-                    _context.Caregivers.Update(caregiver);
-                }
-            }
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("ManageUsers");
         }
 
         public async Task<IActionResult> Profile()
@@ -575,192 +509,195 @@ namespace Chamsoc.Controllers
         }
 
         // Hiển thị danh sách khiếu nại
-        public async Task<IActionResult> ManageComplaints()
-        {
-            var complaints = await _context.Complaints
-                .Include(c => c.Job)
-                .ToListAsync();
-
-            return View(complaints);
-        }
+        // public async Task<IActionResult> ManageComplaints()
+        // {
+        //     var complaints = await _context.Complaints
+        //         .Include(c => c.Job)
+        //         .ToListAsync();
+        //
+        //     return View(complaints);
+        // }
 
         // GET: Admin/HandleComplaint
-        [HttpGet]
-        public async Task<IActionResult> HandleComplaint(int id)
-        {
-            var complaint = await _context.Complaints
-                .Include(c => c.Job)
-                .FirstOrDefaultAsync(c => c.Id == id);
-
-            if (complaint == null)
-            {
-                TempData["ErrorMessage"] = "Không tìm thấy khiếu nại.";
-                return RedirectToAction("ManageComplaints");
-            }
-
-            var caregiver = await _context.Caregivers.FindAsync(complaint.CaregiverId);
-            var senior = await _context.Seniors.FindAsync(complaint.SeniorId);
-
-            var viewModel = new HandleComplaintViewModel
-            {
-                ComplaintId = complaint.Id,
-                JobId = complaint.JobId,
-                CaregiverId = complaint.CaregiverId,
-                CaregiverName = caregiver?.Name,
-                SeniorId = complaint.SeniorId,
-                SeniorName = senior?.Name,
-                Description = complaint.Description,
-                Status = complaint.Status,
-                Resolution = complaint.Resolution
-            };
-
-            return View(viewModel);
-        }
+        // [HttpGet]
+        // public async Task<IActionResult> HandleComplaint(int id)
+        // {
+        //     var complaint = await _context.Complaints
+        //         .Include(c => c.Job)
+        //         .FirstOrDefaultAsync(c => c.Id == id);
+        //
+        //     if (complaint == null)
+        //     {
+        //         TempData["ErrorMessage"] = "Không tìm thấy khiếu nại.";
+        //         return RedirectToAction("ManageComplaints");
+        //     }
+        //
+        //     var caregiver = await _context.Caregivers.FindAsync(complaint.CaregiverId);
+        //     var senior = await _context.Seniors.FindAsync(complaint.SeniorId);
+        //
+        //     var viewModel = new HandleComplaintViewModel
+        //     {
+        //         ComplaintId = complaint.Id,
+        //         JobId = complaint.JobId,
+        //         CaregiverId = complaint.CaregiverId,
+        //         CaregiverName = caregiver?.Name,
+        //         SeniorId = complaint.SeniorId,
+        //         SeniorName = senior?.Name,
+        //         Description = complaint.Description,
+        //         Status = complaint.Status,
+        //         Resolution = complaint.Resolution,
+        //         ImagePath = complaint.ImagePath,
+        //         ThumbnailPath = complaint.ThumbnailPath,
+        //         CreatedAt = complaint.CreatedAt
+        //     };
+        //
+        //     return View(viewModel);
+        // }
 
         // POST: Admin/HandleComplaint
-        [HttpPost]
-        public async Task<IActionResult> HandleComplaint(HandleComplaintViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            var complaint = await _context.Complaints
-                .Include(c => c.Job)
-                .FirstOrDefaultAsync(c => c.Id == model.ComplaintId);
-
-            if (complaint == null)
-            {
-                TempData["ErrorMessage"] = "Không tìm thấy khiếu nại.";
-                return RedirectToAction("ManageComplaints");
-            }
-
-            complaint.Status = model.Status;
-            complaint.Resolution = model.Resolution;
-            _context.Complaints.Update(complaint);
-
-            // Gửi thông báo cho Senior nếu khiếu nại đã được xử lý
-            if (model.Status == "Resolved" || model.Status == "Dismissed")
-            {
-                var senior = await _context.Seniors.FindAsync(complaint.SeniorId);
-                if (senior != null)
-                {
-                    var seniorUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == senior.UserId && u.Role == "Senior");
-                    if (seniorUser != null)
-                    {
-                        var notification = new Notification
-                        {
-                            UserId = seniorUser.Id,
-                            JobId = complaint.JobId,
-                            Message = $"Khiếu nại của bạn về công việc #{complaint.JobId} đã được xử lý.\n" +
-                                      $"- Trạng thái: {model.Status}\n" +
-                                      $"- Giải quyết: {model.Resolution}",
-                            CreatedAt = DateTime.Now,
-                            IsRead = false
-                        };
-                        _context.Notifications.Add(notification);
-
-                        // Gửi thông báo qua SignalR
-                        await _notificationHub.Clients.User(seniorUser.Id).SendAsync("ReceiveNotification", notification.Message);
-                    }
-                }
-            }
-
-            await _context.SaveChangesAsync();
-
-            TempData["SuccessMessage"] = "Khiếu nại đã được xử lý thành công.";
-            return RedirectToAction("ManageComplaints");
-        }
+        // [HttpPost]
+        // public async Task<IActionResult> HandleComplaint(HandleComplaintViewModel model)
+        // {
+        //     if (!ModelState.IsValid)
+        //     {
+        //         return View(model);
+        //     }
+        //
+        //     var complaint = await _context.Complaints
+        //         .Include(c => c.Job)
+        //         .FirstOrDefaultAsync(c => c.Id == model.ComplaintId);
+        //
+        //     if (complaint == null)
+        //     {
+        //         TempData["ErrorMessage"] = "Không tìm thấy khiếu nại.";
+        //         return RedirectToAction("ManageComplaints");
+        //     }
+        //
+        //     complaint.Status = model.Status;
+        //     complaint.Resolution = model.Resolution;
+        //     _context.Complaints.Update(complaint);
+        //
+        //     // Gửi thông báo cho Senior nếu khiếu nại đã được xử lý
+        //     if (model.Status == "Resolved" || model.Status == "Dismissed")
+        //     {
+        //         var senior = await _context.Seniors.FindAsync(complaint.SeniorId);
+        //         if (senior != null)
+        //         {
+        //             var seniorUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == senior.UserId && u.Role == "Senior");
+        //             if (seniorUser != null)
+        //             {
+        //                 var notification = new Notification
+        //                 {
+        //                     UserId = seniorUser.Id,
+        //                     JobId = complaint.JobId,
+        //                     Message = $"Khiếu nại của bạn về công việc #{complaint.JobId} đã được xử lý.\\n" +
+        //                               $"- Trạng thái: {model.Status}\\n" +
+        //                               $"- Giải quyết: {model.Resolution}",
+        //                     CreatedAt = DateTime.Now,
+        //                     IsRead = false
+        //                 };
+        //                 _context.Notifications.Add(notification);
+        //
+        //                 // Gửi thông báo qua SignalR
+        //                 await _notificationHub.Clients.User(seniorUser.Id).SendAsync("ReceiveNotification", notification.Message);
+        //             }
+        //         }
+        //     }
+        //
+        //     await _context.SaveChangesAsync();
+        //
+        //     TempData["SuccessMessage"] = "Khiếu nại đã được xử lý thành công.";
+        //     return RedirectToAction("ManageComplaints");
+        // }
 
         // GET: Admin/ResolveComplaint
-        [HttpGet]
-        public async Task<IActionResult> ResolveComplaint(int id)
-        {
-            var complaint = await _context.Complaints
-                .Include(c => c.Job)
-                .FirstOrDefaultAsync(c => c.Id == id);
-
-            if (complaint == null)
-            {
-                TempData["ErrorMessage"] = "Không tìm thấy khiếu nại.";
-                return RedirectToAction("ManageComplaints");
-            }
-
-            var job = await _context.CareJobs.FindAsync(complaint.JobId);
-            if (job == null)
-            {
-                TempData["ErrorMessage"] = "Không tìm thấy công việc liên quan đến khiếu nại.";
-                return RedirectToAction("ManageComplaints");
-            }
-
-            var senior = await _context.Seniors.FindAsync(complaint.SeniorId);
-            var caregiver = await _context.Caregivers.FindAsync(complaint.CaregiverId);
-
-            var viewModel = new ComplaintViewModel
-            {
-                Complaint = complaint,
-                Job = job,
-                Senior = senior,
-                Caregiver = caregiver
-            };
-
-            return View(viewModel);
-        }
+        // [HttpGet]
+        // public async Task<IActionResult> ResolveComplaint(int id)
+        // {
+        //     var complaint = await _context.Complaints
+        //         .Include(c => c.Job)
+        //         .FirstOrDefaultAsync(c => c.Id == id);
+        //
+        //     if (complaint == null)
+        //     {
+        //         TempData["ErrorMessage"] = "Không tìm thấy khiếu nại.";
+        //         return RedirectToAction("ManageComplaints");
+        //     }
+        //
+        //     var job = await _context.CareJobs.FindAsync(complaint.JobId);
+        //     if (job == null)
+        //     {
+        //         TempData["ErrorMessage"] = "Không tìm thấy công việc liên quan đến khiếu nại.";
+        //         return RedirectToAction("ManageComplaints");
+        //     }
+        //
+        //     var senior = await _context.Seniors.FindAsync(complaint.SeniorId);
+        //     var caregiver = await _context.Caregivers.FindAsync(complaint.CaregiverId);
+        //
+        //     var viewModel = new ComplaintViewModel
+        //     {
+        //         Complaint = complaint,
+        //         Job = job,
+        //         Senior = senior,
+        //         Caregiver = caregiver
+        //     };
+        //
+        //     return View(viewModel);
+        // }
 
         // POST: Admin/ResolveComplaint
-        [HttpPost]
-        public async Task<IActionResult> ResolveComplaint(int id, string adminResponse)
-        {
-            var complaint = await _context.Complaints
-                .Include(c => c.Job)
-                .FirstOrDefaultAsync(c => c.Id == id);
-
-            if (complaint == null)
-            {
-                TempData["ErrorMessage"] = "Không tìm thấy khiếu nại.";
-                return RedirectToAction("ManageComplaints");
-            }
-
-            if (string.IsNullOrWhiteSpace(adminResponse))
-            {
-                TempData["ErrorMessage"] = "Vui lòng nhập phản hồi.";
-                return RedirectToAction("ResolveComplaint", new { id });
-            }
-
-            complaint.Status = "Đã xử lý";
-            complaint.Resolution = adminResponse;
-            _context.Complaints.Update(complaint);
-
-            // Gửi thông báo cho Senior
-            var senior = await _context.Seniors.FindAsync(complaint.SeniorId);
-            if (senior != null)
-            {
-                var seniorUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == senior.UserId && u.Role == "Senior");
-                if (seniorUser != null)
-                {
-                    var notification = new Notification
-                    {
-                        UserId = seniorUser.Id,
-                        JobId = complaint.JobId,
-                        Message = $"Khiếu nại của bạn về công việc #{complaint.JobId} đã được xử lý.\n" +
-                                  $"- Trạng thái: Đã xử lý\n" +
-                                  $"- Giải quyết: {adminResponse}",
-                        CreatedAt = DateTime.Now,
-                        IsRead = false
-                    };
-                    _context.Notifications.Add(notification);
-
-                    // Gửi thông báo qua SignalR
-                    await _notificationHub.Clients.User(seniorUser.Id).SendAsync("ReceiveNotification", notification.Message);
-                }
-            }
-
-            await _context.SaveChangesAsync();
-
-            TempData["SuccessMessage"] = "Khiếu nại đã được xử lý thành công.";
-            return RedirectToAction("ManageComplaints");
-        }
+        // [HttpPost]
+        // public async Task<IActionResult> ResolveComplaint(int id, string adminResponse)
+        // {
+        //     var complaint = await _context.Complaints
+        //         .Include(c => c.Job)
+        //         .FirstOrDefaultAsync(c => c.Id == id);
+        //
+        //     if (complaint == null)
+        //     {
+        //         TempData["ErrorMessage"] = "Không tìm thấy khiếu nại.";
+        //         return RedirectToAction("ManageComplaints");
+        //     }
+        //
+        //     if (string.IsNullOrWhiteSpace(adminResponse))
+        //     {
+        //         TempData["ErrorMessage"] = "Vui lòng nhập phản hồi.";
+        //         return RedirectToAction("ResolveComplaint", new { id });
+        //     }
+        //
+        //     complaint.Status = "Đã xử lý";
+        //     complaint.Resolution = adminResponse;
+        //     _context.Complaints.Update(complaint);
+        //
+        //     // Gửi thông báo cho Senior
+        //     var senior = await _context.Seniors.FindAsync(complaint.SeniorId);
+        //     if (senior != null)
+        //     {
+        //         var seniorUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == senior.UserId && u.Role == "Senior");
+        //         if (seniorUser != null)
+        //         {
+        //             var notification = new Notification
+        //             {
+        //                 UserId = seniorUser.Id,
+        //                 JobId = complaint.JobId,
+        //                 Message = $"Khiếu nại của bạn về công việc #{complaint.JobId} đã được xử lý.\\n" +
+        //                           $"- Trạng thái: Đã xử lý\\n" +
+        //                           $"- Giải quyết: {adminResponse}",
+        //                 CreatedAt = DateTime.Now,
+        //                 IsRead = false
+        //             };
+        //             _context.Notifications.Add(notification);
+        //
+        //             // Gửi thông báo qua SignalR
+        //             await _notificationHub.Clients.User(seniorUser.Id).SendAsync("ReceiveNotification", notification.Message);
+        //         }
+        //     }
+        //
+        //     await _context.SaveChangesAsync();
+        //
+        //     TempData["SuccessMessage"] = "Khiếu nại đã được xử lý thành công.";
+        //     return RedirectToAction("ManageComplaints");
+        // }
 
         [HttpGet]
         public IActionResult AddUser()

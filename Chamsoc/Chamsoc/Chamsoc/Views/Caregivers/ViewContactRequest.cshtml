@@ -1,0 +1,598 @@
+@model Chamsoc.Controllers.CaregiversController.ContactRequestViewModel
+
+@{
+    ViewData["Title"] = "Chi tiết yêu cầu liên hệ";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Chi tiết yêu cầu liên hệ</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5>Thông tin người gửi</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Tên:</strong> @Model.SeniorName</p>
+                                <p><strong>Số điện thoại:</strong> @Model.SeniorPhone</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Địa chỉ:</strong> @Model.SeniorAddress</p>
+                                <p><strong>Thời gian gửi:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5>Nội dung yêu cầu</h5>
+                        <div class="alert alert-info">
+                            @Model.Message
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="@Url.Action("ListSeniors", "Seniors", new { requesterId = Model.SeniorId })" class="btn btn-primary">
+                            <i class="fas fa-handshake me-2"></i>Bắt đầu liên hệ
+                        </a>
+                        
+                        @if (!Model.HasRelatedJob)
+                        {
+                            <a href="@Url.Action("BookCaregiver", "Caregivers", new { seniorId = Model.SeniorId })" class="btn btn-success">
+                                <i class="fas fa-plus me-2"></i>Tạo công việc mới
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Details", "CareJobs", new { id = Model.JobId })" class="btn btn-info">
+                                <i class="fas fa-info-circle me-2"></i>Xem chi tiết công việc
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popup for Incoming Call -->
+<div id="callPopup" class="call-popup">
+    <div class="popup-content">
+        <img id="callAvatar" class="avatar" src="https://via.placeholder.com/120" alt="Avatar">
+        <h4 id="popupTitle">Cuộc gọi đến</h4>
+        <p id="callStatus" class="mb-3">Đang đợi phản hồi...</p>
+        <div id="incomingCallButtons" class="popup-buttons d-none">
+            <button id="answerCallBtn" class="btn btn-success" title="Nhận cuộc gọi" onclick="acceptCall()">
+                <i class="bi bi-telephone-inbound-fill"></i>
+            </button>
+            <button id="rejectCallBtn" class="btn btn-danger" title="Từ chối cuộc gọi" onclick="rejectCall()">
+                <i class="bi bi-telephone-x-fill"></i>
+            </button>
+        </div>
+        <div id="callControls" class="popup-buttons">
+            <button id="endCallBtn" class="btn btn-danger" title="Kết thúc cuộc gọi" onclick="endCall()">
+                <i class="bi bi-telephone-x-fill"></i>
+            </button>
+        </div>
+    </div>
+    <span class="close-btn" id="closePopupBtn" onclick="endCall()">×</span>
+</div>
+
+<!-- Popup for Active Call -->
+<div id="activeCallPopup" class="active-call-popup">
+    <div class="popup-content">
+        <img id="callAvatar" class="avatar" src="https://via.placeholder.com/120" alt="Avatar">
+        <h4 id="callName">Đang gọi...</h4>
+        <span id="callTimer" class="call-timer">00:00</span>
+        <div class="popup-buttons">
+            <button id="toggleMicBtn" class="btn btn-secondary" title="Tắt/Bật micro">
+                <i class="bi bi-mic-fill"></i>
+            </button>
+            <button id="toggleSpeakerBtn" class="btn btn-secondary" title="Tắt/Bật loa">
+                <i class="bi bi-volume-up-fill"></i>
+            </button>
+            <button id="endCallBtn" class="btn btn-danger" title="Kết thúc cuộc gọi">
+                <i class="bi bi-telephone-x-fill"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Audio elements -->
+<audio id="remoteAudio" autoplay></audio>
+<audio id="ringingAudio" loop>
+    <source src="/audio/ringing.mp3" type="audio/mpeg">
+    <source src="https://www.soundjay.com/phone/telephone-ring-01.mp3" type="audio/mpeg">
+</audio>
+<audio id="endCallAudio">
+    <source src="/audio/endcall.mp3" type="audio/mpeg">
+    <source src="https://www.soundjay.com/phone/telephone-end-01.mp3" type="audio/mpeg">
+</audio>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        .call-popup, .active-call-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            max-width: 450px;
+            width: 90%;
+            color: white;
+        }
+
+        .call-popup .popup-content, .active-call-popup .popup-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .call-popup .avatar, .active-call-popup .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 2px solid #fff;
+            background: none;
+        }
+
+        .call-popup h4, .active-call-popup h4 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .call-popup .popup-buttons, .active-call-popup .popup-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .call-popup .popup-buttons button, .active-call-popup .popup-buttons button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .call-popup .popup-buttons button:hover, .active-call-popup .popup-buttons button:hover {
+            transform: scale(1.1);
+        }
+
+        .call-popup .btn-success {
+            background-color: #00cc00;
+        }
+
+        .call-popup .btn-danger {
+            background-color: #ff3333;
+        }
+
+        .active-call-popup .btn-secondary {
+            background-color: #555;
+        }
+
+        .active-call-popup .btn-secondary.muted {
+            background-color: #333;
+        }
+
+        .call-popup.shake {
+            animation: shake 0.5s ease-in-out infinite;
+        }
+
+        .call-timer {
+            font-size: 1.2rem;
+            color: #ccc;
+            margin-top: 10px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        @@keyframes shake {
+            0%, 100% {
+                transform: translate(-50%, -50%) translateX(0);
+            }
+            25% {
+                transform: translate(-50%, -50%) translateX(-5px);
+            }
+            75% {
+                transform: translate(-50%, -50%) translateX(5px);
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+    <script>
+        let callTimer;
+        let callStartTime;
+        let isMuted = false;
+        let localStream;
+        let peerConnection;
+        let connection;
+        let isCallActive = false;
+        let isIncomingCall = false;
+        let targetUserId = null;
+
+        // Khởi tạo kết nối SignalR
+        async function initializeSignalR() {
+            try {
+                connection = new signalR.HubConnectionBuilder()
+                    .withUrl("/notificationHub")
+                    .withAutomaticReconnect()
+                    .build();
+
+                // Xử lý sự kiện nhận yêu cầu cuộc gọi
+                connection.on("ReceiveCallRequest", async (callerId, callerName, callerAvatar) => {
+                    try {
+                        console.log("Received call request from:", callerId, callerName);
+                        isIncomingCall = true;
+                        targetUserId = callerId;
+                        
+                        // Cập nhật thông tin người gọi
+                        document.getElementById('callAvatar').src = callerAvatar || 'https://via.placeholder.com/120';
+                        document.getElementById('popupTitle').textContent = 'Cuộc gọi đến';
+                        document.getElementById('callStatus').textContent = `Cuộc gọi đến từ ${callerName}`;
+                        
+                        // Hiển thị nút nhận/từ chối
+                        document.getElementById('incomingCallButtons').classList.remove('d-none');
+                        document.getElementById('callControls').classList.add('d-none');
+                        
+                        // Hiển thị popup
+                        const callPopup = document.getElementById('callPopup');
+                        callPopup.style.display = 'block';
+                        callPopup.classList.add('shake');
+                        
+                        // Phát âm thanh chuông
+                        playAudio('ringingAudio');
+                    } catch (error) {
+                        console.error("Error handling incoming call request:", error);
+                        showError("Không thể xử lý cuộc gọi đến");
+                    }
+                });
+
+                // Xử lý sự kiện cuộc gọi bị từ chối
+                connection.on("CallRejected", () => {
+                    showError("Cuộc gọi bị từ chối");
+                    endCall();
+                });
+
+                // Xử lý sự kiện cuộc gọi được chấp nhận
+                connection.on("CallAccepted", async (callerId) => {
+                    try {
+                        await startWebRTCConnection(callerId, true);
+                    } catch (error) {
+                        console.error("Error handling call acceptance:", error);
+                        showError("Không thể thiết lập cuộc gọi");
+                        endCall();
+                    }
+                });
+
+                // Xử lý sự kiện nhận offer
+                connection.on("ReceiveCallOffer", async (offerJson, callerId) => {
+                    try {
+                        const offer = JSON.parse(offerJson);
+                        await handleIncomingCall(offer, callerId);
+                    } catch (error) {
+                        console.error("Error handling incoming call:", error);
+                        showError("Không thể xử lý cuộc gọi đến");
+                    }
+                });
+
+                // Xử lý sự kiện nhận answer
+                connection.on("ReceiveCallAnswer", async (answerJson) => {
+                    try {
+                        if (peerConnection && peerConnection.signalingState !== "closed") {
+                            const answer = JSON.parse(answerJson);
+                            await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+                        }
+                    } catch (error) {
+                        console.error("Error setting remote description:", error);
+                        showError("Không thể thiết lập kết nối");
+                    }
+                });
+
+                // Xử lý sự kiện nhận ICE candidate
+                connection.on("ReceiveIceCandidate", async (candidateJson) => {
+                    try {
+                        if (peerConnection && peerConnection.signalingState !== "closed") {
+                            const candidate = JSON.parse(candidateJson);
+                            await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+                        }
+                    } catch (error) {
+                        console.error("Error adding ICE candidate:", error);
+                    }
+                });
+
+                // Xử lý sự kiện kết nối đóng
+                connection.on("CallEnded", () => {
+                    endCall();
+                });
+
+                await connection.start();
+                console.log("SignalR Connected.");
+            } catch (err) {
+                console.error("SignalR Connection Error:", err);
+                showError("Không thể kết nối đến máy chủ");
+            }
+        }
+
+        // Khởi tạo SignalR khi trang được tải
+        initializeSignalR();
+
+        function showError(message) {
+            const callStatus = document.getElementById('callStatus');
+            if (callStatus) {
+                callStatus.textContent = message;
+                callStatus.className = 'text-danger';
+            }
+        }
+
+        async function startCall(targetUserId) {
+            try {
+                if (isCallActive) {
+                    console.log("Call already in progress");
+                    return;
+                }
+
+                console.log("Starting call to user:", targetUserId);
+                isIncomingCall = false;
+                targetUserId = targetUserId;
+
+                // Cập nhật thông tin popup
+                document.getElementById('callAvatar').src = 'https://via.placeholder.com/120';
+                document.getElementById('popupTitle').textContent = 'Đang gọi...';
+                document.getElementById('callStatus').textContent = 'Đang đợi phản hồi...';
+                
+                // Hiển thị nút kết thúc cuộc gọi
+                document.getElementById('incomingCallButtons').classList.add('d-none');
+                document.getElementById('callControls').classList.remove('d-none');
+                
+                // Hiển thị popup
+                const callPopup = document.getElementById('callPopup');
+                callPopup.style.display = 'block';
+                callPopup.classList.remove('shake');
+
+                // Gửi yêu cầu cuộc gọi
+                await connection.invoke("RequestCall", targetUserId);
+                
+                // Phát âm thanh chuông
+                playAudio('ringingAudio');
+            } catch (error) {
+                console.error('Error starting call:', error);
+                showError('Không thể bắt đầu cuộc gọi');
+                endCall();
+            }
+        }
+
+        async function acceptCall() {
+            try {
+                if (!isIncomingCall) return;
+
+                const callerId = document.getElementById('callPopup').dataset.callerId;
+                console.log("Accepting call from:", callerId);
+                await connection.invoke("AcceptCall", callerId);
+                await startWebRTCConnection(callerId, false);
+            } catch (error) {
+                console.error('Error accepting call:', error);
+                showError('Không thể chấp nhận cuộc gọi');
+                endCall();
+            }
+        }
+
+        async function rejectCall() {
+            try {
+                if (!isIncomingCall) return;
+
+                const callerId = document.getElementById('callPopup').dataset.callerId;
+                console.log("Rejecting call from:", callerId);
+                await connection.invoke("RejectCall", callerId);
+                endCall();
+            } catch (error) {
+                console.error('Error rejecting call:', error);
+                showError('Không thể từ chối cuộc gọi');
+            }
+        }
+
+        async function startWebRTCConnection(targetUserId, isIncoming) {
+            try {
+                console.log("Starting WebRTC connection with user:", targetUserId, "isIncoming:", isIncoming);
+
+                // Khởi tạo WebRTC
+                const configuration = {
+                    iceServers: [
+                        { urls: 'stun:stun.l.google.com:19302' },
+                        { urls: 'stun:stun1.l.google.com:19302' }
+                    ]
+                };
+
+                peerConnection = new RTCPeerConnection(configuration);
+                
+                // Lấy stream từ microphone
+                localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                localStream.getTracks().forEach(track => {
+                    peerConnection.addTrack(track, localStream);
+                });
+
+                // Xử lý ICE candidates
+                peerConnection.onicecandidate = event => {
+                    if (event.candidate) {
+                        const candidateData = {
+                            candidate: event.candidate.candidate,
+                            sdpMid: event.candidate.sdpMid,
+                            sdpMLineIndex: event.candidate.sdpMLineIndex
+                        };
+                        connection.invoke("HandleIceCandidate", targetUserId, JSON.stringify(candidateData))
+                            .catch(error => {
+                                console.error("Error sending ICE candidate:", error);
+                            });
+                    }
+                };
+
+                // Xử lý khi kết nối được thiết lập
+                peerConnection.onconnectionstatechange = () => {
+                    console.log("Connection state changed:", peerConnection.connectionState);
+                    switch(peerConnection.connectionState) {
+                        case "connected":
+                            document.getElementById('callStatus').textContent = 'Đã kết nối';
+                            document.getElementById('callStatus').className = 'text-success';
+                            isCallActive = true;
+                            break;
+                        case "disconnected":
+                        case "failed":
+                            document.getElementById('callStatus').textContent = 'Mất kết nối';
+                            document.getElementById('callStatus').className = 'text-danger';
+                            endCall();
+                            break;
+                        case "closed":
+                            document.getElementById('callStatus').textContent = 'Cuộc gọi kết thúc';
+                            document.getElementById('callStatus').className = '';
+                            endCall();
+                            break;
+                    }
+                };
+
+                if (!isIncoming) {
+                    // Tạo và gửi offer
+                    const offer = await peerConnection.createOffer();
+                    await peerConnection.setLocalDescription(offer);
+
+                    const offerData = {
+                        type: offer.type,
+                        sdp: offer.sdp
+                    };
+                    console.log("Sending offer to user:", targetUserId);
+                    await connection.invoke("HandleCallOffer", targetUserId, JSON.stringify(offerData));
+                }
+
+                // Bắt đầu đếm thời gian
+                startCallTimer();
+            } catch (error) {
+                console.error('Error starting WebRTC connection:', error);
+                showError('Không thể thiết lập kết nối');
+                endCall();
+            }
+        }
+
+        async function handleIncomingCall(offer, callerId) {
+            try {
+                if (isCallActive) {
+                    console.log("Call already in progress");
+                    return;
+                }
+
+                console.log("Handling incoming call from:", callerId);
+
+                // Thiết lập offer từ người gọi
+                await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+
+                // Tạo và gửi answer
+                const answer = await peerConnection.createAnswer();
+                await peerConnection.setLocalDescription(answer);
+
+                const answerData = {
+                    type: answer.type,
+                    sdp: answer.sdp
+                };
+                console.log("Sending answer to user:", callerId);
+                await connection.invoke("HandleCallAnswer", callerId, JSON.stringify(answerData));
+
+                // Cập nhật trạng thái
+                document.getElementById('callStatus').textContent = 'Đã kết nối';
+                document.getElementById('callStatus').className = 'text-success';
+                isCallActive = true;
+            } catch (error) {
+                console.error('Error handling incoming call:', error);
+                showError('Không thể xử lý cuộc gọi đến');
+                endCall();
+            }
+        }
+
+        function endCall() {
+            if (peerConnection) {
+                peerConnection.close();
+                peerConnection = null;
+            }
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+                localStream = null;
+            }
+            stopCallTimer();
+            isCallActive = false;
+            isIncomingCall = false;
+            const callPopup = document.getElementById('callPopup');
+            if (callPopup) {
+                callPopup.style.display = 'none';
+            }
+        }
+
+        function toggleMute() {
+            if (localStream) {
+                isMuted = !isMuted;
+                localStream.getAudioTracks().forEach(track => {
+                    track.enabled = !isMuted;
+                });
+                const muteIcon = document.getElementById('muteIcon');
+                muteIcon.className = isMuted ? 'fas fa-microphone-slash' : 'fas fa-microphone';
+            }
+        }
+
+        function startCallTimer() {
+            callStartTime = new Date();
+            callTimer = setInterval(updateCallTimer, 1000);
+        }
+
+        function stopCallTimer() {
+            if (callTimer) {
+                clearInterval(callTimer);
+                callTimer = null;
+            }
+        }
+
+        function updateCallTimer() {
+            const now = new Date();
+            const diff = Math.floor((now - callStartTime) / 1000);
+            const minutes = Math.floor(diff / 60).toString().padStart(2, '0');
+            const seconds = (diff % 60).toString().padStart(2, '0');
+            document.getElementById('callTimer').textContent = `${minutes}:${seconds}`;
+        }
+
+        function playAudio(audioId) {
+            const audio = document.getElementById(audioId);
+            if (audio) {
+                audio.play().catch(err => console.error(`Error playing ${audioId}:`, err));
+            }
+        }
+
+        function stopAudio(audioId) {
+            const audio = document.getElementById(audioId);
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        }
+    </script>
+} 

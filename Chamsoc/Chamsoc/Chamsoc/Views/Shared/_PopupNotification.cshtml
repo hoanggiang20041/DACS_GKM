@@ -1,0 +1,53 @@
+@if (TempData["SuccessMessage"] != null || TempData["ErrorMessage"] != null || TempData["WarningMessage"] != null || TempData["InfoMessage"] != null)
+{
+    var message = TempData["SuccessMessage"] ?? TempData["ErrorMessage"] ?? TempData["WarningMessage"] ?? TempData["InfoMessage"];
+    var type = TempData["SuccessMessage"] != null ? "success"
+            : TempData["ErrorMessage"] != null ? "error"
+            : TempData["WarningMessage"] != null ? "warning"
+            : "info";
+
+    <div id="popup-notification-overlay">
+        <div id="popup-notification-modal" class="@type">
+            <h3>Thông báo</h3>
+            <div class="popup-message">@message</div>
+            <button class="popup-close" onclick="closePopupNotification()">Đóng</button>
+        </div>
+    </div>
+}
+<style>
+#popup-notification-overlay {
+    position: fixed; z-index: 9999; left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;
+}
+#popup-notification-modal {
+    background: #222; color: #fff; border-radius: 16px; padding: 2rem 2.5rem; min-width: 320px; max-width: 90vw; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    position: relative;
+}
+#popup-notification-modal.success { border-top: 6px solid #28a745; }
+#popup-notification-modal.error { border-top: 6px solid #dc3545; }
+#popup-notification-modal.warning { border-top: 6px solid #ffc107; color: #222; }
+#popup-notification-modal.info { border-top: 6px solid #17a2b8; }
+.popup-message { margin: 1.5rem 0; font-size: 1.1rem; }
+.popup-close {
+    background: #28a745; color: #fff; border: none; border-radius: 8px; padding: 0.5rem 1.5rem; font-weight: 600; font-size: 1rem; cursor: pointer;
+    transition: background 0.2s;
+}
+#popup-notification-modal.error .popup-close { background: #dc3545; }
+#popup-notification-modal.warning .popup-close { background: #ffc107; color: #222; }
+#popup-notification-modal.info .popup-close { background: #17a2b8; }
+.popup-close:hover { opacity: 0.85; }
+</style>
+<script>
+function closePopupNotification() {
+    document.getElementById('popup-notification-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+window.onload = function() {
+    if (document.getElementById('popup-notification-overlay')) {
+        document.body.style.overflow = 'hidden';
+        document.getElementById('popup-notification-overlay').addEventListener('click', function(e) {
+            if (e.target === this) closePopupNotification();
+        });
+    }
+};
+</script> 

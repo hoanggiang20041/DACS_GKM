@@ -1,183 +1,603 @@
-﻿@model Chamsoc.Models.Caregiver
+﻿@model Chamsoc.Models.BookCaregiverViewModel
 @using System.Globalization
 
 @{
-    ViewData["Title"] = "Đặt Lịch Chăm Sóc";
-    var pricePerHour = Model.Price;
-    var price1Hour = pricePerHour * 1;
-    var price2Hours = pricePerHour * 2;
-    var price5Sessions = pricePerHour * 5;
-    var defaultStartTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
-    var serviceLabel = string.IsNullOrEmpty(Model.Skills) ? "Dịch vụ" : Model.Skills;
-    var seniorPhone = ViewBag.SeniorPhone as string ?? "Chưa có số điện thoại";
+    ViewData["Title"] = "Đặt lịch chăm sóc";
+    var minDateTime = DateTime.Now.AddHours(1);
 }
 
-<div class="container my-5">
-    @if (Model == null)
-    {
-        <h2 class="text-center mb-4 text-danger">Không tìm thấy người chăm sóc.</h2>
+<style>
+    .booking-container {
+        max-width: 1000px;
+        margin: 2rem auto;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
     }
-    else
-    {
-        <h2 class="text-center mb-4">Đặt Lịch Chăm Sóc Với @Model.Name</h2>
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                @if (TempData["ErrorMessage"] != null)
-                {
-                    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-                }
-                @if (TempData["SuccessMessage"] != null)
-                {
-                    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-                }
 
-                <h4 class="mb-3">Bảng Giá @serviceLabel</h4>
-                <table class="table table-bordered mb-4">
-                    <thead>
-                        <tr>
-                            <th>Bảng giá dịch vụ của @serviceLabel</th>
-                            <th>Giá</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Giá dịch vụ 1 giờ</td>
-                            <td>@price1Hour.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) VNĐ</td>
-                        </tr>
-                        <tr>
-                            <td>Giá dịch vụ 2 giờ</td>
-                            <td>@price2Hours.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) VNĐ</td>
-                        </tr>
-                        <tr>
-                            <td>Gói 5 buổi (mỗi buổi 1 giờ)</td>
-                            <td>@price5Sessions.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) VNĐ</td>
-                        </tr>
-                    </tbody>
-                </table>
+    .booking-header {
+        background: linear-gradient(135deg, #0d6efd, #0a58ca);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 15px 15px 0 0;
+        text-align: center;
+    }
 
-                <form id="bookForm" asp-action="BookCaregiver" method="post">
-                    <input type="hidden" name="caregiverId" value="@Model.Id" />
-                    <input type="hidden" id="latitude" name="latitude" value="0" />
-                    <input type="hidden" id="longitude" name="longitude" value="0" />
+    .booking-body {
+        padding: 2rem;
+    }
 
-                    <div class="mb-3">
-                        <label for="serviceType" class="form-label">Loại @serviceLabel</label>
-                        <select class="form-control" id="serviceType" name="serviceType" required>
-                            <option value="">Chọn loại dịch vụ của @serviceLabel.ToLower()</option>
-                            <option value="1Hour">Giá dịch vụ / 1 giờ (@price1Hour.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) VNĐ)</option>
-                            <option value="2Hours">Giá dịch vụ / 2 giờ (@price2Hours.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) VNĐ)</option>
-                            <option value="5Sessions">Gói 5 buổi (@price5Sessions.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) VNĐ)</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="startTime" class="form-label">Thời Gian Bắt Đầu</label>
-                        <input type="datetime-local" class="form-control" id="startTime" name="startTime" value="@defaultStartTime" required />
-                    </div>
-                    <div class="mb-3">
-                        <label for="phoneNumber" class="form-label">Số Điện Thoại Của Bạn</label>
-                        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" value="@seniorPhone" required pattern="[0-9]{10}" title="Số điện thoại phải gồm 10 chữ số" />
-                    </div>
-                    <div class="mb-3">
-                        <label for="locationSearch" class="form-label">Tìm Kiếm Vị Trí</label>
-                        <input type="text" class="form-control" id="locationSearch" placeholder="Nhập địa chỉ để tìm kiếm" />
-                        <div id="locationSuggestions" class="dropdown-menu" style="width: 100%; max-height: 200px; overflow-y: auto;"></div>
-                        <div id="locationMessage" class="alert alert-info mt-2 d-none">
-                            Chúng tôi sẽ đến chăm sóc tại vị trí đã được định vị: <span id="latLong"></span>
-                            <button type="button" id="changeLocation" class="btn btn-sm btn-warning ms-2">Thay đổi vị trí</button>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" id="submitBtn" class="btn btn-primary">Chốt Lịch</button>
-                        <a asp-action="ListCaregivers" class="btn btn-secondary">Quay Lại</a>
-                    </div>
-                </form>
+    .caregiver-card {
+        display: flex;
+        align-items: flex-start;
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid #e9ecef;
+    }
+
+    .caregiver-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-right: 1.5rem;
+        border: 3px solid #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .caregiver-info {
+        flex: 1;
+    }
+
+    .caregiver-name {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #344767;
+        margin-bottom: 0.5rem;
+    }
+
+    .caregiver-rating {
+        color: #ffc107;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .caregiver-skills {
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+    }
+
+    .caregiver-price {
+        font-size: 1.2rem;
+        color: #0d6efd;
+        font-weight: 600;
+    }
+
+    .form-section {
+        background: #fff;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid #e9ecef;
+    }
+
+    .form-section-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #344767;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #344767;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control, .form-select {
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        padding: 0.75rem;
+        transition: all 0.2s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+    }
+
+    .alert-info {
+        background-color: #e8f4ff;
+        border-left: 4px solid #0d6efd;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+    }
+
+    .price-card {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 1.5rem;
+    }
+
+    .price-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .price-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .price-label {
+        color: #6c757d;
+    }
+
+    .price-value {
+        font-weight: 600;
+        color: #344767;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #0d6efd, #0a58ca);
+        color: white;
+        border: none;
+        padding: 1rem;
+        border-radius: 10px;
+        font-weight: 600;
+        width: 100%;
+        margin-top: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(13,110,253,0.3);
+    }
+
+    .btn-back {
+        background: #f8f9fa;
+        color: #344767;
+        border: 1px solid #dee2e6;
+        padding: 1rem;
+        border-radius: 10px;
+        font-weight: 600;
+        width: 100%;
+        margin-top: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+        background: #e9ecef;
+    }
+
+    .location-wrapper {
+        position: relative;
+    }
+
+    .location-suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        z-index: 1000;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .location-suggestion {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .location-suggestion:last-child {
+        border-bottom: none;
+    }
+
+    .location-suggestion:hover {
+        background: #f8f9fa;
+    }
+
+    .location-icon {
+        color: #6c757d;
+        margin-right: 0.5rem;
+    }
+
+    /* Add smooth scrolling and hardware acceleration */
+    html, body {
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        -webkit-transform: translateZ(0);
+        -moz-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        -o-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+
+    /* Optimize animations */
+    .location-suggestions {
+        transform: translateZ(0);
+        will-change: transform, opacity;
+        transition: all 0.2s ease-out;
+    }
+
+    /* Prevent text selection during interactions */
+    .location-suggestion {
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+</style>
+
+<div class="booking-container">
+    <div class="booking-header">
+        <h4 class="mb-0">Đặt lịch chăm sóc</h4>
+    </div>
+    <div class="booking-body">
+        <div class="caregiver-card">
+            <img src="@(string.IsNullOrEmpty(Model.CaregiverAvatar) ? "/images/default-avatar.png" : Model.CaregiverAvatar)" 
+                 alt="@Model.CaregiverName" class="caregiver-avatar" />
+            <div class="caregiver-info">
+                <div class="caregiver-name">@Model.CaregiverName</div>
+                <div class="caregiver-rating">
+                    @for (var i = 0; i < Math.Floor(Model.CaregiverRating); i++)
+                    {
+                        <i class="fas fa-star"></i>
+                    }
+                    @if (Model.CaregiverRating % 1 != 0)
+                    {
+                        <i class="fas fa-star-half-alt"></i>
+                    }
+                    <span class="text-muted">(@Model.CaregiverRatingCount đánh giá)</span>
+                </div>
+                <div class="caregiver-skills">
+                    <i class="fas fa-certificate me-2"></i>@Model.CaregiverSkills
+                </div>
+                <div class="caregiver-price">
+                    <i class="fas fa-tag me-2"></i>@Model.ServicePrice.ToString("N0") VNĐ/giờ
+                </div>
             </div>
         </div>
-    }
+
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i> 
+            Vui lòng điền đầy đủ thông tin để đặt lịch chăm sóc với người chăm sóc.
+        </div>
+
+        <form id="bookingForm" method="post" action="@Url.Action("BookCaregiver", "Caregivers")">
+            <input type="hidden" asp-for="CareJobId" />
+            <input type="hidden" asp-for="CaregiverId" />
+            <input type="hidden" asp-for="CaregiverName" />
+            <input type="hidden" asp-for="ServicePrice" />
+            <input type="hidden" name="latitude" id="latitude" value="0" />
+            <input type="hidden" name="longitude" id="longitude" value="0" />
+            <input type="hidden" name="phoneNumber" id="phoneNumber" value="@ViewBag.SeniorPhone" />
+
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-calendar-alt me-2"></i>Thông tin đặt lịch
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ServiceType" class="form-label">Loại dịch vụ</label>
+                        <select asp-for="ServiceType" class="form-select" required>
+                            <option value="">Chọn loại dịch vụ</option>
+                            <option value="comprehensive">Chăm sóc toàn diện</option>
+                            <option value="physiotherapy">Vật lí trị liệu</option>
+                            <option value="medical">Chăm sóc y tế</option>
+                            <option value="rehabilitation">Phục hồi chức năng</option>
+                        </select>
+                        <span asp-validation-for="ServiceType" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="NumberOfHours" class="form-label">Số giờ cần chăm sóc</label>
+                        <select asp-for="NumberOfHours" class="form-select" required>
+                            <option value="1">1 giờ</option>
+                            <option value="3">3 giờ</option>
+                            <option value="5">5 giờ</option>
+                            <option value="8">8 giờ</option>
+                            <option value="12">12 giờ</option>
+                            <option value="24">24 giờ</option>
+                        </select>
+                        <span asp-validation-for="NumberOfHours" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="StartTime" class="form-label">Thời gian bắt đầu</label>
+                    <input asp-for="StartTime" class="form-control" type="datetime-local" 
+                           value="@DateTime.Now.AddHours(1).ToString("yyyy-MM-ddTHH:mm")"
+                           min="@DateTime.Now.AddHours(1).ToString("yyyy-MM-ddTHH:mm")" required />
+                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Location" class="form-label">Địa điểm</label>
+                    <div class="location-wrapper">
+                        <div class="input-group">
+                            <input asp-for="Location" class="form-control" type="text" 
+                                   placeholder="Nhập địa chỉ để nhận gợi ý..." required readonly />
+                            <button type="button" class="btn btn-outline-primary" id="getCurrentLocation">
+                                <i class="fas fa-location-arrow"></i>
+                            </button>
+                        </div>
+                        <div class="location-suggestions d-none"></div>
+                    </div>
+                    <small class="text-muted">Nhập ít nhất 3 ký tự để nhận gợi ý địa điểm hoặc click vào biểu tượng để lấy vị trí hiện tại</small>
+                    <span asp-validation-for="Location" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">Mô tả công việc cần chăm sóc</label>
+                    <textarea asp-for="Description" class="form-control" rows="3" 
+                              placeholder="Mô tả chi tiết công việc cần được chăm sóc..." required></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-money-bill-wave me-2"></i>Chi phí dự kiến
+                </div>
+                
+                <div class="price-card">
+                    <div class="price-item">
+                        <span class="price-label">Giá mỗi giờ:</span>
+                        <span class="price-value">@Model.ServicePrice.ToString("N0") VNĐ</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="price-label">Số giờ:</span>
+                        <span class="price-value" id="totalHours">1 giờ</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="price-label">Tổng chi phí:</span>
+                        <span class="price-value" id="totalBill">@Model.ServicePrice.ToString("N0") VNĐ</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-submit">
+                <i class="fas fa-paper-plane me-2"></i> Đặt lịch ngay
+            </button>
+            <a asp-action="ListCaregivers" class="btn btn-back">
+                <i class="fas fa-arrow-left me-2"></i> Quay lại danh sách
+            </a>
+        </form>
+    </div>
 </div>
 
 @section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('bookForm');
-            const submitBtn = document.getElementById('submitBtn');
-            const locationSearch = document.getElementById('locationSearch');
-            const locationSuggestions = document.getElementById('locationSuggestions');
-            const locationMessage = document.getElementById('locationMessage');
-            const latLongSpan = document.getElementById('latLong');
-            const changeLocationBtn = document.getElementById('changeLocation');
-            let isLocationConfirmed = false;
+        $(document).ready(function() {
+            var $form = $('#bookingForm');
+            var $locationInput = $('#Location');
+            var $latitudeInput = $('#latitude');
+            var $longitudeInput = $('#longitude');
+            var $serviceTypeSelect = $('#ServiceType');
+            var $numberOfHours = $('#NumberOfHours');
+            var $totalHours = $('#totalHours');
+            var $totalBill = $('#totalBill');
+            var $getCurrentLocationBtn = $('#getCurrentLocation');
+            var pricePerHour = parseInt('@Model.ServicePrice'.replace(/,/g, ''));
+            var searchTimeout = null;
+            var $suggestionsBox = $('.location-suggestions');
 
-            // Tìm kiếm địa chỉ bằng Nominatim
-            locationSearch.addEventListener('input', function () {
-                const query = this.value;
-                if (query.length < 3) {
-                    locationSuggestions.innerHTML = '';
-                    locationSuggestions.classList.remove('show');
+            // Format currency
+            function formatCurrency(number) {
+                return new Intl.NumberFormat('vi-VN').format(number) + ' VNĐ';
+            }
+
+            // Update price calculation
+            function updatePriceAndHours() {
+                var hours = parseInt($numberOfHours.val()) || 1;
+                var total = hours * pricePerHour;
+                $totalHours.text(hours + ' giờ');
+                $totalBill.text(formatCurrency(total));
+            }
+
+            $numberOfHours.on('change', updatePriceAndHours).trigger('change');
+
+            // Location search with coordinates
+            function searchLocation(query) {
+                if (query.length < 2) {
+                    $suggestionsBox.addClass('d-none').empty();
                     return;
                 }
 
-                fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&countrycodes=vn`)
-                    .then(response => response.json())
-                    .then(data => {
-                        locationSuggestions.innerHTML = '';
-                        if (data.length > 0) {
-                            data.forEach(place => {
-                                const item = document.createElement('div');
-                                item.className = 'dropdown-item';
-                                item.textContent = place.display_name;
-                                item.addEventListener('click', function () {
-                                    document.getElementById('latitude').value = place.lat;
-                                    document.getElementById('longitude').value = place.lon;
-                                    locationSearch.value = place.display_name;
-                                    locationSuggestions.classList.remove('show');
-                                    locationMessage.classList.remove('d-none');
-                                    latLongSpan.textContent = `${place.lat}, ${place.lon}`;
-                                    isLocationConfirmed = true;
-                                    submitBtn.textContent = 'Xác Nhận và Chốt Lịch';
-                                });
-                                locationSuggestions.appendChild(item);
-                            });
-                            locationSuggestions.classList.add('show');
-                        } else {
-                            locationSuggestions.classList.remove('show');
+                $suggestionsBox.removeClass('d-none')
+                    .html('<div class="p-2 text-muted"><i class="fas fa-spinner fa-spin me-2"></i>Đang tìm kiếm...</div>');
+
+                $.ajax({
+                    url: 'https://nominatim.openstreetmap.org/search',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        q: query + ', Việt Nam',
+                        format: 'json',
+                        limit: 5,
+                        countrycodes: 'vn',
+                        addressdetails: 1,
+                        'accept-language': 'vi'
+                    },
+                    success: function(data) {
+                        if (!data || data.length === 0) {
+                            $suggestionsBox.html('<div class="p-2 text-muted">Không tìm thấy địa điểm</div>');
+                            return;
                         }
-                    })
-                    .catch(error => console.error('Error fetching suggestions:', error));
+
+                        var html = data.map(function(place) {
+                            var address = [];
+                            if (place.address) {
+                                if (place.address.road) address.push(place.address.road);
+                                if (place.address.suburb) address.push(place.address.suburb);
+                                if (place.address.city_district) address.push(place.address.city_district);
+                                if (place.address.city) address.push(place.address.city);
+                                if (place.address.state) address.push(place.address.state);
+                            }
+                            var displayAddress = address.length > 0 ? address.join(', ') : place.display_name;
+
+                            return '<div class="location-suggestion p-2" ' +
+                                   'data-location="' + displayAddress + '" ' +
+                                   'data-lat="' + place.lat + '" ' +
+                                   'data-lon="' + place.lon + '">' +
+                                   '<i class="fas fa-map-marker-alt location-icon"></i>' +
+                                   displayAddress +
+                                   '</div>';
+                        }).join('');
+
+                        $suggestionsBox.html(html);
+                    },
+                    error: function() {
+                        $suggestionsBox.html('<div class="p-2 text-danger">Có lỗi xảy ra khi tìm kiếm địa điểm</div>');
+                    }
+                });
+            }
+
+            // Handle location input
+            $locationInput.on('input', function() {
+                var query = $(this).val().trim();
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(function() {
+                    searchLocation(query);
+                }, 300);
             });
 
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
+            // Handle location selection
+            $(document).on('click', '.location-suggestion', function() {
+                var location = $(this).data('location');
+                var lat = $(this).data('lat');
+                var lon = $(this).data('lon');
+                
+                $locationInput.val(location);
+                $latitudeInput.val(lat);
+                $longitudeInput.val(lon);
+                $suggestionsBox.addClass('d-none');
+            });
 
-                if (!isLocationConfirmed) {
-                    navigator.geolocation.getCurrentPosition(
-                        function (position) {
-                            const latitude = position.coords.latitude;
-                            const longitude = position.coords.longitude;
-                            document.getElementById('latitude').value = latitude;
-                            document.getElementById('longitude').value = longitude;
-                            locationMessage.classList.remove('d-none');
-                            latLongSpan.textContent = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
-                            isLocationConfirmed = true;
-                            submitBtn.textContent = 'Xác Nhận và Chốt Lịch';
-                        },
-                        function (error) {
-                            alert('Không thể lấy vị trí tự động: ' + error.message + '. Vui lòng nhập địa chỉ để tìm kiếm.');
-                        },
-                        { enableHighAccuracy: true }
-                    );
-                } else {
-                    form.submit();
+            // Get current location
+            $getCurrentLocationBtn.on('click', function() {
+                if (!navigator.geolocation) {
+                    alert('Trình duyệt của bạn không hỗ trợ lấy vị trí.');
+                    return;
+                }
+
+                var $btn = $(this);
+                $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        var lat = position.coords.latitude;
+                        var lon = position.coords.longitude;
+                        
+                        $latitudeInput.val(lat);
+                        $longitudeInput.val(lon);
+
+                        $.ajax({
+                            url: 'https://nominatim.openstreetmap.org/reverse',
+                            type: 'GET',
+                            dataType: 'json',
+                            data: {
+                                format: 'json',
+                                lat: lat,
+                                lon: lon,
+                                'accept-language': 'vi'
+                            },
+                            success: function(data) {
+                                if (data && data.display_name) {
+                                    var address = [];
+                                    if (data.address) {
+                                        if (data.address.road) address.push(data.address.road);
+                                        if (data.address.suburb) address.push(data.address.suburb);
+                                        if (data.address.city_district) address.push(data.address.city_district);
+                                        if (data.address.city) address.push(data.address.city);
+                                        if (data.address.state) address.push(data.address.state);
+                                    }
+                                    var displayAddress = address.length > 0 ? address.join(', ') : data.display_name;
+                                    $locationInput.val(displayAddress);
+                                }
+                            },
+                            complete: function() {
+                                $btn.prop('disabled', false).html('<i class="fas fa-location-arrow"></i>');
+                            }
+                        });
+                    },
+                    function(error) {
+                        var message = 'Không thể lấy vị trí: ';
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                message += 'Bạn đã từ chối cho phép truy cập vị trí.';
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                message += 'Thông tin vị trí không khả dụng.';
+                                break;
+                            case error.TIMEOUT:
+                                message += 'Hết thời gian chờ lấy vị trí.';
+                                break;
+                            default:
+                                message += 'Đã xảy ra lỗi không xác định.';
+                        }
+                        alert(message);
+                        $btn.prop('disabled', false).html('<i class="fas fa-location-arrow"></i>');
+                    }
+                );
+            });
+
+            // Hide suggestions when clicking outside
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.location-wrapper').length) {
+                    $suggestionsBox.addClass('d-none');
                 }
             });
 
-            changeLocationBtn.addEventListener('click', function () {
-                locationMessage.classList.add('d-none');
-                locationSearch.value = '';
-                document.getElementById('latitude').value = 0;
-                document.getElementById('longitude').value = 0;
-                isLocationConfirmed = false;
-                submitBtn.textContent = 'Chốt Lịch';
+            // Form validation
+            $form.on('submit', function(e) {
+                // Validate coordinates
+                var lat = parseFloat($latitudeInput.val());
+                var lon = parseFloat($longitudeInput.val());
+                
+                if (lat === 0 || lon === 0 || isNaN(lat) || isNaN(lon)) {
+                    e.preventDefault();
+                    alert('Vui lòng chọn một vị trí từ danh sách gợi ý hoặc sử dụng vị trí hiện tại.');
+                    return false;
+                }
+
+                // Validate service type
+                var serviceType = $serviceTypeSelect.val();
+                if (!serviceType) {
+                    e.preventDefault();
+                    alert('Vui lòng chọn loại dịch vụ.');
+                    $serviceTypeSelect.focus();
+                    return false;
+                }
+
+                // Validate start time
+                var startTime = new Date($('#StartTime').val());
+                var now = new Date();
+                if (startTime <= now) {
+                    e.preventDefault();
+                    alert('Thời gian bắt đầu phải lớn hơn thời gian hiện tại.');
+                    return false;
+                }
             });
         });
     </script>

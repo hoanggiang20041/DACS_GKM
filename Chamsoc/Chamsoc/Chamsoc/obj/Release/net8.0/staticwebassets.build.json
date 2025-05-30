@@ -1,0 +1,2597 @@
+{
+  "Version": 1,
+  "Hash": "V8KEoiXzwrm4fs4rv1lgUxZN0NWoUC5LcL+9mW9Km3Y=",
+  "Source": "Chamsoc",
+  "BasePath": "_content/Chamsoc",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Chamsoc\\wwwroot",
+      "Source": "Chamsoc",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Release\\net8.0\\scopedcss\\bundle\\Chamsoc.styles.css",
+      "SourceId": "Chamsoc",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Release\\net8.0\\scopedcss\\bundle\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "Chamsoc#[.{fingerprint}]?.styles.css",
+      "AssetKind": "All",
+      "AssetMode": "CurrentProject",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ApplicationBundle",
+      "Fingerprint": "lx3iutwqnx",
+      "Integrity": "lyne13i1Zb2nIxA8kIxxaSNwbA84+aqfgcanihSiW6k=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Release\\net8.0\\scopedcss\\bundle\\Chamsoc.styles.css"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Release\\net8.0\\scopedcss\\projectbundle\\Chamsoc.bundle.scp.css",
+      "SourceId": "Chamsoc",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Release\\net8.0\\scopedcss\\projectbundle\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "Chamsoc#[.{fingerprint}]!.bundle.scp.css",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ProjectBundle",
+      "Fingerprint": "lx3iutwqnx",
+      "Integrity": "lyne13i1Zb2nIxA8kIxxaSNwbA84+aqfgcanihSiW6k=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Release\\net8.0\\scopedcss\\projectbundle\\Chamsoc.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\css\\site.css",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "css/site#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "xqmycegev5",
+      "Integrity": "V1Tjk/wu6IuYG5kmeA3cjPlbwk7WH3yV158HkHMUrkI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\js\\notifications.js",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "js/notifications#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "9ioadih2y5",
+      "Integrity": "byBpBBVtuBL4B2U3LwJ2beh6YKjgup0A8SWNrABFuNk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\notifications.js"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\js\\site.js",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "js/site#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "6sudseegm8",
+      "Integrity": "FlFJJzhvwWcqi0MsPkrr1cj1Lzp1rRHZLxzrEzvtfUM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\site.js"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\1a781a9e-65bf-460c-8275-0ab659c5decf_1.png",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/avatars/1a781a9e-65bf-460c-8275-0ab659c5decf_1#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "pl115wrb1f",
+      "Integrity": "oyzax+R1lbH6XFS1J0o2TwnuRTMwa72jxgofKnzfTwQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\1a781a9e-65bf-460c-8275-0ab659c5decf_1.png"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\1e710604-7d93-4255-ab52-e64e6a6020f1_1706861694-95867803-custom.jpg",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/avatars/1e710604-7d93-4255-ab52-e64e6a6020f1_1706861694-95867803-custom#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "rh7xvsaxp6",
+      "Integrity": "L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\1e710604-7d93-4255-ab52-e64e6a6020f1_1706861694-95867803-custom.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\43740847-8f63-4e9e-807b-93d53a9e0273.jpg",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/avatars/43740847-8f63-4e9e-807b-93d53a9e0273#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "au3b7jpfhx",
+      "Integrity": "MstIKxEHzahD0qQg+gC9i61mmcW6aV8sP8XbId/FyIs=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\43740847-8f63-4e9e-807b-93d53a9e0273.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\5fab3fa8-0193-4577-9658-dc5f4fa3b5e3_448735191_997255028658976_1842512308837990710_n.jpg",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/avatars/5fab3fa8-0193-4577-9658-dc5f4fa3b5e3_448735191_997255028658976_1842512308837990710_n#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "wjahxrysqc",
+      "Integrity": "rHwSc0Wa0Dt/LRnhLDeWb0qcZV+D3F6uIxsLDKXg1cs=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\5fab3fa8-0193-4577-9658-dc5f4fa3b5e3_448735191_997255028658976_1842512308837990710_n.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\863c2398-821e-4c7c-96c6-032f6cdeb787.jpg",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/avatars/863c2398-821e-4c7c-96c6-032f6cdeb787#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "rh7xvsaxp6",
+      "Integrity": "L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\863c2398-821e-4c7c-96c6-032f6cdeb787.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\8b111fce-8bbc-45ad-a06c-55b5066d4118_1.png",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/avatars/8b111fce-8bbc-45ad-a06c-55b5066d4118_1#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "pl115wrb1f",
+      "Integrity": "oyzax+R1lbH6XFS1J0o2TwnuRTMwa72jxgofKnzfTwQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\8b111fce-8bbc-45ad-a06c-55b5066d4118_1.png"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\a87c4834-0bd3-47a6-a5f8-f9126bfb3d05.jpg",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/avatars/a87c4834-0bd3-47a6-a5f8-f9126bfb3d05#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "rh7xvsaxp6",
+      "Integrity": "L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\a87c4834-0bd3-47a6-a5f8-f9126bfb3d05.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\be005f35-1ee7-48aa-b8fc-a77889d84889_1666750887-1616272448-custom.jpeg",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/avatars/be005f35-1ee7-48aa-b8fc-a77889d84889_1666750887-1616272448-custom#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "9sp0r1omga",
+      "Integrity": "d96lEh5kWLWtz5MyJygXOfYn7l0l9xjxhSm6KB968QI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\be005f35-1ee7-48aa-b8fc-a77889d84889_1666750887-1616272448-custom.jpeg"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\d2bc1045-9c23-47a2-9a62-dcd80d4c4090_448735191_997255028658976_1842512308837990710_n.jpg",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/avatars/d2bc1045-9c23-47a2-9a62-dcd80d4c4090_448735191_997255028658976_1842512308837990710_n#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "wjahxrysqc",
+      "Integrity": "rHwSc0Wa0Dt/LRnhLDeWb0qcZV+D3F6uIxsLDKXg1cs=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\d2bc1045-9c23-47a2-9a62-dcd80d4c4090_448735191_997255028658976_1842512308837990710_n.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\d7b45678-38f4-4ff3-8cb8-e6e87cbd5cff_1.png",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/avatars/d7b45678-38f4-4ff3-8cb8-e6e87cbd5cff_1#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "pl115wrb1f",
+      "Integrity": "oyzax+R1lbH6XFS1J0o2TwnuRTMwa72jxgofKnzfTwQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\d7b45678-38f4-4ff3-8cb8-e6e87cbd5cff_1.png"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\e4f319d4-d739-42b5-90a7-34d104bff792_1706861694-95867803-custom.jpg",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/avatars/e4f319d4-d739-42b5-90a7-34d104bff792_1706861694-95867803-custom#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "rh7xvsaxp6",
+      "Integrity": "L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\e4f319d4-d739-42b5-90a7-34d104bff792_1706861694-95867803-custom.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\ecfd33d5-3a26-404f-ad8c-c1213d391454_1706861694-95867803-custom.jpg",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/avatars/ecfd33d5-3a26-404f-ad8c-c1213d391454_1706861694-95867803-custom#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "rh7xvsaxp6",
+      "Integrity": "L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\ecfd33d5-3a26-404f-ad8c-c1213d391454_1706861694-95867803-custom.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\9be04210-a796-4ba5-9b1a-3b8251de9ad8.png",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/certificates/9be04210-a796-4ba5-9b1a-3b8251de9ad8#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mqokxpr4uf",
+      "Integrity": "wtBvrXuFjRyw1KpNzpGEQ6IVBjpqs8w6rPYQNDsawO8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\certificates\\9be04210-a796-4ba5-9b1a-3b8251de9ad8.png"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\complaints\\638833251783581200_download (5).jpg",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/complaints/638833251783581200_download (5)#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "wfajjahew7",
+      "Integrity": "nKaCklfCOPQXOWoYUjfS0NiF6QjociIy9XpUbSNOh7o=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\complaints\\638833251783581200_download (5).jpg"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\complaints\\638839399144797061_Project.png",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/complaints/638839399144797061_Project#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "dtoaow9b7y",
+      "Integrity": "33u50bgSPvS0O4s8ifRqX6Jf5M2d+XjhhH+r8899NdM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\complaints\\638839399144797061_Project.png"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\3256eb92-a556-46ac-8823-71134e08f807.jpg",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/degrees/3256eb92-a556-46ac-8823-71134e08f807#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "59xno36hrd",
+      "Integrity": "51MMi8R6CQrZGLlZocD/l2HOsap8z9vDN+Anmjlqjbk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\degrees\\3256eb92-a556-46ac-8823-71134e08f807.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\557e6ac4-8c76-4620-b3ea-4df7e0e05e21.jpg",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/degrees/557e6ac4-8c76-4620-b3ea-4df7e0e05e21#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "nc5oazi97i",
+      "Integrity": "6bjLjVY6GWiZzpr9Ee5aVfOOeLBH8454Mzinh+bIugA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\degrees\\557e6ac4-8c76-4620-b3ea-4df7e0e05e21.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\6d8884aa-bd6b-4a7f-84d6-ae9fdff53447.png",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/degrees/6d8884aa-bd6b-4a7f-84d6-ae9fdff53447#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "jghio70w90",
+      "Integrity": "HUNQ0vMX/Qv1M/EiscPe7sclwBxm4lTTCF0wjwamBvI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\degrees\\6d8884aa-bd6b-4a7f-84d6-ae9fdff53447.png"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\88fbbfa6-09e4-4ae5-a8ad-93c816050c2d.jpg",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/degrees/88fbbfa6-09e4-4ae5-a8ad-93c816050c2d#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "nc5oazi97i",
+      "Integrity": "6bjLjVY6GWiZzpr9Ee5aVfOOeLBH8454Mzinh+bIugA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\degrees\\88fbbfa6-09e4-4ae5-a8ad-93c816050c2d.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\a7e7244f-6541-4130-a50a-04ddfaa84acc.png",
+      "SourceId": "Chamsoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\",
+      "BasePath": "_content/Chamsoc",
+      "RelativePath": "uploads/degrees/a7e7244f-6541-4130-a50a-04ddfaa84acc#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "jghio70w90",
+      "Integrity": "HUNQ0vMX/Qv1M/EiscPe7sclwBxm4lTTCF0wjwamBvI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\degrees\\a7e7244f-6541-4130-a50a-04ddfaa84acc.png"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "Chamsoc.bundle.scp.css",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Release\\net8.0\\scopedcss\\projectbundle\\Chamsoc.bundle.scp.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1125"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"lyne13i1Zb2nIxA8kIxxaSNwbA84+aqfgcanihSiW6k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 26 May 2025 07:04:40 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-lyne13i1Zb2nIxA8kIxxaSNwbA84+aqfgcanihSiW6k="
+        }
+      ]
+    },
+    {
+      "Route": "Chamsoc.lx3iutwqnx.bundle.scp.css",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Release\\net8.0\\scopedcss\\projectbundle\\Chamsoc.bundle.scp.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1125"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"lyne13i1Zb2nIxA8kIxxaSNwbA84+aqfgcanihSiW6k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 26 May 2025 07:04:40 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "lx3iutwqnx"
+        },
+        {
+          "Name": "label",
+          "Value": "Chamsoc.bundle.scp.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-lyne13i1Zb2nIxA8kIxxaSNwbA84+aqfgcanihSiW6k="
+        }
+      ]
+    },
+    {
+      "Route": "Chamsoc.lx3iutwqnx.styles.css",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Release\\net8.0\\scopedcss\\bundle\\Chamsoc.styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1125"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"lyne13i1Zb2nIxA8kIxxaSNwbA84+aqfgcanihSiW6k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 26 May 2025 07:04:40 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "lx3iutwqnx"
+        },
+        {
+          "Name": "label",
+          "Value": "Chamsoc.styles.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-lyne13i1Zb2nIxA8kIxxaSNwbA84+aqfgcanihSiW6k="
+        }
+      ]
+    },
+    {
+      "Route": "Chamsoc.styles.css",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\obj\\Release\\net8.0\\scopedcss\\bundle\\Chamsoc.styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1125"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"lyne13i1Zb2nIxA8kIxxaSNwbA84+aqfgcanihSiW6k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 26 May 2025 07:04:40 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-lyne13i1Zb2nIxA8kIxxaSNwbA84+aqfgcanihSiW6k="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.css",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\css\\site.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1087"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"V1Tjk/wu6IuYG5kmeA3cjPlbwk7WH3yV158HkHMUrkI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 26 May 2025 06:54:16 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-V1Tjk/wu6IuYG5kmeA3cjPlbwk7WH3yV158HkHMUrkI="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.xqmycegev5.css",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\css\\site.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1087"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"V1Tjk/wu6IuYG5kmeA3cjPlbwk7WH3yV158HkHMUrkI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 26 May 2025 06:54:16 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "xqmycegev5"
+        },
+        {
+          "Name": "label",
+          "Value": "css/site.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-V1Tjk/wu6IuYG5kmeA3cjPlbwk7WH3yV158HkHMUrkI="
+        }
+      ]
+    },
+    {
+      "Route": "js/notifications.9ioadih2y5.js",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\js\\notifications.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2003"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"byBpBBVtuBL4B2U3LwJ2beh6YKjgup0A8SWNrABFuNk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 19 May 2025 10:41:25 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "9ioadih2y5"
+        },
+        {
+          "Name": "label",
+          "Value": "js/notifications.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-byBpBBVtuBL4B2U3LwJ2beh6YKjgup0A8SWNrABFuNk="
+        }
+      ]
+    },
+    {
+      "Route": "js/notifications.js",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\js\\notifications.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2003"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"byBpBBVtuBL4B2U3LwJ2beh6YKjgup0A8SWNrABFuNk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 19 May 2025 10:41:25 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-byBpBBVtuBL4B2U3LwJ2beh6YKjgup0A8SWNrABFuNk="
+        }
+      ]
+    },
+    {
+      "Route": "js/site.6sudseegm8.js",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\js\\site.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1392"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"FlFJJzhvwWcqi0MsPkrr1cj1Lzp1rRHZLxzrEzvtfUM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 26 May 2025 06:54:16 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "6sudseegm8"
+        },
+        {
+          "Name": "label",
+          "Value": "js/site.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-FlFJJzhvwWcqi0MsPkrr1cj1Lzp1rRHZLxzrEzvtfUM="
+        }
+      ]
+    },
+    {
+      "Route": "js/site.js",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\js\\site.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1392"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"FlFJJzhvwWcqi0MsPkrr1cj1Lzp1rRHZLxzrEzvtfUM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 26 May 2025 06:54:16 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-FlFJJzhvwWcqi0MsPkrr1cj1Lzp1rRHZLxzrEzvtfUM="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/1a781a9e-65bf-460c-8275-0ab659c5decf_1.pl115wrb1f.png",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\1a781a9e-65bf-460c-8275-0ab659c5decf_1.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "166428"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"oyzax+R1lbH6XFS1J0o2TwnuRTMwa72jxgofKnzfTwQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:31:51 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "pl115wrb1f"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/1a781a9e-65bf-460c-8275-0ab659c5decf_1.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-oyzax+R1lbH6XFS1J0o2TwnuRTMwa72jxgofKnzfTwQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/1a781a9e-65bf-460c-8275-0ab659c5decf_1.png",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\1a781a9e-65bf-460c-8275-0ab659c5decf_1.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "166428"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"oyzax+R1lbH6XFS1J0o2TwnuRTMwa72jxgofKnzfTwQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:31:51 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-oyzax+R1lbH6XFS1J0o2TwnuRTMwa72jxgofKnzfTwQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/1e710604-7d93-4255-ab52-e64e6a6020f1_1706861694-95867803-custom.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\1e710604-7d93-4255-ab52-e64e6a6020f1_1706861694-95867803-custom.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12006"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:20:51 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/1e710604-7d93-4255-ab52-e64e6a6020f1_1706861694-95867803-custom.rh7xvsaxp6.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\1e710604-7d93-4255-ab52-e64e6a6020f1_1706861694-95867803-custom.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12006"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:20:51 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "rh7xvsaxp6"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/1e710604-7d93-4255-ab52-e64e6a6020f1_1706861694-95867803-custom.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/43740847-8f63-4e9e-807b-93d53a9e0273.au3b7jpfhx.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\43740847-8f63-4e9e-807b-93d53a9e0273.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "137934"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"MstIKxEHzahD0qQg+gC9i61mmcW6aV8sP8XbId/FyIs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 20 May 2025 03:07:16 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "au3b7jpfhx"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/43740847-8f63-4e9e-807b-93d53a9e0273.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-MstIKxEHzahD0qQg+gC9i61mmcW6aV8sP8XbId/FyIs="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/43740847-8f63-4e9e-807b-93d53a9e0273.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\43740847-8f63-4e9e-807b-93d53a9e0273.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "137934"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"MstIKxEHzahD0qQg+gC9i61mmcW6aV8sP8XbId/FyIs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 20 May 2025 03:07:16 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-MstIKxEHzahD0qQg+gC9i61mmcW6aV8sP8XbId/FyIs="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/5fab3fa8-0193-4577-9658-dc5f4fa3b5e3_448735191_997255028658976_1842512308837990710_n.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\5fab3fa8-0193-4577-9658-dc5f4fa3b5e3_448735191_997255028658976_1842512308837990710_n.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11182"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"rHwSc0Wa0Dt/LRnhLDeWb0qcZV+D3F6uIxsLDKXg1cs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:34:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-rHwSc0Wa0Dt/LRnhLDeWb0qcZV+D3F6uIxsLDKXg1cs="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/5fab3fa8-0193-4577-9658-dc5f4fa3b5e3_448735191_997255028658976_1842512308837990710_n.wjahxrysqc.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\5fab3fa8-0193-4577-9658-dc5f4fa3b5e3_448735191_997255028658976_1842512308837990710_n.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11182"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"rHwSc0Wa0Dt/LRnhLDeWb0qcZV+D3F6uIxsLDKXg1cs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:34:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "wjahxrysqc"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/5fab3fa8-0193-4577-9658-dc5f4fa3b5e3_448735191_997255028658976_1842512308837990710_n.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-rHwSc0Wa0Dt/LRnhLDeWb0qcZV+D3F6uIxsLDKXg1cs="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/863c2398-821e-4c7c-96c6-032f6cdeb787.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\863c2398-821e-4c7c-96c6-032f6cdeb787.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12006"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:22:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/863c2398-821e-4c7c-96c6-032f6cdeb787.rh7xvsaxp6.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\863c2398-821e-4c7c-96c6-032f6cdeb787.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12006"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:22:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "rh7xvsaxp6"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/863c2398-821e-4c7c-96c6-032f6cdeb787.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/8b111fce-8bbc-45ad-a06c-55b5066d4118_1.pl115wrb1f.png",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\8b111fce-8bbc-45ad-a06c-55b5066d4118_1.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "166428"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"oyzax+R1lbH6XFS1J0o2TwnuRTMwa72jxgofKnzfTwQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:30:05 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "pl115wrb1f"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/8b111fce-8bbc-45ad-a06c-55b5066d4118_1.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-oyzax+R1lbH6XFS1J0o2TwnuRTMwa72jxgofKnzfTwQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/8b111fce-8bbc-45ad-a06c-55b5066d4118_1.png",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\8b111fce-8bbc-45ad-a06c-55b5066d4118_1.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "166428"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"oyzax+R1lbH6XFS1J0o2TwnuRTMwa72jxgofKnzfTwQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:30:05 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-oyzax+R1lbH6XFS1J0o2TwnuRTMwa72jxgofKnzfTwQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/a87c4834-0bd3-47a6-a5f8-f9126bfb3d05.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\a87c4834-0bd3-47a6-a5f8-f9126bfb3d05.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12006"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:22:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/a87c4834-0bd3-47a6-a5f8-f9126bfb3d05.rh7xvsaxp6.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\a87c4834-0bd3-47a6-a5f8-f9126bfb3d05.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12006"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:22:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "rh7xvsaxp6"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/a87c4834-0bd3-47a6-a5f8-f9126bfb3d05.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/be005f35-1ee7-48aa-b8fc-a77889d84889_1666750887-1616272448-custom.9sp0r1omga.jpeg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\be005f35-1ee7-48aa-b8fc-a77889d84889_1666750887-1616272448-custom.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "671557"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"d96lEh5kWLWtz5MyJygXOfYn7l0l9xjxhSm6KB968QI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:20:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "9sp0r1omga"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/be005f35-1ee7-48aa-b8fc-a77889d84889_1666750887-1616272448-custom.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-d96lEh5kWLWtz5MyJygXOfYn7l0l9xjxhSm6KB968QI="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/be005f35-1ee7-48aa-b8fc-a77889d84889_1666750887-1616272448-custom.jpeg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\be005f35-1ee7-48aa-b8fc-a77889d84889_1666750887-1616272448-custom.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "671557"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"d96lEh5kWLWtz5MyJygXOfYn7l0l9xjxhSm6KB968QI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:20:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-d96lEh5kWLWtz5MyJygXOfYn7l0l9xjxhSm6KB968QI="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/d2bc1045-9c23-47a2-9a62-dcd80d4c4090_448735191_997255028658976_1842512308837990710_n.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\d2bc1045-9c23-47a2-9a62-dcd80d4c4090_448735191_997255028658976_1842512308837990710_n.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11182"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"rHwSc0Wa0Dt/LRnhLDeWb0qcZV+D3F6uIxsLDKXg1cs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:35:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-rHwSc0Wa0Dt/LRnhLDeWb0qcZV+D3F6uIxsLDKXg1cs="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/d2bc1045-9c23-47a2-9a62-dcd80d4c4090_448735191_997255028658976_1842512308837990710_n.wjahxrysqc.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\d2bc1045-9c23-47a2-9a62-dcd80d4c4090_448735191_997255028658976_1842512308837990710_n.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11182"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"rHwSc0Wa0Dt/LRnhLDeWb0qcZV+D3F6uIxsLDKXg1cs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:35:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "wjahxrysqc"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/d2bc1045-9c23-47a2-9a62-dcd80d4c4090_448735191_997255028658976_1842512308837990710_n.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-rHwSc0Wa0Dt/LRnhLDeWb0qcZV+D3F6uIxsLDKXg1cs="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/d7b45678-38f4-4ff3-8cb8-e6e87cbd5cff_1.pl115wrb1f.png",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\d7b45678-38f4-4ff3-8cb8-e6e87cbd5cff_1.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "166428"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"oyzax+R1lbH6XFS1J0o2TwnuRTMwa72jxgofKnzfTwQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:29:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "pl115wrb1f"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/d7b45678-38f4-4ff3-8cb8-e6e87cbd5cff_1.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-oyzax+R1lbH6XFS1J0o2TwnuRTMwa72jxgofKnzfTwQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/d7b45678-38f4-4ff3-8cb8-e6e87cbd5cff_1.png",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\d7b45678-38f4-4ff3-8cb8-e6e87cbd5cff_1.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "166428"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"oyzax+R1lbH6XFS1J0o2TwnuRTMwa72jxgofKnzfTwQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:29:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-oyzax+R1lbH6XFS1J0o2TwnuRTMwa72jxgofKnzfTwQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/e4f319d4-d739-42b5-90a7-34d104bff792_1706861694-95867803-custom.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\e4f319d4-d739-42b5-90a7-34d104bff792_1706861694-95867803-custom.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12006"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:21:31 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/e4f319d4-d739-42b5-90a7-34d104bff792_1706861694-95867803-custom.rh7xvsaxp6.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\e4f319d4-d739-42b5-90a7-34d104bff792_1706861694-95867803-custom.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12006"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:21:31 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "rh7xvsaxp6"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/e4f319d4-d739-42b5-90a7-34d104bff792_1706861694-95867803-custom.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/ecfd33d5-3a26-404f-ad8c-c1213d391454_1706861694-95867803-custom.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\ecfd33d5-3a26-404f-ad8c-c1213d391454_1706861694-95867803-custom.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12006"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:20:43 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/ecfd33d5-3a26-404f-ad8c-c1213d391454_1706861694-95867803-custom.rh7xvsaxp6.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\ecfd33d5-3a26-404f-ad8c-c1213d391454_1706861694-95867803-custom.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12006"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:20:43 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "rh7xvsaxp6"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/ecfd33d5-3a26-404f-ad8c-c1213d391454_1706861694-95867803-custom.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-L/Mp1kOaIrFD1XxXPB3JdmKor9w2g67uB5wEBImOu/k="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/certificates/9be04210-a796-4ba5-9b1a-3b8251de9ad8.mqokxpr4uf.png",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\9be04210-a796-4ba5-9b1a-3b8251de9ad8.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1464830"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wtBvrXuFjRyw1KpNzpGEQ6IVBjpqs8w6rPYQNDsawO8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:51:49 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mqokxpr4uf"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/certificates/9be04210-a796-4ba5-9b1a-3b8251de9ad8.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-wtBvrXuFjRyw1KpNzpGEQ6IVBjpqs8w6rPYQNDsawO8="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/certificates/9be04210-a796-4ba5-9b1a-3b8251de9ad8.png",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\9be04210-a796-4ba5-9b1a-3b8251de9ad8.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1464830"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wtBvrXuFjRyw1KpNzpGEQ6IVBjpqs8w6rPYQNDsawO8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:51:49 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-wtBvrXuFjRyw1KpNzpGEQ6IVBjpqs8w6rPYQNDsawO8="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/complaints/638833251783581200_download (5).jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\complaints\\638833251783581200_download (5).jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5736"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"nKaCklfCOPQXOWoYUjfS0NiF6QjociIy9XpUbSNOh7o=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 20 May 2025 01:06:18 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-nKaCklfCOPQXOWoYUjfS0NiF6QjociIy9XpUbSNOh7o="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/complaints/638833251783581200_download (5).wfajjahew7.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\complaints\\638833251783581200_download (5).jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5736"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"nKaCklfCOPQXOWoYUjfS0NiF6QjociIy9XpUbSNOh7o=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 20 May 2025 01:06:18 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "wfajjahew7"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/complaints/638833251783581200_download (5).jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-nKaCklfCOPQXOWoYUjfS0NiF6QjociIy9XpUbSNOh7o="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/complaints/638839399144797061_Project.dtoaow9b7y.png",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\complaints\\638839399144797061_Project.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "51578"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"33u50bgSPvS0O4s8ifRqX6Jf5M2d+XjhhH+r8899NdM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 27 May 2025 03:51:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "dtoaow9b7y"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/complaints/638839399144797061_Project.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-33u50bgSPvS0O4s8ifRqX6Jf5M2d+XjhhH+r8899NdM="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/complaints/638839399144797061_Project.png",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\complaints\\638839399144797061_Project.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "51578"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"33u50bgSPvS0O4s8ifRqX6Jf5M2d+XjhhH+r8899NdM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 27 May 2025 03:51:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-33u50bgSPvS0O4s8ifRqX6Jf5M2d+XjhhH+r8899NdM="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/degrees/3256eb92-a556-46ac-8823-71134e08f807.59xno36hrd.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\3256eb92-a556-46ac-8823-71134e08f807.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "10240"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"51MMi8R6CQrZGLlZocD/l2HOsap8z9vDN+Anmjlqjbk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:36:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "59xno36hrd"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/degrees/3256eb92-a556-46ac-8823-71134e08f807.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-51MMi8R6CQrZGLlZocD/l2HOsap8z9vDN+Anmjlqjbk="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/degrees/3256eb92-a556-46ac-8823-71134e08f807.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\3256eb92-a556-46ac-8823-71134e08f807.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "10240"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"51MMi8R6CQrZGLlZocD/l2HOsap8z9vDN+Anmjlqjbk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:36:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-51MMi8R6CQrZGLlZocD/l2HOsap8z9vDN+Anmjlqjbk="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/degrees/557e6ac4-8c76-4620-b3ea-4df7e0e05e21.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\557e6ac4-8c76-4620-b3ea-4df7e0e05e21.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12984"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"6bjLjVY6GWiZzpr9Ee5aVfOOeLBH8454Mzinh+bIugA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:24:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-6bjLjVY6GWiZzpr9Ee5aVfOOeLBH8454Mzinh+bIugA="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/degrees/557e6ac4-8c76-4620-b3ea-4df7e0e05e21.nc5oazi97i.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\557e6ac4-8c76-4620-b3ea-4df7e0e05e21.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12984"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"6bjLjVY6GWiZzpr9Ee5aVfOOeLBH8454Mzinh+bIugA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 15:24:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "nc5oazi97i"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/degrees/557e6ac4-8c76-4620-b3ea-4df7e0e05e21.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-6bjLjVY6GWiZzpr9Ee5aVfOOeLBH8454Mzinh+bIugA="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/degrees/6d8884aa-bd6b-4a7f-84d6-ae9fdff53447.jghio70w90.png",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\6d8884aa-bd6b-4a7f-84d6-ae9fdff53447.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "172990"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HUNQ0vMX/Qv1M/EiscPe7sclwBxm4lTTCF0wjwamBvI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:34:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "jghio70w90"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/degrees/6d8884aa-bd6b-4a7f-84d6-ae9fdff53447.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-HUNQ0vMX/Qv1M/EiscPe7sclwBxm4lTTCF0wjwamBvI="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/degrees/6d8884aa-bd6b-4a7f-84d6-ae9fdff53447.png",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\6d8884aa-bd6b-4a7f-84d6-ae9fdff53447.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "172990"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HUNQ0vMX/Qv1M/EiscPe7sclwBxm4lTTCF0wjwamBvI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:34:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-HUNQ0vMX/Qv1M/EiscPe7sclwBxm4lTTCF0wjwamBvI="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/degrees/88fbbfa6-09e4-4ae5-a8ad-93c816050c2d.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\88fbbfa6-09e4-4ae5-a8ad-93c816050c2d.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12984"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"6bjLjVY6GWiZzpr9Ee5aVfOOeLBH8454Mzinh+bIugA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:54:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-6bjLjVY6GWiZzpr9Ee5aVfOOeLBH8454Mzinh+bIugA="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/degrees/88fbbfa6-09e4-4ae5-a8ad-93c816050c2d.nc5oazi97i.jpg",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\88fbbfa6-09e4-4ae5-a8ad-93c816050c2d.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12984"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"6bjLjVY6GWiZzpr9Ee5aVfOOeLBH8454Mzinh+bIugA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:54:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "nc5oazi97i"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/degrees/88fbbfa6-09e4-4ae5-a8ad-93c816050c2d.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-6bjLjVY6GWiZzpr9Ee5aVfOOeLBH8454Mzinh+bIugA="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/degrees/a7e7244f-6541-4130-a50a-04ddfaa84acc.jghio70w90.png",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\a7e7244f-6541-4130-a50a-04ddfaa84acc.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "172990"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HUNQ0vMX/Qv1M/EiscPe7sclwBxm4lTTCF0wjwamBvI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:35:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "jghio70w90"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/degrees/a7e7244f-6541-4130-a50a-04ddfaa84acc.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-HUNQ0vMX/Qv1M/EiscPe7sclwBxm4lTTCF0wjwamBvI="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/degrees/a7e7244f-6541-4130-a50a-04ddfaa84acc.png",
+      "AssetFile": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\a7e7244f-6541-4130-a50a-04ddfaa84acc.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "172990"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HUNQ0vMX/Qv1M/EiscPe7sclwBxm4lTTCF0wjwamBvI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 22 May 2025 13:35:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-HUNQ0vMX/Qv1M/EiscPe7sclwBxm4lTTCF0wjwamBvI="
+        }
+      ]
+    }
+  ]
+}

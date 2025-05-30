@@ -1,30 +1,109 @@
-﻿namespace Chamsoc.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Chamsoc.Models
 {
     public class CareJob
     {
+        [Key]
         public int Id { get; set; }
+
+        [Required]
         public int SeniorId { get; set; }
-        public int CaregiverId { get; set; }
-        public string? CaregiverName { get; set; }
-        public DateTime StartTime { get; set; }
+
+        [ForeignKey("SeniorId")]
+        public Senior Senior { get; set; } = null!;
+
+        public int? CaregiverId { get; set; }
+
+        [ForeignKey("CaregiverId")]
+        public Caregiver? Caregiver { get; set; }
+
+        [Required]
+        public DateTime? StartTime { get; set; }
+
+        [Required]
         public DateTime? EndTime { get; set; }
-        public string? Status { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string ServiceType { get; set; } = null!;
+
+        [Required]
+        [StringLength(500)]
+        public string Description { get; set; } = null!;
+
+        [Required]
+        [StringLength(50)]
+        public string Status { get; set; } = "Đang chờ";
+
+        [Column(TypeName = "decimal(18,2)")]
         public decimal TotalBill { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal DepositAmount { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Deposit { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
         public decimal RemainingAmount { get; set; }
-        public string? ServiceType { get; set; }
-        public int? Rating { get; set; }
-        public bool DepositMade { get; set; } = false;
+
+        public bool IsDepositPaid { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public DateTime UpdatedAt { get; set; }
+
         public string CreatedByRole { get; set; }
-        public bool SeniorAccepted { get; set; } = false; // Theo dõi Senior đã chấp nhận chưa
-        public bool CaregiverAccepted { get; set; } = false; // Theo dõi Caregiver đã chấp nhận chưa
-        public double Latitude { get; set; }  // Đã thêm
-        public double Longitude { get; set; } // Đã thêm
-        public string? PaymentStatus { get; set; } = "Pending"; // Trạng thái thanh toán: Pending, Completed, Failed
-        public string? TransactionId { get; set; } // Mã giao dịch từ ngân hàng
-        public string? TransactionReference { get; set; } // Mã tham chiếu giao dịch tự động
-        public DateTime? PaymentTime { get; set; } // Thời gian thanh toán
-        public bool NeedsManualConfirmation { get; set; } = false; // Đánh dấu cần xác nhận thủ công
-        public string? DepositNote { get; set; } // Ghi chú về thanh toán cọc
+
+        public bool DepositMade { get; set; }
+
+        [Required]
+        public string DepositNote { get; set; }
+
+        [Required]
+public string PaymentStatus { get; set; } = "Chờ thanh toán"; // Trạng thái thanh toán: Chờ thanh toán, Đã thanh toán, Từ chối
+
+        public string PaymentMethod { get; set; }
+
+        public DateTime? PaymentTime { get; set; }
+
+        public DateTime? CompletedAt { get; set; }
+
+        public decimal? Rating { get; set; }
+
+        [StringLength(500)]
+        public string? Review { get; set; }
+
+        public int ServiceId { get; set; }
+
+        [ForeignKey("ServiceId")]
+        public Service Service { get; set; }
+
+        [Required]
+        public string Location { get; set; }
+
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
+        public bool CaregiverAccepted { get; set; }
+
+        public bool SeniorAccepted { get; set; }
+
+        public string CaregiverName { get; set; }
+
+        public string SeniorName { get; set; }
+
+        public string SeniorPhone { get; set; }
+
+        public bool? HasRated { get; set; }
+
+        public bool? HasComplained { get; set; }
+
+        public ICollection<Complaint> Complaints { get; set; } = new List<Complaint>();
+
+        public ICollection<Notification> Notifications { get; set; }
     }
 }

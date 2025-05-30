@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="display-4">Chào mừng đến với GKM Care</h1>
+            <p class="lead">Dịch vụ chăm sóc sức khỏe tại nhà hàng đầu</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Chăm sóc sức khỏe</h5>
+                    <p class="card-text">Dịch vụ chăm sóc sức khỏe chuyên nghiệp tại nhà</p>
+                    <a href="@Url.Action("ChamSocSucKhoe", "Home")" class="btn btn-primary">Tìm hiểu thêm</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Vật lý trị liệu</h5>
+                    <p class="card-text">Phục hồi chức năng và vật lý trị liệu tại nhà</p>
+                    <a href="@Url.Action("ChamSocVatLyTriLieu", "Home")" class="btn btn-primary">Tìm hiểu thêm</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Giới thiệu</h5>
+                    <p class="card-text">Tìm hiểu thêm về GKM Care và dịch vụ của chúng tôi</p>
+                    <a href="@Url.Action("GioiThieuSoQua", "Home")" class="btn btn-primary">Tìm hiểu thêm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

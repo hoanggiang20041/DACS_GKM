@@ -1,0 +1,244 @@
+@model List<TransactionViewModel>
+@using Chamsoc.Models
+
+@{
+    ViewData["Title"] = "Thống Kê Giao Dịch";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Thống kê giao dịch</h5>
+                        <div>
+                            <button class="btn btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse">
+                                <i class="fas fa-filter me-2"></i>Lọc
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapse" id="filterCollapse">
+                    <div class="card-body border-bottom">
+                        <form method="get" class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Từ ngày</label>
+                                <input type="date" name="startDate" class="form-control" value="@ViewBag.StartDate?.ToString("yyyy-MM-dd")" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Đến ngày</label>
+                                <input type="date" name="endDate" class="form-control" value="@ViewBag.EndDate?.ToString("yyyy-MM-dd")" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Trạng thái</label>
+                                <select name="status" class="form-select">
+                                    <option value="">Tất cả</option>
+                                    @{
+                                        var selectedStatus = ViewBag.Status as string;
+                                    }
+                                    <option value="Đang chờ" selected="@(selectedStatus == "Đang chờ")">Đang chờ</option>
+                                    <option value="Hoàn thành" selected="@(selectedStatus == "Hoàn thành")">Hoàn thành</option>
+                                    <option value="Hủy" selected="@(selectedStatus == "Hủy")">Hủy</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search me-2"></i>Tìm kiếm
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <h6>Tổng giao dịch</h6>
+                                    <h4>@ViewBag.Stats.TotalTransactions</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <h6>Hoàn thành</h6>
+                                    <h4>@ViewBag.Stats.CompletedTransactions</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-warning text-white">
+                                <div class="card-body">
+                                    <h6>Đang chờ</h6>
+                                    <h4>@ViewBag.Stats.PendingTransactions</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-danger text-white">
+                                <div class="card-body">
+                                    <h6>Đã hủy</h6>
+                                    <h4>@ViewBag.Stats.CancelledTransactions</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Người cần chăm sóc</th>
+                                    <th>Người chăm sóc</th>
+                                    <th>Dịch vụ</th>
+                                    <th>Thời gian</th>
+                                    <th>Số tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thanh toán</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td>@item.SeniorName</td>
+                                        <td>@item.CaregiverName</td>
+                                        <td>@item.ServiceType</td>
+                                        <td>
+                                            <div>Bắt đầu: @(item.StartTime?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa bắt đầu")</div>
+                                            <div>Kết thúc: @(item.EndTime?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa kết thúc")</div>
+                                        </td>
+                                        <td>@item.TotalAmount.ToString("N0") VNĐ</td>
+                                        <td>
+                                            <span class="badge @GetStatusBadgeClass(item.Status)">
+                                                @item.Status
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge @GetPaymentStatusBadgeClass(item.PaymentStatus)">
+                                                @item.PaymentStatus
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-info" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#detailModal@(item.Id)">
+                                                <i class="fas fa-info-circle"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Modal chi tiết -->
+                                    <div class="modal fade" id="detailModal@(item.Id)" tabindex="-1">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Chi tiết giao dịch #@item.Id</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <h6>Thông tin chung</h6>
+                                                            <p><strong>Ngày tạo:</strong> @item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                                                            <p><strong>Trạng thái:</strong> @item.Status</p>
+                                                            <p><strong>Thanh toán:</strong> @item.PaymentStatus</p>
+                                                            <p><strong>Tổng tiền:</strong> @item.TotalAmount.ToString("N0") VNĐ</p>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <h6>Thông tin dịch vụ</h6>
+                                                            <p><strong>Loại dịch vụ:</strong> @item.ServiceType</p>
+                                                            <p><strong>Thời gian bắt đầu:</strong> @(item.StartTime?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa bắt đầu")</p>
+                                                            <p><strong>Thời gian kết thúc:</strong> @(item.EndTime?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa kết thúc")</p>
+                                                            <p><strong>Địa điểm:</strong> @item.Location</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mt-3">
+                                                        <h6>Mô tả công việc</h6>
+                                                        <p>@item.Description</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Phân trang -->
+                    @if (ViewBag.TotalPages > 1)
+                    {
+                        <div class="d-flex justify-content-center mt-4">
+                            <nav>
+                                <ul class="pagination">
+                                    @if (ViewBag.CurrentPage > 1)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" href="@Url.Action("TransactionStats", new { page = ViewBag.CurrentPage - 1, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate, status = ViewBag.Status })">
+                                                <i class="fas fa-chevron-left"></i>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                                    {
+                                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                            <a class="page-link" href="@Url.Action("TransactionStats", new { page = i, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate, status = ViewBag.Status })">
+                                                @i
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" href="@Url.Action("TransactionStats", new { page = ViewBag.CurrentPage + 1, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate, status = ViewBag.Status })">
+                                                <i class="fas fa-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </nav>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bong bóng chat Zalo -->
+<div class="zalo-chat-btn" id="zaloChatBtn">
+    <img src="https://nhanvanauto.vn/wp-content/uploads/2024/01/a9025424-6f3f-4804-8a0e-d9f5ae2b80ff-cover.png" alt="Zalo" style="width: 45px; height: 45px;">
+</div>
+
+@functions {
+    string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Hoàn thành" => "bg-success",
+            "Hủy" => "bg-danger",
+            _ => "bg-warning"
+        };
+    }
+
+    string GetPaymentStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Đã thanh toán" => "bg-success",
+            "Chờ thanh toán" => "bg-warning",
+            _ => "bg-secondary"
+        };
+    }
+} 

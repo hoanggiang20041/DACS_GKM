@@ -1,31 +1,51 @@
-html {
-  font-size: 14px;
+/* Notification styles */
+.swal2-popup {
+    font-size: 1.1rem !important;
+    font-family: 'Arial', sans-serif !important;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.swal2-title {
+    color: #333 !important;
+    font-size: 1.5rem !important;
+    font-weight: bold !important;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.swal2-html-container {
+    color: #666 !important;
+    font-size: 1.1rem !important;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.swal2-confirm {
+    background-color: #007bff !important;
+    font-size: 1rem !important;
+    padding: 0.5rem 2rem !important;
+    border-radius: 20px !important;
+    transition: all 0.3s ease !important;
 }
 
-body {
-  margin-bottom: 60px;
+.swal2-confirm:hover {
+    background-color: #0056b3 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* Animation for notifications */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.animated {
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
 }
+
+.fadeInDown {
+    animation-name: fadeInDown;
+} 

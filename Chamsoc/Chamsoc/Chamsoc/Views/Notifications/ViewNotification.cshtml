@@ -1,41 +1,125 @@
 ﻿@model Chamsoc.Models.NotificationViewModel
+@using System.Globalization
 
-<div class="container my-5">
-    <h2 class="text-center mb-4 text-primary">Chi Tiết Công Việc</h2>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="card-title mb-0">Thông Tin Công Việc</h5>
-                </div>
-                <div class="card-body">
-                    <h6 class="text-muted mb-3">Thông Tin Khách Hàng</h6>
-                    <p><strong><i class="fas fa-user me-2"></i>Tên:</strong> @Model.Senior.Name</p>
-                    <p><strong><i class="fas fa-birthday-cake me-2"></i>Tuổi:</strong> @Model.Senior.Age</p>
-                    <p><strong><i class="fas fa-heartbeat me-2"></i>Tình trạng bệnh:</strong> @Model.Senior.CareNeeds</p>
-                    <p><strong><i class="fas fa-info-circle me-2"></i>Trạng thái:</strong> @(Model.Senior.Status ? "Sẵn sàng" : "Đang bận")</p>
+@{
+    ViewData["Title"] = "Chi tiết thông báo";
+    var culture = new CultureInfo("vi-VN");
+}
 
-                    <h6 class="text-muted mt-4 mb-3">Thông Tin Công Việc</h6>
-                    <p><strong><i class="fas fa-concierge-bell me-2"></i>Dịch vụ:</strong> @Model.Job.ServiceType</p>
-                    <p><strong><i class="fas fa-clock me-2"></i>Thời gian bắt đầu:</strong> @Model.Job.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
-                    <p><strong><i class="fas fa-money-bill-wave me-2"></i>Tổng bill:</strong> @Model.Job.TotalBill.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</p>
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Chi tiết thông báo</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.Job != null)
+            {
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h4>Thông tin công việc</h4>
+                        <dl class="row">
+                            <dt class="col-sm-4">Người cần chăm sóc:</dt>
+                            <dd class="col-sm-8">@(Model.Senior?.Name ?? "Chưa có")</dd>
 
-                    <div class="text-center mt-4">
-                        <form asp-action="ConfirmJob" method="post" style="display:inline;">
-                            <input type="hidden" name="notificationId" value="@Model.Notification.Id" />
-                            <button type="submit" class="btn btn-success me-2">
-                                <i class="fas fa-check-circle me-2"></i>Xác Nhận
-                            </button>
-                        </form>
-                        <form asp-action="RejectJob" method="post" style="display:inline;">
-                            <input type="hidden" name="notificationId" value="@Model.Notification.Id" />
-                            <button type="submit" class="btn btn-danger">
-                                <i class="fas fa-times-circle me-2"></i>Từ Chối
-                            </button>
-                        </form>
+                            <dt class="col-sm-4">Người chăm sóc:</dt>
+                            <dd class="col-sm-8">@(Model.Job.Caregiver?.Name ?? "Chưa có")</dd>
+
+                            <dt class="col-sm-4">Loại dịch vụ:</dt>
+                            <dd class="col-sm-8">@Model.Job.ServiceType</dd>
+
+                            <dt class="col-sm-4">Thời gian bắt đầu:</dt>
+                            <dd class="col-sm-8">@($"{Model.Job.StartTime:dd/MM/yyyy HH:mm}")</dd>
+
+                            <dt class="col-sm-4">Thời gian kết thúc:</dt>
+                            <dd class="col-sm-8">@($"{Model.Job.EndTime:dd/MM/yyyy HH:mm}")</dd>
+
+                            <dt class="col-sm-4">Trạng thái:</dt>
+                            <dd class="col-sm-8">@Model.Job.Status</dd>
+
+                            <dt class="col-sm-4">Tổng tiền:</dt>
+                            <dd class="col-sm-8">@($"{Model.Job.TotalBill:N0} VNĐ")</dd>
+                        </dl>
                     </div>
                 </div>
+
+                @if (Model.Job.Status == "Đang chờ xác nhận từ Senior" || Model.Job.Status == "Đang chờ xác nhận từ Caregiver")
+                {
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <div class="btn-group" role="group">
+                                <form asp-controller="CareJobs" asp-action="UpdateStatus" method="post" style="display: inline;">
+                                    <input type="hidden" name="id" value="@Model.Job.Id" />
+                                    <input type="hidden" name="newStatus" value="@(Model.Job.Status == "Đang chờ xác nhận từ Senior" ? "Đang chờ Người chăm sóc thanh toán cọc" : "Đang thực hiện")" />
+                                    <button type="submit" class="btn btn-success" onclick="return confirm('Bạn có chắc muốn xác nhận công việc này?');">
+                                        <i class="fas fa-check"></i> Xác nhận
+                                    </button>
+                                </form>
+                                <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#rejectModal">
+                                    <i class="fas fa-times"></i> Từ chối
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal từ chối -->
+                    <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="rejectModalLabel">Từ chối công việc</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form asp-controller="CareJobs" asp-action="UpdateStatus" method="post">
+                                    <div class="modal-body">
+                                        <input type="hidden" name="id" value="@Model.Job.Id" />
+                                        <input type="hidden" name="newStatus" value="Hủy" />
+                                        <div class="mb-3">
+                                            <label for="reason" class="form-label">Lý do từ chối:</label>
+                                            <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                        <button type="submit" class="btn btn-danger">Xác nhận từ chối</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    Không tìm thấy thông tin công việc liên quan.
+                </div>
+            }
+
+            <div class="mt-4">
+                <a href="@Url.Action("Index", "Notifications")" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Quay lại
+                </a>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Hiển thị thông báo thành công/lỗi
+        $(document).ready(function() {
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <text>
+                toastr.success('@TempData["SuccessMessage"]');
+                </text>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <text>
+                toastr.error('@TempData["ErrorMessage"]');
+                </text>
+            }
+        });
+    </script>
+}

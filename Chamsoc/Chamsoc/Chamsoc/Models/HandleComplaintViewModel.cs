@@ -7,15 +7,21 @@ namespace Chamsoc.Models
         public int ComplaintId { get; set; }
         public int JobId { get; set; }
         public int CaregiverId { get; set; }
-        public string CaregiverName { get; set; }
         public int SeniorId { get; set; }
-        public string SeniorName { get; set; }
         public string Description { get; set; }
-
-        [Required(ErrorMessage = "Vui lòng chọn trạng thái.")]
-        public string Status { get; set; } // "Pending", "Resolved", "Dismissed"
-
-        [StringLength(1000, ErrorMessage = "Giải quyết không được dài quá 1000 ký tự.")]
+        public string Status { get; set; }
         public string Resolution { get; set; }
+        public string ImagePath { get; set; }
+        public string ThumbnailPath { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string CaregiverName { get; set; }
+        public string SeniorName { get; set; }
+        public Complaint Complaint { get; set; }
+
+        [Required(ErrorMessage = "Vui lòng chọn trạng thái xử lý")]
+        public string NewStatus { get; set; }
+
+        [Required(ErrorMessage = "Vui lòng nhập nội dung xử lý")]
+        public string NewResolution { get; set; }
     }
-}
+} 

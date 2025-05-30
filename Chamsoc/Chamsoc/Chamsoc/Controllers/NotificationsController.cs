@@ -1,10 +1,11 @@
-﻿using Chamsoc.Data;
+using Chamsoc.Data;
 using Chamsoc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Chamsoc.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using System.Linq;
 
 namespace Chamsoc.Controllers
 {
@@ -21,6 +22,8 @@ namespace Chamsoc.Controllers
         }
 
         // Hiển thị danh sách thông báo của Caregiver, Senior hoặc Admin
+
+        
         public async Task<IActionResult> Index()
         {
             var userRole = HttpContext.Session.GetString("UserRole");
@@ -34,12 +37,6 @@ namespace Chamsoc.Controllers
             // Lọc thông báo theo vai trò
             IQueryable<Notification> notificationsQuery = _context.Notifications
                 .Where(n => n.UserId == userId && !n.IsRead);
-
-            if (userRole == "Senior")
-            {
-                // Chỉ hiển thị thông báo liên quan đến đặt lịch chăm sóc (CareJob) cho Senior
-                notificationsQuery = notificationsQuery.Where(n => n.Type == "CareJob");
-            }
 
             var notifications = await notificationsQuery
                 .OrderByDescending(n => n.CreatedAt)
@@ -56,7 +53,10 @@ namespace Chamsoc.Controllers
                 }
 
                 var jobs = await _context.CareJobs
+                    .Include(j => j.Senior)
+                    .Include(j => j.Notifications)
                     .Where(j => j.CaregiverId == caregiver.Id)
+                    .OrderByDescending(j => j.CreatedAt)
                     .ToListAsync();
                 ViewBag.Jobs = jobs;
             }
@@ -70,18 +70,23 @@ namespace Chamsoc.Controllers
                 }
 
                 var jobs = await _context.CareJobs
+                    .Include(j => j.Caregiver)
+                    .Include(j => j.Notifications)
                     .Where(j => j.SeniorId == senior.Id)
+                    .OrderByDescending(j => j.CreatedAt)
                     .ToListAsync();
                 ViewBag.Jobs = jobs;
             }
             else if (userRole == "Admin")
             {
-                var jobs = await _context.CareJobs.ToListAsync();
+                var jobs = await _context.CareJobs
+                    .Include(j => j.Senior)
+                    .Include(j => j.Caregiver)
+                    .Include(j => j.Notifications)
+                    .OrderByDescending(j => j.CreatedAt)
+                    .ToListAsync();
                 ViewBag.Jobs = jobs;
             }
-
-            // Debug: Kiểm tra số lượng thông báo
-            System.Diagnostics.Debug.WriteLine($"Số lượng thông báo: {notifications.Count}");
 
             return View(notifications);
         }
@@ -90,55 +95,38 @@ namespace Chamsoc.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewNotification(int id)
         {
-            var userRole = HttpContext.Session.GetString("UserRole");
             var userId = HttpContext.Session.GetString("UserId");
-
-            if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(userId))
             {
-                return View("~/Views/Shared/AccessDenied.cshtml");
+                return RedirectToAction("Login", "Account");
             }
 
-            var notification = await _context.Notifications.FindAsync(id);
-            if (notification == null || notification.UserId != userId)
+            var notification = await _context.Notifications
+                .FirstOrDefaultAsync(n => n.Id == id && n.UserId == userId);
+
+            if (notification == null)
             {
-                TempData["ErrorMessage"] = "Không tìm thấy thông báo.";
-                return RedirectToAction("Index");
+                return NotFound("Không tìm thấy thông báo");
             }
 
-            // Đánh dấu thông báo là đã đọc
+            // Đánh dấu thông báo đã đọc
             notification.IsRead = true;
-            _context.Notifications.Update(notification);
             await _context.SaveChangesAsync();
 
-            // Tìm công việc liên quan đến thông báo
-            var job = await _context.CareJobs.FindAsync(notification.JobId);
-            if (job == null)
+            // Xử lý chuyển hướng dựa trên loại thông báo
+            if (notification.Type == "ContactRequest")
             {
-                TempData["ErrorMessage"] = "Không tìm thấy công việc liên quan đến thông báo.";
-                return RedirectToAction("Index");
+                // Lấy seniorUserId từ Link
+                var seniorUserId = notification.Link.Split('/').Last();
+                // Chuyển hướng đến ViewContactRequest với seniorUserId
+                return RedirectToAction("ViewContactRequest", "Caregivers", new { seniorUserId = seniorUserId });
+            }
+            else if (notification.JobId.HasValue)
+            {
+                return RedirectToAction("Details", "CareJobs", new { id = notification.JobId });
             }
 
-            Senior senior = null;
-            if (userRole == "Caregiver")
-            {
-                // Nếu là Caregiver, hiển thị thông tin Senior
-                senior = await _context.Seniors.FirstOrDefaultAsync(s => s.Id == job.SeniorId);
-                if (senior == null)
-                {
-                    TempData["ErrorMessage"] = "Không tìm thấy thông tin khách hàng.";
-                    return RedirectToAction("Index");
-                }
-            }
-
-            // Tạo view model để hiển thị thông tin
-            var viewModel = new NotificationViewModel
-            {
-                Notification = notification,
-                Job = job,
-                Senior = senior
-            };
-
-            return View(viewModel);
+            return RedirectToAction("Index");
         }
 
         // Xác nhận công việc từ thông báo (Tiếp nhận)
@@ -201,7 +189,7 @@ namespace Chamsoc.Controllers
                         JobId = job.Id,
                         Message = $"Người chăm sóc đã xác nhận công việc của bạn.\n" +
                                   $"- Dịch vụ: {job.ServiceType}\n" +
-                                  $"- Thời gian: {job.StartTime.ToString("dd/MM/yyyy HH:mm")}\n" +
+                                  $"- Thời gian: {job.StartTime?.ToString("dd/MM/yyyy HH:mm")}\n" +
                                   $"Công việc sẽ bắt đầu vào thời gian đã chọn.",
                         CreatedAt = DateTime.Now,
                         IsRead = false,
@@ -221,7 +209,7 @@ namespace Chamsoc.Controllers
                 JobId = job.Id,
                 Message = $"Bạn đã xác nhận công việc.\n" +
                           $"- Dịch vụ: {job.ServiceType}\n" +
-                          $"- Thời gian: {job.StartTime.ToString("dd/MM/yyyy HH:mm")}\n" +
+                          $"- Thời gian: {job.StartTime?.ToString("dd/MM/yyyy HH:mm")}\n" +
                           $"Vui lòng nạp cọc để tiếp tục.",
                 CreatedAt = DateTime.Now,
                 IsRead = false,
@@ -238,6 +226,45 @@ namespace Chamsoc.Controllers
             return RedirectToAction("Deposit", "Caregivers", new { jobId = job.Id });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> MarkAllAsRead()
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return View("~/Views/Shared/AccessDenied.cshtml");
+            }
+
+            var unreadNotifications = await _context.Notifications
+                .Where(n => n.UserId == userId && !n.IsRead)
+                .ToListAsync();
+
+            if (unreadNotifications.Any())
+            {
+                foreach (var notification in unreadNotifications)
+                {
+                    notification.IsRead = true;
+                }
+
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Đã đánh dấu tất cả thông báo là đã đọc.";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MarkAsRead(int notificationId)
+        {
+            var notification = await _context.Notifications.FindAsync(notificationId);
+            if (notification != null)
+            {
+                notification.IsRead = true;
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("ListSeniors", "Seniors");
+        }
+        
         // Từ chối công việc từ thông báo
         [HttpPost]
         public async Task<IActionResult> RejectJob(int notificationId)
@@ -295,7 +322,7 @@ namespace Chamsoc.Controllers
                         JobId = job.Id,
                         Message = $"Người chăm sóc đã từ chối công việc của bạn.\n" +
                                   $"- Dịch vụ: {job.ServiceType}\n" +
-                                  $"- Thời gian: {job.StartTime.ToString("dd/MM/yyyy HH:mm")}\n" +
+                                  $"- Thời gian: {job.StartTime?.ToString("dd/MM/yyyy HH:mm")}\n" +
                                   $"Vui lòng chọn người chăm sóc khác.",
                         CreatedAt = DateTime.Now,
                         IsRead = false,
@@ -315,7 +342,7 @@ namespace Chamsoc.Controllers
                 JobId = job.Id,
                 Message = $"Bạn đã từ chối công việc.\n" +
                           $"- Dịch vụ: {job.ServiceType}\n" +
-                          $"- Thời gian: {job.StartTime.ToString("dd/MM/yyyy HH:mm")}\n" +
+                          $"- Thời gian: {job.StartTime?.ToString("dd/MM/yyyy HH:mm")}\n" +
                           $"Công việc đã được hủy.",
                 CreatedAt = DateTime.Now,
                 IsRead = false,
@@ -330,6 +357,98 @@ namespace Chamsoc.Controllers
 
             TempData["SuccessMessage"] = "Bạn đã từ chối công việc.";
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SendContactRequest(int caregiverId)
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var senior = await _context.Seniors
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(s => s.UserId == userId);
+            if (senior == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy thông tin người dùng.";
+                return RedirectToAction("ListCaregivers", "Caregivers");
+            }
+
+            var caregiver = await _context.Caregivers
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.Id == caregiverId);
+            if (caregiver == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy thông tin người chăm sóc.";
+                return RedirectToAction("ListCaregivers", "Caregivers");
+            }
+
+            ViewBag.CaregiverId = caregiverId;
+            ViewBag.CaregiverName = caregiver.User.FullName;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendContactRequest(int caregiverId, string message)
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var senior = await _context.Seniors
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(s => s.UserId == userId);
+            if (senior == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy thông tin người dùng.";
+                return RedirectToAction("ListCaregivers", "Caregivers");
+            }
+
+            var caregiver = await _context.Caregivers
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.Id == caregiverId);
+            if (caregiver == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy thông tin người chăm sóc.";
+                return RedirectToAction("ListCaregivers", "Caregivers");
+            }
+
+            var notification = new Notification
+            {
+                UserId = caregiver.UserId,
+                Title = "Yêu cầu liên hệ mới",
+                Message = $"Bạn có yêu cầu liên hệ mới từ {senior.User.FullName}.\n" +
+                         $"Thông tin người gửi:\n" +
+                         $"- Tên: {senior.User.FullName}\n" +
+                         $"- Số điện thoại: {senior.User.PhoneNumber}\n" +
+                         $"- Địa chỉ: {senior.User.Address}\n\n" +
+                         $"Lời nhắn:\n{message?.Trim() ?? "Không có nội dung"}",
+                Type = "ContactRequest",
+                CreatedAt = DateTime.Now,
+                IsRead = false,
+                Link = $"/Caregivers/ViewContactRequest/{senior.UserId}"
+            };
+
+            _context.Notifications.Add(notification);
+            await _context.SaveChangesAsync();
+
+            // Gửi thông báo realtime qua SignalR
+            await _notificationHub.Clients.User(caregiver.UserId)
+                .SendAsync("ReceiveNotification", new
+                {
+                    title = notification.Title,
+                    message = notification.Message,
+                    type = notification.Type,
+                    link = notification.Link
+                });
+
+            TempData["SuccessMessage"] = "Yêu cầu liên hệ đã được gửi thành công.";
+            return RedirectToAction("ListCaregivers", "Caregivers");
         }
     }
 }

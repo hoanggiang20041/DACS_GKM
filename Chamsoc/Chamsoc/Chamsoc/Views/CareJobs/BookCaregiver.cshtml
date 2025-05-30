@@ -1,0 +1,105 @@
+@model Chamsoc.Models.BookCaregiverViewModel
+
+@{
+    ViewData["Title"] = "Đặt lịch chăm sóc";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Đặt lịch chăm sóc với @Model.CaregiverName</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="BookCaregiver" method="post">
+                        <input type="hidden" asp-for="CareJobId" />
+                        <input type="hidden" asp-for="CaregiverId" />
+                        <input type="hidden" asp-for="CaregiverName" />
+                        <input type="hidden" asp-for="ServicePrice" />
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> Đây là yêu cầu chăm sóc. Người cần chăm sóc sẽ xác nhận và cung cấp địa điểm sau khi chấp nhận yêu cầu.
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ServiceType" class="form-label">Loại dịch vụ</label>
+                            <select asp-for="ServiceType" class="form-select" required>
+                                <option value="">Chọn loại dịch vụ</option>
+                                <option value="Chăm sóc tại nhà">Chăm sóc tại nhà</option>
+                                <option value="Chăm sóc tại bệnh viện">Chăm sóc tại bệnh viện</option>
+                                <option value="Chăm sóc ban ngày">Chăm sóc ban ngày</option>
+                                <option value="Chăm sóc ban đêm">Chăm sóc ban đêm</option>
+                            </select>
+                            <span asp-validation-for="ServiceType" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="StartTime" class="form-label">Thời gian bắt đầu</label>
+                            <input asp-for="StartTime" class="form-control" type="datetime-local" required />
+                            <span asp-validation-for="StartTime" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="NumberOfHours" class="form-label">Số giờ</label>
+                            <select asp-for="NumberOfHours" class="form-select" required>
+                                <option value="1">1 giờ</option>
+                                <option value="3">3 giờ</option>
+                                <option value="5">5 giờ</option>
+                                <option value="8">8 giờ</option>
+                                <option value="12">12 giờ</option>
+                                <option value="24">24 giờ</option>
+                            </select>
+                            <span asp-validation-for="NumberOfHours" class="text-danger"></span>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Thông tin thanh toán</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Giá mỗi giờ:</strong> @Model.ServicePrice.ToString("N0") VNĐ</p>
+                                        <p><strong>Tổng số giờ:</strong> @Model.NumberOfHours giờ</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Tổng tiền:</strong> @Model.TotalBill.ToString("N0") VNĐ</p>
+                                        <p><strong>Đặt cọc (30%):</strong> @Model.Deposit.ToString("N0") VNĐ</p>
+                                        <p><strong>Còn lại:</strong> @Model.RemainingAmount.ToString("N0") VNĐ</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i> Gửi yêu cầu
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Quay lại
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Update total bill when hours change
+            $('#NumberOfHours').change(function() {
+                var hours = $(this).val();
+                var pricePerHour = @Model.ServicePrice;
+                var totalBill = hours * pricePerHour;
+                var deposit = totalBill * 0.3;
+                var remaining = totalBill - deposit;
+
+                $('strong:contains("Tổng tiền:")').next().text(totalBill.toLocaleString() + ' VNĐ');
+                $('strong:contains("Đặt cọc (30%):")').next().text(deposit.toLocaleString() + ' VNĐ');
+                $('strong:contains("Còn lại:")').next().text(remaining.toLocaleString() + ' VNĐ');
+            });
+        });
+    </script>
+} 

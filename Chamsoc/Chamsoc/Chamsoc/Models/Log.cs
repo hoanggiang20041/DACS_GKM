@@ -1,6 +1,6 @@
 using System;
 
-namespace Chamsoc.Models
+namespace Chamsoc.Core.Models
 {
     public class Log
     {

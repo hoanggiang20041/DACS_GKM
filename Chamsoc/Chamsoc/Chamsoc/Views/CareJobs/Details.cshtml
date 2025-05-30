@@ -1,0 +1,469 @@
+@model Chamsoc.Models.CareJobViewModel
+
+@{
+    ViewData["Title"] = "Chi tiết công việc";
+    var userRole = Context.Session.GetString("UserRole");
+}
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>Thông tin công việc #@Model.Id
+                        </h5>
+                        <span class="badge @GetStatusBadgeClass(Model.Status) fs-6">
+                            @GetStatusDisplayText(Model.Status, userRole)
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="info-section mb-4">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-user me-2"></i>Thông tin người dùng
+                                </h6>
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="@(string.IsNullOrEmpty(Model.Senior?.AvatarUrl) ? "/images/default-avatar.png" : Model.Senior.AvatarUrl)" 
+                                         class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;" 
+                                         alt="@Model.SeniorName">
+                                    <div>
+                                        <h6 class="mb-1">@Model.SeniorName</h6>
+                                        <small class="text-muted">Người cần chăm sóc</small>
+                                    </div>
+                                </div>
+                                @if (Model.Caregiver != null)
+                                {
+                                    <div class="d-flex align-items-center">
+                                        <img src="@(string.IsNullOrEmpty(Model.Caregiver.AvatarUrl) ? "/images/default-avatar.png" : Model.Caregiver.AvatarUrl)" 
+                                             class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;" 
+                                             alt="@Model.CaregiverName">
+                                        <div>
+                                            <h6 class="mb-1">@Model.CaregiverName</h6>
+                                            <small class="text-muted">Người chăm sóc</small>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="info-section mb-4">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-clock me-2"></i>Thời gian
+                                </h6>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Bắt đầu:</span>
+                                    <span class="fw-bold">@(Model.StartTime?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa xác định")</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Kết thúc:</span>
+                                    <span class="fw-bold">@(Model.EndTime?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa xác định")</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            @if (userRole == "Caregiver")
+                            {
+                                <div class="info-section mb-4">
+                                    <h6 class="text-primary mb-3">
+                                        <i class="fas fa-money-bill-wave me-2"></i>Thông tin thanh toán
+                                    </h6>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted">Tổng tiền:</span>
+                                        <span class="fw-bold text-success">@Model.TotalBill.ToString("N0") VNĐ</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted">Tiền cọc:</span>
+                                        <span class="fw-bold">@Model.Deposit.ToString("N0") VNĐ</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">Còn lại:</span>
+                                        <span class="fw-bold">@Model.RemainingAmount.ToString("N0") VNĐ</span>
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="info-section">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-concierge-bell me-2"></i>Dịch vụ
+                                </h6>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Loại dịch vụ:</span>
+                                    <span class="fw-bold">@GetServiceTypeName(Model.ServiceType)</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Mô tả:</span>
+                                    <span class="fw-bold">@(string.IsNullOrEmpty(Model.Description) ? GetServiceDescription(Model.ServiceType) : Model.Description)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 justify-content-end">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Quay lại
+                </a>
+
+                @if (userRole == "Caregiver")
+                {
+                    @if (Model.Status == "Đang chờ xác nhận từ Caregiver")
+                    {
+                        <form asp-action="UpdateStatus" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <input type="hidden" name="newStatus" value="Đang chờ Người chăm sóc thanh toán cọc" />
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check me-2"></i>Chấp nhận
+                            </button>
+                        </form>
+                        <form asp-action="UpdateStatus" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <input type="hidden" name="newStatus" value="Hủy" />
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-times me-2"></i>Từ chối
+                            </button>
+                        </form>
+                    }
+                    else if (Model.Status == "Đang chờ Người chăm sóc thanh toán cọc" && !Model.IsDepositPaid)
+                    {
+                        <a asp-controller="Caregivers" asp-action="Deposit" asp-route-jobId="@Model.Id" class="btn btn-primary">
+                            <i class="fas fa-money-bill-wave me-2"></i>Nạp tiền cọc
+                        </a>
+                    }
+                    else if (Model.Status == "Đang thực hiện")
+                    {
+                        <form asp-action="UpdateStatus" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <input type="hidden" name="newStatus" value="Đang chờ xác nhận hoàn thành" />
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check-circle me-2"></i>Hoàn thành công việc
+                            </button>
+                        </form>
+                    }
+                }
+                else if (userRole == "Senior")
+                {
+                    @if (Model.Status == "Đang chờ xác nhận từ Senior")
+                    {
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <form asp-action="UpdateStatus" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@Model.Id" />
+                                    <input type="hidden" name="newStatus" value="Đang chờ Người chăm sóc thanh toán cọc" />
+                                    <input type="hidden" name="latitude" id="latitude" />
+                                    <input type="hidden" name="longitude" id="longitude" />
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-map-marker-alt me-2"></i>Địa điểm chăm sóc
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="text" 
+                                                   name="location" 
+                                                   id="location" 
+                                                   class="form-control" 
+                                                   required
+                                                   placeholder="Nhập địa chỉ hoặc click để lấy vị trí hiện tại" />
+                                            <button type="button" 
+                                                    class="btn btn-outline-primary" 
+                                                    onclick="getCurrentLocation()">
+                                                <i class="fas fa-location-arrow"></i>
+                                            </button>
+                                        </div>
+                                        <div id="locationSuggestions" class="list-group mt-2" style="display:none;"></div>
+                                    </div>
+
+                                    <div class="d-flex gap-2">
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fas fa-check me-2"></i>Chấp nhận
+                                        </button>
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal">
+                                            <i class="fas fa-times me-2"></i>Từ chối
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                    else if (Model.Status == "Đang chờ xác nhận hoàn thành")
+                    {
+                        <form asp-action="UpdateStatus" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <input type="hidden" name="newStatus" value="Hoàn thành" />
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check-circle me-2"></i>Xác nhận hoàn thành
+                            </button>
+                        </form>
+                        <form asp-action="UpdateStatus" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <input type="hidden" name="newStatus" value="Đang thực hiện" />
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-redo me-2"></i>Yêu cầu tiếp tục
+                            </button>
+                        </form>
+                    }
+                    @if (Model.Status == "Hoàn thành" && !Model.HasRated)
+                    {
+                        <a asp-action="RateCaregiver" asp-route-jobId="@Model.Id" class="btn btn-primary">
+                            <i class="fas fa-star me-2"></i>Đánh giá dịch vụ
+                        </a>
+                    }
+                    @if (Model.Status == "Hoàn thành" && !Model.HasComplained)
+                    {
+                        <a asp-action="FileComplaint" asp-route-jobId="@Model.Id" class="btn btn-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Gửi khiếu nại
+                        </a>
+                    }
+                }
+                else if (userRole == "Admin")
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                        <i class="fas fa-edit me-2"></i>Chỉnh sửa
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Fix scrolling issue */
+    body {
+        overflow-y: auto !important;
+        padding-right: 0 !important;
+    }
+    .modal-open {
+        overflow: auto !important;
+        padding-right: 0 !important;
+    }
+    /* Existing styles */
+    .card {
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+    .card-header {
+        border-bottom: none;
+    }
+    .info-section {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+    }
+    .badge {
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+    }
+    .btn {
+        padding: 0.5rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+    }
+    .alert {
+        border-radius: 0.5rem;
+        border: none;
+    }
+</style>
+
+@functions {
+    string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Đang chờ xác nhận từ Caregiver" => "bg-warning",
+            "Đang chờ xác nhận từ Senior" => "bg-warning",
+            "Đang chờ Người chăm sóc thanh toán cọc" => "bg-warning",
+            "Đang thực hiện" => "bg-primary",
+            "Đang chờ xác nhận hoàn thành" => "bg-info",
+            "Hoàn thành" => "bg-success",
+            "Hủy" => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetStatusDisplayText(string status, string userRole)
+    {
+        if (userRole == "Caregiver")
+        {
+            return status switch
+            {
+                "Đang chờ xác nhận từ Caregiver" => "Đang chờ bạn chấp nhận",
+                "Đang chờ xác nhận từ Senior" => "Đang chờ người cần chăm sóc xác nhận",
+                "Đang chờ Người chăm sóc thanh toán cọc" => "Đang chờ bạn thanh toán cọc",
+                "Đang thực hiện" => "Đang thực hiện",
+                "Đang chờ xác nhận hoàn thành" => "Đang chờ xác nhận hoàn thành",
+                "Hoàn thành" => "Hoàn thành",
+                "Hủy" => "Hủy",
+                _ => status
+            };
+        }
+        else if (userRole == "Senior")
+        {
+            return status switch
+            {
+                "Đang chờ xác nhận từ Caregiver" => "Đang chờ người chăm sóc chấp nhận",
+                "Đang chờ xác nhận từ Senior" => "Đang chờ bạn xác nhận",
+                "Đang chờ Người chăm sóc thanh toán cọc" => "Đang chờ người chăm sóc thanh toán cọc",
+                "Đang thực hiện" => "Đang thực hiện",
+                "Đang chờ xác nhận hoàn thành" => "Đang chờ bạn xác nhận hoàn thành",
+                "Hoàn thành" => "Hoàn thành",
+                "Hủy" => "Hủy",
+                _ => status
+            };
+        }
+        return status;
+    }
+
+    string GetServiceTypeName(string serviceType)
+    {
+        return serviceType?.ToLower() switch
+        {
+            "comprehensive" => "Chăm sóc toàn diện",
+            "physiotherapy" => "Vật lí trị liệu",
+            "medical" => "Chăm sóc y tế",
+            "rehabilitation" => "Phục hồi chức năng",
+            _ => serviceType
+        };
+    }
+
+    string GetServiceDescription(string serviceType)
+    {
+        return serviceType?.ToLower() switch
+        {
+            "comprehensive" => "Dịch vụ chăm sóc toàn diện 24/7, bao gồm: vệ sinh cá nhân, cho ăn uống, theo dõi sức khỏe, đi lại, và các hoạt động sinh hoạt hàng ngày",
+            "physiotherapy" => "Dịch vụ vật lý trị liệu chuyên nghiệp, giúp phục hồi chức năng vận động và tăng cường sức khỏe",
+            "medical" => "Dịch vụ chăm sóc y tế tại nhà, bao gồm: tiêm thuốc, thay băng, chăm sóc vết thương, theo dõi sinh hiệu",
+            "rehabilitation" => "Dịch vụ phục hồi chức năng toàn diện, giúp người bệnh phục hồi sau chấn thương hoặc phẫu thuật",
+            _ => "Chưa có mô tả"
+        };
+    }
+}
+
+@section Scripts {
+    <script>
+        let debounceTimer;
+
+        document.getElementById('location').addEventListener('input', function(e) {
+            clearTimeout(debounceTimer);
+            const query = e.target.value;
+            
+            if (query.length < 3) {
+                document.getElementById('locationSuggestions').style.display = 'none';
+                return;
+            }
+
+            debounceTimer = setTimeout(() => {
+                searchLocation(query);
+            }, 500);
+        });
+
+        function searchLocation(query) {
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const suggestions = document.getElementById('locationSuggestions');
+                    suggestions.innerHTML = '';
+                    suggestions.style.display = data.length ? 'block' : 'none';
+
+                    data.slice(0, 5).forEach(item => {
+                        const div = document.createElement('a');
+                        div.className = 'list-group-item list-group-item-action';
+                        div.href = '#';
+                        div.textContent = item.display_name;
+                        div.onclick = function(e) {
+                            e.preventDefault();
+                            document.getElementById('location').value = item.display_name;
+                            document.getElementById('latitude').value = item.lat;
+                            document.getElementById('longitude').value = item.lon;
+                            suggestions.style.display = 'none';
+                        };
+                        suggestions.appendChild(div);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                const locationButton = document.querySelector('button[onclick="getCurrentLocation()"]');
+                locationButton.disabled = true;
+                locationButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        
+                        document.getElementById('latitude').value = lat;
+                        document.getElementById('longitude').value = lon;
+                        
+                        // Reverse geocoding to get address
+                        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                document.getElementById('location').value = data.display_name;
+                                locationButton.disabled = false;
+                                locationButton.innerHTML = '<i class="fas fa-location-arrow"></i>';
+                            })
+                            .catch(error => {
+                                console.error('Error getting address:', error);
+                                locationButton.disabled = false;
+                                locationButton.innerHTML = '<i class="fas fa-location-arrow"></i>';
+                                alert('Không thể lấy địa chỉ từ vị trí của bạn.');
+                            });
+                    },
+                    function(error) {
+                        locationButton.disabled = false;
+                        locationButton.innerHTML = '<i class="fas fa-location-arrow"></i>';
+                        alert('Không thể lấy vị trí: ' + error.message);
+                    }
+                );
+            } else {
+                alert('Trình duyệt của bạn không hỗ trợ định vị.');
+            }
+        }
+
+        // Click outside to close suggestions
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('#location') && !e.target.closest('#locationSuggestions')) {
+                document.getElementById('locationSuggestions').style.display = 'none';
+            }
+        });
+    </script>
+
+    <style>
+        #locationSuggestions {
+            position: absolute;
+            z-index: 1000;
+            width: calc(100% - 3rem);
+            max-height: 200px;
+            overflow-y: auto;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .list-group-item-action {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+} 

@@ -3,13 +3,13 @@ using Chamsoc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Chamsoc.Hubs;
-
-using Microsoft.AspNetCore.SignalR;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Chamsoc.Models;
+using Chamsoc.Hubs;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Chamsoc.Controllers
 {
@@ -18,22 +18,13 @@ namespace Chamsoc.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IHubContext<NotificationHub> _notificationHub;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CareJobsController(AppDbContext context, IHubContext<NotificationHub> notificationHub)
+        public CareJobsController(AppDbContext context, IHubContext<NotificationHub> notificationHub, IWebHostEnvironment webHostEnvironment)
         {
-            _context = context;
-            _notificationHub = notificationHub;
-        }
-
-        public class CareJobViewModel
-        {
-            public CareJob Job { get; set; }
-            public bool HasRated { get; set; }
-            public bool HasComplained { get; set; }
-            public string CaregiverUserId { get; set; } // UserId của Caregiver từ AspNetUsers
-            public string SeniorUserId { get; set; }
-            public double Latitude { get; set; }
-            public double Longitude { get; set; }
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _notificationHub = notificationHub ?? throw new ArgumentNullException(nameof(notificationHub));
+            _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
         }
 
         public async Task<IActionResult> Index()
@@ -42,303 +33,656 @@ namespace Chamsoc.Controllers
             var userId = HttpContext.Session.GetString("UserId");
 
             if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userId))
-            {
                 return RedirectToAction("Login", "Account");
-            }
 
-            IQueryable<CareJob> careJobsQuery;
-
-            if (userRole == "Admin")
+            var jobs = await GetJobsByUserRole(userRole, userId);
+            var viewModels = jobs.Select(job => new CareJobViewModel
             {
-                careJobsQuery = _context.CareJobs;
-            }
-            else if (userRole == "Senior")
-            {
-                var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.UserId == userId);
-                if (senior == null) return RedirectWithError("Không tìm thấy thông tin khách hàng.");
-                careJobsQuery = _context.CareJobs.Where(job => job.SeniorId == senior.Id);
-            }
-            else
-            {
-                var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == userId);
-                if (caregiver == null) return RedirectWithError("Không tìm thấy thông tin người chăm sóc.");
-                careJobsQuery = _context.CareJobs.Where(job => job.CaregiverId == caregiver.Id);
-            }
+                Id = job.Id,
+                SeniorId = job.SeniorId,
+                CaregiverId = job.CaregiverId ?? 0,
+                SeniorName = job.SeniorName,
+                CaregiverName = job.CaregiverName,
+                SeniorPhone = job.SeniorPhone,
+                StartTime = job.StartTime,
+                EndTime = job.EndTime,
+                Status = job.Status,
+                TotalBill = job.TotalBill,
+                Deposit = job.Deposit,
+                RemainingAmount = job.RemainingAmount,
+                ServiceType = job.ServiceType,
+                CreatedByRole = job.CreatedByRole,
+                Latitude = job.Latitude,
+                Longitude = job.Longitude,
+                Location = job.Location,
+                Description = job.Description,
+                PaymentStatus = job.PaymentStatus,
+                PaymentMethod = job.PaymentMethod,
+                CreatedAt = job.CreatedAt,
+                UpdatedAt = job.UpdatedAt,
+                IsDepositPaid = job.IsDepositPaid,
+                DepositMade = job.DepositMade,
+                CaregiverAccepted = job.CaregiverAccepted,
+                SeniorAccepted = job.SeniorAccepted,
+                DepositNote = job.DepositNote,
+                Notifications = job.Notifications?.ToList() ?? new List<Notification>(),
+                HasRated = job.HasRated ?? false,
+                HasComplained = job.HasComplained ?? false,
+                Senior = job.Senior,
+                Caregiver = job.Caregiver
+            }).ToList();
 
-            var careJobs = await careJobsQuery.ToListAsync();
+            return View(viewModels);
+        }
 
-            foreach (var job in careJobs)
+        private async Task<List<CareJob>> GetJobsByUserRole(string userRole, string userId)
+        {
+            var query = _context.CareJobs
+                .Include(j => j.Senior)
+                .Include(j => j.Caregiver)
+                .Include(j => j.Notifications)
+                .AsQueryable();
+
+            switch (userRole)
             {
-                if (job.Status == "Đang thực hiện" && job.EndTime.HasValue && DateTime.Now > job.EndTime.Value.AddSeconds(30))
-                {
-                    job.Status = "Hoàn tất";
-                    job.EndTime = DateTime.Now;
-                    job.RemainingAmount = job.TotalBill - job.Deposit;
-                    UpdateAvailability(job);
-                    _context.CareJobs.Update(job);
-                }
-            }
-            await _context.SaveChangesAsync();
-
-            var careJobViewModels = new List<CareJobViewModel>();
-            foreach (var job in careJobs)
-            {
-                bool hasRated = false, hasComplained = false;
-                string caregiverUserId = null;
-                string seniorUserId = null;
-
-                if (userRole == "Senior")
-                {
+                case "Senior":
                     var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.UserId == userId);
                     if (senior != null)
                     {
-                        hasRated = await _context.Ratings.AnyAsync(r => r.JobId == job.Id && r.SeniorId == senior.Id);
-                        hasComplained = await _context.Complaints.AnyAsync(c => c.JobId == job.Id && c.SeniorId == senior.Id);
+                        query = query.Where(j => j.SeniorId == senior.Id);
+                        // Chỉ cập nhật trạng thái nếu có công việc đang thực hiện và senior đang sẵn sàng
+                        var hasActiveJob = await query.AnyAsync(j => j.Status == "Đang thực hiện");
+                        if (hasActiveJob && senior.Status)
+                        {
+                            senior.Status = false; // Đánh dấu Senior đang bận
+                            _context.Seniors.Update(senior);
+                            await _context.SaveChangesAsync();
+                        }
+                        // Nếu không có công việc đang thực hiện và senior đang bận, cập nhật lại thành sẵn sàng
+                        else if (!hasActiveJob && !senior.Status)
+                        {
+                            senior.Status = true; // Đánh dấu Senior sẵn sàng
+                            _context.Seniors.Update(senior);
+                            await _context.SaveChangesAsync();
+                        }
                     }
-                }
-                else if (userRole == "Admin")
-                {
-                    hasRated = await _context.Ratings.AnyAsync(r => r.JobId == job.Id && r.SeniorId == 0);
-                }
+                    break;
 
-                // Lấy UserId từ bảng Caregivers và Seniors
-                caregiverUserId = await _context.Caregivers
-                    .Where(c => c.Id == job.CaregiverId)
-                    .Select(c => c.UserId)
-                    .FirstOrDefaultAsync();
-                seniorUserId = await _context.Seniors
-                    .Where(s => s.Id == job.SeniorId)
-                    .Select(s => s.UserId)
-                    .FirstOrDefaultAsync();
+                case "Caregiver":
+                    var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == userId);
+                    if (caregiver != null)
+                    {
+                        query = query.Where(j => j.CaregiverId == caregiver.Id);
+                        // Chỉ cập nhật trạng thái nếu có công việc đang thực hiện và caregiver đang sẵn sàng
+                        var hasActiveJob = await query.AnyAsync(j => j.Status == "Đang thực hiện");
+                        if (hasActiveJob && caregiver.IsAvailable)
+                        {
+                            caregiver.IsAvailable = false; // Đánh dấu Caregiver đang bận
+                            _context.Caregivers.Update(caregiver);
+                            await _context.SaveChangesAsync();
+                        }
+                        // Nếu không có công việc đang thực hiện và caregiver đang bận, cập nhật lại thành sẵn sàng
+                        else if (!hasActiveJob && !caregiver.IsAvailable)
+                        {
+                            caregiver.IsAvailable = true; // Đánh dấu Caregiver sẵn sàng
+                            _context.Caregivers.Update(caregiver);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                    break;
 
-                careJobViewModels.Add(new CareJobViewModel
-                {
-                    Job = job,
-                    HasRated = hasRated,
-                    HasComplained = hasComplained,
-                    CaregiverUserId = caregiverUserId,
-                    SeniorUserId = seniorUserId,
-                    Latitude = job.Latitude,   // Thêm dòng này
-                    Longitude = job.Longitude
-                });
+                case "Admin":
+                    // Admin có thể xem tất cả
+                    break;
+
+                default:
+                    return new List<CareJob>();
             }
 
-            return View(careJobViewModels);
-        }
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> TransactionStats(int? month, int? year)
-        {
-            var filterMonth = month ?? DateTime.Now.Month;
-            var filterYear = year ?? DateTime.Now.Year;
-
-            var careJobs = await _context.CareJobs
-                .Where(j => j.StartTime.Year == filterYear && j.StartTime.Month == filterMonth)
+            return await query
+                .OrderByDescending(j => j.CreatedAt)
                 .ToListAsync();
+        }
 
-            var transactionStats = new List<TransactionStatsViewModel>();
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var userRole = HttpContext.Session.GetString("UserRole");
+            var userId = HttpContext.Session.GetString("UserId");
 
-            foreach (var job in careJobs)
+            if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userId))
+                return RedirectToAction("Login", "Account");
+
+            var job = await GetJobWithDetails(id);
+            if (job == null) return NotFound();
+
+            if (!await CanAccessJob(job, userRole, userId))
+                return AccessDenied();
+
+            var viewModel = new CareJobViewModel
             {
-                var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.Id == job.SeniorId);
-                var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.Id == job.CaregiverId);
+                Id = job.Id,
+                SeniorId = job.SeniorId,
+                CaregiverId = job.CaregiverId ?? 0,
+                SeniorName = job.SeniorName,
+                CaregiverName = job.CaregiverName,
+                SeniorPhone = job.SeniorPhone,
+                StartTime = job.StartTime,
+                EndTime = job.EndTime,
+                Status = job.Status,
+                TotalBill = job.TotalBill,
+                Deposit = job.Deposit,
+                RemainingAmount = job.RemainingAmount,
+                ServiceType = job.ServiceType,
+                CreatedByRole = job.CreatedByRole,
+                Latitude = job.Latitude,
+                Longitude = job.Longitude,
+                Location = job.Location,
+                Description = job.Description,
+                PaymentStatus = job.PaymentStatus,
+                PaymentMethod = job.PaymentMethod,
+                CreatedAt = job.CreatedAt,
+                UpdatedAt = job.UpdatedAt,
+                IsDepositPaid = job.IsDepositPaid,
+                DepositMade = job.DepositMade,
+                CaregiverAccepted = job.CaregiverAccepted,
+                SeniorAccepted = job.SeniorAccepted,
+                DepositNote = job.DepositNote,
+                Notifications = job.Notifications?.ToList() ?? new List<Notification>(),
+                HasRated = job.HasRated ?? false,
+                HasComplained = job.HasComplained ?? false,
+                Senior = job.Senior,
+                Caregiver = job.Caregiver
+            };
 
-                var seniorUser = senior != null ? await _context.Users.FirstOrDefaultAsync(u => u.Id == senior.UserId) : null;
-                var caregiverUser = caregiver != null ? await _context.Users.FirstOrDefaultAsync(u => u.Id == caregiver.UserId) : null;
+            return View(viewModel);
+        }
 
-                transactionStats.Add(new TransactionStatsViewModel
-                {
-                    SeniorName = senior?.Name ?? "Không xác định",
-                    CaregiverName = caregiver?.Name ?? "Không xác định",
-                    TransactionDateTime = job.EndTime.HasValue ? job.EndTime.Value : job.StartTime,
-                    SeniorPhone = seniorUser?.PhoneNumber ?? "N/A",
-                    SeniorEmail = seniorUser?.Email ?? "N/A",
-                    CaregiverPhone = caregiverUser?.PhoneNumber ?? "N/A",
-                    CaregiverEmail = caregiverUser?.Email ?? "N/A",
-                    ServiceName = job.ServiceType ?? "Không xác định",
-                    TotalBill = job.TotalBill,
-                    Deposit = job.Deposit,
-                    Status = job.Status
-                });
+        private async Task<CareJob> GetJobWithDetails(int id)
+        {
+            return await _context.CareJobs
+                .Include(j => j.Senior)
+                .Include(j => j.Caregiver)
+                .Include(j => j.Notifications)
+                .FirstOrDefaultAsync(j => j.Id == id);
+        }
+
+        private async Task<bool> CanAccessJob(CareJob job, string userRole, string userId)
+        {
+            switch (userRole)
+            {
+                case "Senior":
+                    var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.UserId == userId);
+                    return senior != null && job.SeniorId == senior.Id;
+
+                case "Caregiver":
+                    var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == userId);
+                    return caregiver != null && job.CaregiverId == caregiver.Id;
+
+                case "Admin":
+                    return true;
+
+                default:
+                    return false;
             }
-
-            // Dữ liệu cho biểu đồ tròn (phân bố trạng thái)
-            var statusCounts = transactionStats
-                .GroupBy(t => t.Status)
-                .Select(g => new { Status = g.Key, Count = g.Count() })
-                .ToList();
-
-            // Dữ liệu cho biểu đồ cột (doanh thu và số đơn của Caregiver)
-            var caregiverStats = transactionStats
-                .GroupBy(t => t.CaregiverName)
-                .Select(g => new
-                {
-                    CaregiverName = g.Key,
-                    TotalRevenue = g.Sum(t => t.TotalBill),
-                    OrderCount = g.Count()
-                })
-                .OrderByDescending(g => g.TotalRevenue)
-                .ToList();
-
-            ViewBag.StatusLabels = statusCounts.Select(s => s.Status).ToList();
-            ViewBag.StatusData = statusCounts.Select(s => s.Count).ToList();
-            ViewBag.CaregiverNames = caregiverStats.Select(c => c.CaregiverName).ToList();
-            ViewBag.CaregiverRevenue = caregiverStats.Select(c => c.TotalRevenue).ToList();
-            ViewBag.CaregiverOrderCount = caregiverStats.Select(c => c.OrderCount).ToList();
-            ViewBag.FilterMonth = filterMonth;
-            ViewBag.FilterYear = filterYear;
-
-            return View(transactionStats);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CompleteJob(int id)
+        public async Task<IActionResult> UpdateStatus(int id, string newStatus, string location = null, double? latitude = null, double? longitude = null)
         {
-            var job = await _context.CareJobs.FindAsync(id);
+            var userRole = HttpContext.Session.GetString("UserRole");
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userId))
+                return RedirectToAction("Login", "Account");
+
+            var job = await _context.CareJobs
+                .Include(j => j.Caregiver)
+                .Include(j => j.Senior)
+                .FirstOrDefaultAsync(j => j.Id == id);
+
             if (job == null) return NotFound();
-            if (!IsAuthorizedUser(job)) return AccessDenied();
 
-            if (job.Status != "Đang thực hiện") return RedirectWithError("Công việc không ở trạng thái Đang thực hiện.");
+            if (!await CanAccessJob(job, userRole, userId))
+                return AccessDenied();
 
-            job.Status = "Hoàn tất";
-            job.EndTime = DateTime.Now;
-            job.RemainingAmount = job.TotalBill - job.Deposit;
-            UpdateAvailability(job);
-            _context.CareJobs.Update(job);
+            if (!IsValidStatusTransition(job.Status, newStatus, userRole))
+            {
+                TempData["ErrorMessage"] = "Không thể chuyển sang trạng thái này.";
+                return RedirectToAction("Details", new { id });
+            }
+
+            // Kiểm tra và cập nhật thông tin vị trí khi Senior chấp nhận yêu cầu
+            if (userRole == "Senior" && 
+                job.Status == "Đang chờ xác nhận từ Senior" && 
+                newStatus == "Đang chờ Người chăm sóc thanh toán cọc")
+            {
+                if (string.IsNullOrEmpty(location) || !latitude.HasValue || !longitude.HasValue)
+                {
+                    TempData["ErrorMessage"] = "Vui lòng cung cấp đầy đủ thông tin vị trí.";
+                    return RedirectToAction("Details", new { id });
+                }
+
+                job.Location = location;
+                job.Latitude = latitude.Value;
+                job.Longitude = longitude.Value;
+            }
+
+            var oldStatus = job.Status;
+            job.Status = newStatus;
+            job.UpdatedAt = DateTime.Now;
+
+            // Cập nhật trạng thái của Senior và Caregiver khi công việc chuyển sang trạng thái mới
+            if (newStatus == "Đang thực hiện")
+            {
+                if (job.Senior != null)
+                {
+                    job.Senior.Status = false; // Đánh dấu Senior đang bận
+                    _context.Seniors.Update(job.Senior);
+                }
+                if (job.Caregiver != null)
+                {
+                    job.Caregiver.IsAvailable = false; // Đánh dấu Caregiver đang bận
+                    _context.Caregivers.Update(job.Caregiver);
+                }
+            }
+            else if (newStatus == "Hoàn thành" || newStatus == "Hủy")
+            {
+                if (job.Senior != null)
+                {
+                    job.Senior.Status = true; // Đánh dấu Senior sẵn sàng
+                    _context.Seniors.Update(job.Senior);
+                }
+                if (job.Caregiver != null)
+                {
+                    job.Caregiver.IsAvailable = true; // Đánh dấu Caregiver sẵn sàng
+                    _context.Caregivers.Update(job.Caregiver);
+                }
+            }
+
+            // Xử lý khi một bên chấp nhận yêu cầu
+            if (newStatus == "Đang chờ Người chăm sóc thanh toán cọc")
+            {
+                // Hủy các yêu cầu khác đang chờ
+                var otherPendingJobs = await _context.CareJobs
+                    .Where(j => j.Id != job.Id && 
+                               ((j.SeniorId == job.SeniorId && j.Status.StartsWith("Đang chờ")) ||
+                                (j.CaregiverId == job.CaregiverId && j.Status.StartsWith("Đang chờ"))))
+                    .ToListAsync();
+
+                foreach (var pendingJob in otherPendingJobs)
+                {
+                    pendingJob.Status = "Hủy";
+                    pendingJob.UpdatedAt = DateTime.Now;
+                    _context.CareJobs.Update(pendingJob);
+                }
+            }
+
+            try
+            {
+                _context.Update(job);
+                await _context.SaveChangesAsync();
+                await SendStatusUpdateNotification(job, userRole);
+                TempData["SuccessMessage"] = "Cập nhật trạng thái thành công.";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Có lỗi xảy ra: {ex.Message}";
+            }
+
+            return RedirectToAction("Details", new { id });
+        }
+
+        private bool IsValidStatusTransition(string currentStatus, string newStatus, string userRole)
+        {
+            var validTransitions = new Dictionary<string, Dictionary<string, string[]>>
+            {
+                ["Senior"] = new Dictionary<string, string[]>
+                {
+                    ["Đang chờ xác nhận từ Senior"] = new[] { "Đang chờ Người chăm sóc thanh toán cọc", "Hủy" },
+                    ["Đang chờ xác nhận hoàn thành"] = new[] { "Hoàn thành", "Đang thực hiện" }
+                },
+                ["Caregiver"] = new Dictionary<string, string[]>
+                {
+                    ["Đang chờ xác nhận từ Caregiver"] = new[] { "Đang chờ Người chăm sóc thanh toán cọc", "Hủy" },
+                    ["Đang thực hiện"] = new[] { "Đang chờ xác nhận hoàn thành", "Hủy" }
+                },
+                ["Admin"] = new Dictionary<string, string[]>
+                {
+                    ["Đang chờ"] = new[] { "Đang chờ xác nhận từ Caregiver", "Đang chờ xác nhận từ Senior", "Hủy" },
+                    ["Đang chờ xác nhận từ Caregiver"] = new[] { "Đang chờ Người chăm sóc thanh toán cọc", "Hủy" },
+                    ["Đang chờ xác nhận từ Senior"] = new[] { "Đang chờ Người chăm sóc thanh toán cọc", "Hủy" },
+                    ["Đang chờ Người chăm sóc thanh toán cọc"] = new[] { "Đang thực hiện", "Hủy" },
+                    ["Đang thực hiện"] = new[] { "Đang chờ xác nhận hoàn thành", "Hủy" },
+                    ["Đang chờ xác nhận hoàn thành"] = new[] { "Hoàn thành", "Đang thực hiện" }
+                }
+            };
+
+            return validTransitions.ContainsKey(userRole) &&
+                   validTransitions[userRole].ContainsKey(currentStatus) &&
+                   validTransitions[userRole][currentStatus].Contains(newStatus);
+        }
+
+        private async Task SendStatusUpdateNotification(CareJob job, string updatedByRole)
+        {
+            // Load the job with navigation properties
+            job = await _context.CareJobs
+                .Include(j => j.Caregiver)
+                .Include(j => j.Senior)
+                .FirstOrDefaultAsync(j => j.Id == job.Id);
+
+            if (job == null) return;
+
+            var message = GetStatusUpdateMessage(job, updatedByRole);
+            string targetUserId;
+
+            if (updatedByRole == "Senior")
+            {
+                if (job.Caregiver == null)
+                {
+                    // If caregiver is not found, try to get it from the database
+                    var caregiver = await _context.Caregivers.FindAsync(job.CaregiverId);
+                    targetUserId = caregiver?.UserId;
+                }
+                else
+                {
+                    targetUserId = job.Caregiver.UserId;
+                }
+            }
+            else
+            {
+                if (job.Senior == null)
+                {
+                    // If senior is not found, try to get it from the database
+                    var senior = await _context.Seniors.FindAsync(job.SeniorId);
+                    targetUserId = senior?.UserId;
+                }
+                else
+                {
+                    targetUserId = job.Senior.UserId;
+                }
+            }
+
+            if (string.IsNullOrEmpty(targetUserId)) return;
+
+            var notification = new Notification
+            {
+                UserId = targetUserId,
+                JobId = job.Id,
+                Title = "Cập nhật trạng thái công việc",
+                Message = message,
+                CreatedAt = DateTime.Now,
+                IsRead = false,
+                Type = "StatusUpdate",
+                Link = $"/CareJobs/Details/{job.Id}"
+            };
+
+            _context.Notifications.Add(notification);
             await _context.SaveChangesAsync();
+            await _notificationHub.Clients.User(targetUserId).SendAsync("ReceiveNotification", message);
+        }
 
-            // Gửi thông báo cho Senior
-            var senior = await _context.Seniors.FindAsync(job.SeniorId);
-            if (senior != null)
+        private string GetStatusUpdateMessage(CareJob job, string updatedByRole)
+        {
+            return updatedByRole switch
             {
-                var seniorUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == senior.UserId && u.Role == "Senior");
-                if (seniorUser != null)
-                {
-                    var seniorNotification = new Notification
-                    {
-                        UserId = seniorUser.Id,
-                        JobId = job.Id,
-                        Message = $"Công việc #{job.Id} đã hoàn tất. Dịch vụ: {job.ServiceType}, Thời gian: {job.EndTime?.ToString("dd/MM/yyyy HH:mm")}.",
-                        CreatedAt = DateTime.Now,
-                        IsRead = false
-                    };
-                    _context.Notifications.Add(seniorNotification);
-                    await _context.SaveChangesAsync();
-                    await _notificationHub.Clients.User(seniorUser.Id).SendAsync("ReceiveNotification", seniorNotification.Message);
-                }
-            }
-
-            // Gửi thông báo cho Caregiver
-            var caregiver = await _context.Caregivers.FindAsync(job.CaregiverId);
-            if (caregiver != null)
-            {
-                var caregiverUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == caregiver.UserId && u.Role == "Caregiver");
-                if (caregiverUser != null)
-                {
-                    var caregiverNotification = new Notification
-                    {
-                        UserId = caregiverUser.Id,
-                        JobId = job.Id,
-                        Message = $"Công việc #{job.Id} đã hoàn tất. Dịch vụ: {job.ServiceType}, Thời gian: {job.EndTime?.ToString("dd/MM/yyyy HH:mm")}.",
-                        CreatedAt = DateTime.Now,
-                        IsRead = false
-                    };
-                    _context.Notifications.Add(caregiverNotification);
-                    await _context.SaveChangesAsync();
-                    await _notificationHub.Clients.User(caregiverUser.Id).SendAsync("ReceiveNotification", caregiverNotification.Message);
-                }
-            }
-
-            TempData["SuccessMessage"] = "Công việc đã được xác nhận hoàn tất.";
-            return RedirectToAction("Index");
+                "Senior" => $"Khách hàng đã cập nhật trạng thái công việc #{job.Id} thành {job.Status}",
+                "Caregiver" => $"Người chăm sóc đã cập nhật trạng thái công việc #{job.Id} thành {job.Status}",
+                "Admin" => $"Admin đã cập nhật trạng thái công việc #{job.Id} thành {job.Status}",
+                _ => $"Trạng thái công việc #{job.Id} đã được cập nhật thành {job.Status}"
+            };
         }
 
         [HttpPost]
         public async Task<IActionResult> CancelJob(int id)
         {
-            var job = await _context.CareJobs.FindAsync(id);
-            if (job == null) return NotFound();
-            if (!IsAuthorizedUser(job)) return AccessDenied();
-
-            if (job.Status != "Đang chờ" && job.Status != "Đang chờ Người chăm sóc thanh toán cọc" && job.Status != "Đang thực hiện")
-                return RedirectWithError("Không thể hủy công việc đã hoàn tất hoặc đã bị hủy.");
-
-            job.Status = "Hủy";
-            UpdateAvailability(job);
-            await SendCancellationNotifications(job);
-            _context.CareJobs.Update(job);
-            await _context.SaveChangesAsync();
-
-            TempData["SuccessMessage"] = "Công việc đã được hủy.";
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "Senior,Caregiver")]
-        public async Task<IActionResult> AcceptJob(int id, double latitude = 0, double longitude = 0)
-        {
-            var job = await _context.CareJobs.FindAsync(id);
-            if (job == null || job.Status != "Đang chờ")
-                return RedirectWithError("Công việc không hợp lệ hoặc không ở trạng thái chờ.");
-
             var userRole = HttpContext.Session.GetString("UserRole");
             var userId = HttpContext.Session.GetString("UserId");
 
-            if (userRole == "Senior")
+            if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userId))
+                return RedirectToAction("Login", "Account");
+
+            var job = await _context.CareJobs
+                .Include(j => j.Caregiver)
+                .Include(j => j.Senior)
+                .FirstOrDefaultAsync(j => j.Id == id);
+
+            if (job == null) return NotFound();
+
+            if (!await CanAccessJob(job, userRole, userId))
+                return AccessDenied();
+
+            if (job.Status == "Hoàn thành" || job.Status == "Hủy")
             {
-                if (!IsSenior(job)) return RedirectWithError("Công việc không thuộc về bạn.");
-                if (job.SeniorAccepted) return RedirectWithError("Bạn đã chấp nhận công việc này rồi.");
-                if (job.CreatedByRole != "Caregiver") return RedirectWithError("Bạn không cần chấp nhận công việc do mình tạo.");
-
-                // Kiểm tra vị trí khi Senior chấp nhận yêu cầu từ Caregiver
-                if (job.CreatedByRole == "Caregiver" && (latitude == 0 || longitude == 0))
-                {
-                    TempData["ErrorMessage"] = "Vui lòng cung cấp vị trí chăm sóc trước khi chấp nhận.";
-                    return RedirectToAction("Index");
-                }
-
-                job.SeniorAccepted = true;
-                job.Latitude = latitude;
-                job.Longitude = longitude;
-                job.Status = "Đang chờ Người chăm sóc thanh toán cọc";
-                await SendDepositNotification(job);
-            }
-            else if (userRole == "Caregiver")
-            {
-                var caregiver = await _context.Caregivers.FirstOrDefaultAsync(c => c.UserId == userId);
-                if (caregiver == null || job.CaregiverId != caregiver.Id) return RedirectWithError("Công việc không thuộc về bạn.");
-                if (job.CaregiverAccepted) return RedirectWithError("Bạn đã chấp nhận công việc này rồi.");
-                if (job.CreatedByRole != "Senior") return RedirectWithError("Bạn không cần chấp nhận công việc do mình tạo.");
-
-                job.CaregiverAccepted = true;
-                job.Status = "Đang chờ Người chăm sóc thanh toán cọc";
-                await SendDepositNotification(job);
+                TempData["ErrorMessage"] = "Không thể hủy công việc đã hoàn thành hoặc đã hủy.";
+                return RedirectToAction("Details", new { id });
             }
 
-            _context.CareJobs.Update(job);
-            await _context.SaveChangesAsync();
+            job.Status = "Hủy";
+            job.UpdatedAt = DateTime.Now;
 
-            TempData["SuccessMessage"] = "Bạn đã chấp nhận công việc.";
-            return RedirectToAction("Index");
+            // Cập nhật trạng thái của caregiver và senior
+            if (job.Caregiver != null)
+            {
+                job.Caregiver.IsAvailable = true;
+                _context.Caregivers.Update(job.Caregiver);
+            }
+            if (job.Senior != null)
+            {
+                job.Senior.Status = true; // Đánh dấu Senior đã sẵn sàng
+                _context.Seniors.Update(job.Senior);
+            }
+
+            try
+            {
+                _context.Update(job);
+                await _context.SaveChangesAsync();
+                await SendStatusUpdateNotification(job, userRole);
+                TempData["SuccessMessage"] = "Hủy công việc thành công.";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Có lỗi xảy ra: {ex.Message}";
+            }
+
+            return RedirectToAction("Details", new { id });
         }
 
         [HttpPost]
-        [Authorize(Roles = "Senior")]
-        public async Task<IActionResult> RejectJob(int id)
+        public async Task<IActionResult> CompleteJob(int id)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userId))
+                return RedirectToAction("Login", "Account");
+
+            var job = await _context.CareJobs
+                .Include(j => j.Caregiver)
+                .Include(j => j.Senior)
+                .FirstOrDefaultAsync(j => j.Id == id);
+
+            if (job == null) return NotFound();
+
+            if (!await CanAccessJob(job, userRole, userId))
+                return AccessDenied();
+
+            if (job.Status != "Đang thực hiện")
+            {
+                TempData["ErrorMessage"] = "Chỉ có thể hoàn thành công việc đang thực hiện.";
+                return RedirectToAction("Details", new { id });
+            }
+
+            // Log trạng thái trước khi cập nhật
+            Console.WriteLine($"Trước khi cập nhật - Job ID: {job.Id}");
+            Console.WriteLine($"Caregiver IsAvailable: {job.Caregiver?.IsAvailable}");
+            Console.WriteLine($"Senior Status: {job.Senior?.Status}");
+
+            job.Status = "Hoàn thành";
+            job.UpdatedAt = DateTime.Now;
+
+            // Cập nhật trạng thái của caregiver và senior
+            if (job.Caregiver != null)
+            {
+                job.Caregiver.IsAvailable = true; // Đánh dấu Caregiver sẵn sàng
+                _context.Caregivers.Update(job.Caregiver);
+                Console.WriteLine($"Đã cập nhật Caregiver {job.Caregiver.Id} thành sẵn sàng");
+            }
+            if (job.Senior != null)
+            {
+                job.Senior.Status = true; // Đánh dấu Senior sẵn sàng
+                _context.Seniors.Update(job.Senior);
+                Console.WriteLine($"Đã cập nhật Senior {job.Senior.Id} thành sẵn sàng");
+            }
+
+            try
+            {
+                // Lưu thay đổi cho job
+                _context.Update(job);
+                await _context.SaveChangesAsync();
+
+                // Kiểm tra lại trạng thái sau khi lưu
+                var updatedJob = await _context.CareJobs
+                    .Include(j => j.Caregiver)
+                    .Include(j => j.Senior)
+                    .FirstOrDefaultAsync(j => j.Id == id);
+
+                Console.WriteLine($"Sau khi cập nhật - Job ID: {updatedJob.Id}");
+                Console.WriteLine($"Caregiver IsAvailable: {updatedJob.Caregiver?.IsAvailable}");
+                Console.WriteLine($"Senior Status: {updatedJob.Senior?.Status}");
+
+                await SendStatusUpdateNotification(job, userRole);
+                TempData["SuccessMessage"] = "Hoàn thành công việc thành công.";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi cập nhật trạng thái: {ex.Message}");
+                TempData["ErrorMessage"] = $"Có lỗi xảy ra: {ex.Message}";
+            }
+
+            return RedirectToAction("Details", new { id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RateJob(int id, int rating, string comment)
+        {
+            var userRole = HttpContext.Session.GetString("UserRole");
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userId))
+                return RedirectToAction("Login", "Account");
+
+            if (userRole != "Senior")
+                return AccessDenied();
+
             var job = await _context.CareJobs.FindAsync(id);
-            if (job == null || job.Status != "Đang chờ")
-                return RedirectWithError("Công việc không hợp lệ hoặc không ở trạng thái chờ.");
-            if (!IsSenior(job)) return RedirectWithError("Công việc không thuộc về bạn.");
-            if (job.CreatedByRole != "Caregiver") return RedirectWithError("Bạn không thể từ chối công việc do mình tạo.");
+            if (job == null) return NotFound();
 
-            job.Status = "Hủy";
-            UpdateAvailability(job);
-            await SendCancellationNotifications(job);
-            _context.CareJobs.Update(job);
-            await _context.SaveChangesAsync();
+            if (job.Status != "Hoàn thành")
+            {
+                TempData["ErrorMessage"] = "Chỉ có thể đánh giá công việc đã hoàn thành.";
+                return RedirectToAction("Details", new { id });
+            }
 
-            TempData["SuccessMessage"] = "Bạn đã từ chối công việc.";
-            return RedirectToAction("Index");
+            var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.UserId == userId);
+            if (senior == null || job.SeniorId != senior.Id)
+                return AccessDenied();
+
+            var ratingModel = new Rating
+            {
+                JobId = id,
+                Stars = rating,
+                Comment = comment,
+                CreatedAt = DateTime.Now
+            };
+
+            _context.Ratings.Add(ratingModel);
+            job.HasRated = true;
+            _context.Update(job);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Cảm ơn bạn đã đánh giá dịch vụ!";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Có lỗi xảy ra: {ex.Message}";
+            }
+
+            return RedirectToAction("Details", new { id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ComplainJob(int id, string complaintReason)
+        {
+            var userRole = HttpContext.Session.GetString("UserRole");
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userId))
+                return RedirectToAction("Login", "Account");
+
+            if (userRole != "Senior")
+                return AccessDenied();
+
+            var job = await _context.CareJobs.FindAsync(id);
+            if (job == null) return NotFound();
+
+            if (job.Status != "Hoàn thành")
+            {
+                TempData["ErrorMessage"] = "Chỉ có thể khiếu nại công việc đã hoàn thành.";
+                return RedirectToAction("Details", new { id });
+            }
+
+            var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.UserId == userId);
+            if (senior == null || job.SeniorId != senior.Id)
+                return AccessDenied();
+
+            var complaint = new Complaint
+            {
+                JobId = id,
+                Description = complaintReason,
+                Status = "Chờ xử lý",
+                CreatedAt = DateTime.Now
+            };
+
+            _context.Complaints.Add(complaint);
+            job.HasComplained = true;
+            _context.Update(job);
+
+            // Tạo thông báo cho Admin
+            var adminUsers = await _context.Users.Where(u => u.Role == "Admin").ToListAsync();
+            foreach (var admin in adminUsers)
+            {
+                var notification = new Notification
+                {
+                    UserId = admin.Id,
+                    JobId = job.Id,
+                    Title = "Có khiếu nại mới",
+                    Message = $"Có khiếu nại mới từ Senior về công việc #{job.Id}.\n" +
+                              $"Người chăm sóc: {job.Caregiver?.FullName ?? "Chưa có"}\n" +
+                              $"Nội dung: {complaintReason}",
+                    CreatedAt = DateTime.Now,
+                    IsRead = false,
+                    Type = "Complaint"
+                };
+                _context.Notifications.Add(notification);
+
+                // Gửi thông báo qua SignalR
+                await _notificationHub.Clients.User(admin.Id).SendAsync("ReceiveNotification", notification.Message);
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Khiếu nại của bạn đã được gửi thành công!";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Có lỗi xảy ra: {ex.Message}";
+            }
+
+            return RedirectToAction("Details", new { id });
         }
 
         [HttpGet]
@@ -347,29 +691,34 @@ namespace Chamsoc.Controllers
             var userRole = HttpContext.Session.GetString("UserRole");
             var userId = HttpContext.Session.GetString("UserId");
 
-            if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userId) || (userRole != "Senior" && userRole != "Admin"))
+            if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userId))
+                return RedirectToAction("Login", "Account");
+
+            if (userRole != "Senior")
+                return AccessDenied();
+
+            var job = await _context.CareJobs
+                .Include(j => j.Caregiver)
+                .FirstOrDefaultAsync(j => j.Id == jobId);
+
+            if (job == null) return NotFound();
+
+            if (job.Status != "Hoàn thành")
             {
-                return View("~/Views/Shared/AccessDenied.cshtml");
+                TempData["ErrorMessage"] = "Chỉ có thể đánh giá công việc đã hoàn thành.";
+                return RedirectToAction("Details", new { id = jobId });
             }
 
-            var job = await _context.CareJobs.FindAsync(jobId);
-            if (job == null || job.Status != "Hoàn tất") return RedirectWithError("Công việc không hợp lệ hoặc chưa hoàn tất.");
-
-            int? raterId = userRole == "Senior" ? _context.Seniors.FirstOrDefault(s => s.UserId == userId)?.Id : 0;
-            if (userRole == "Senior" && (raterId == null || job.SeniorId != raterId)) return RedirectWithError("Bạn không có quyền đánh giá công việc này.");
-
-            var existingRating = await _context.Ratings.FirstOrDefaultAsync(r => r.JobId == jobId && (r.SeniorId == raterId || (userRole == "Admin" && r.SeniorId == 0)));
-            if (existingRating != null) return RedirectWithError("Công việc này đã được đánh giá.");
-
-            var caregiver = await _context.Caregivers.FindAsync(job.CaregiverId);
-            if (caregiver == null) return RedirectWithError("Không tìm thấy thông tin người chăm sóc.");
+            var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.UserId == userId);
+            if (senior == null || job.SeniorId != senior.Id)
+                return AccessDenied();
 
             var viewModel = new RateCaregiverViewModel
             {
                 JobId = job.Id,
-                CaregiverId = caregiver.Id,
-                CaregiverName = caregiver.Name,
-                SeniorId = raterId ?? 0
+                CaregiverId = job.CaregiverId ?? 0,
+                SeniorId = senior.Id,
+                CaregiverName = job.Caregiver?.FullName ?? "Người chăm sóc"
             };
 
             return View(viewModel);
@@ -378,40 +727,56 @@ namespace Chamsoc.Controllers
         [HttpPost]
         public async Task<IActionResult> RateCaregiver(RateCaregiverViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
-
             var userRole = HttpContext.Session.GetString("UserRole");
             var userId = HttpContext.Session.GetString("UserId");
 
-            if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userId) || (userRole != "Senior" && userRole != "Admin"))
+            if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userId))
+                return RedirectToAction("Login", "Account");
+
+            if (userRole != "Senior")
+                return AccessDenied();
+
+            var job = await _context.CareJobs
+                .Include(j => j.Caregiver)
+                .FirstOrDefaultAsync(j => j.Id == model.JobId);
+
+            if (job == null) return NotFound();
+
+            if (job.Status != "Hoàn thành")
             {
-                return View("~/Views/Shared/AccessDenied.cshtml");
+                TempData["ErrorMessage"] = "Chỉ có thể đánh giá công việc đã hoàn thành.";
+                return RedirectToAction("Details", new { id = model.JobId });
             }
 
-            var job = await _context.CareJobs.FindAsync(model.JobId);
-            if (job == null || job.Status != "Hoàn tất") return RedirectWithError("Công việc không hợp lệ hoặc chưa hoàn tất.");
-
-            int? raterId = userRole == "Senior" ? _context.Seniors.FirstOrDefault(s => s.UserId == userId)?.Id : 0;
-            if (userRole == "Senior" && (raterId == null || job.SeniorId != raterId)) return RedirectWithError("Bạn không có quyền đánh giá công việc này.");
-
-            var existingRating = await _context.Ratings.FirstOrDefaultAsync(r => r.JobId == model.JobId && (r.SeniorId == raterId || (userRole == "Admin" && r.SeniorId == 0)));
-            if (existingRating != null) return RedirectWithError("Công việc này đã được đánh giá.");
+            var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.UserId == userId);
+            if (senior == null || job.SeniorId != senior.Id)
+                return AccessDenied();
 
             var rating = new Rating
             {
-                JobId = model.JobId,
-                CaregiverId = model.CaregiverId,
-                SeniorId = raterId ?? 0,
+                JobId = job.Id,
+                CaregiverId = job.CaregiverId ?? 0,
+                SeniorId = senior.Id,
                 Stars = model.Stars,
                 Review = model.Review,
                 CreatedAt = DateTime.Now
             };
 
             _context.Ratings.Add(rating);
-            await _context.SaveChangesAsync();
+            job.HasRated = true;
+            _context.Update(job);
 
-            TempData["SuccessMessage"] = "Đánh giá của bạn đã được gửi thành công.";
-            return RedirectToAction("Index");
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Cảm ơn bạn đã đánh giá dịch vụ!";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Có lỗi xảy ra: {ex.Message}";
+            }
+
+            return RedirectToAction("Details", new { id = model.JobId });
         }
 
         [HttpGet]
@@ -420,29 +785,34 @@ namespace Chamsoc.Controllers
             var userRole = HttpContext.Session.GetString("UserRole");
             var userId = HttpContext.Session.GetString("UserId");
 
-            if (string.IsNullOrEmpty(userRole) || userRole != "Senior" || string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userId))
+                return RedirectToAction("Login", "Account");
+
+            if (userRole != "Senior")
+                return AccessDenied();
+
+            var job = await _context.CareJobs
+                .Include(j => j.Caregiver)
+                .FirstOrDefaultAsync(j => j.Id == jobId);
+
+            if (job == null) return NotFound();
+
+            if (job.Status != "Hoàn thành")
             {
-                return View("~/Views/Shared/AccessDenied.cshtml");
+                TempData["ErrorMessage"] = "Chỉ có thể khiếu nại công việc đã hoàn thành.";
+                return RedirectToAction("Details", new { id = jobId });
             }
 
-            var job = await _context.CareJobs.FindAsync(jobId);
-            if (job == null || job.Status != "Hoàn tất") return RedirectWithError("Công việc không hợp lệ hoặc chưa hoàn tất.");
-
             var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.UserId == userId);
-            if (senior == null || job.SeniorId != senior.Id) return RedirectWithError("Bạn không có quyền khiếu nại công việc này.");
-
-            var existingComplaint = await _context.Complaints.AnyAsync(c => c.JobId == jobId && c.SeniorId == senior.Id);
-            if (existingComplaint) return RedirectWithError("Bạn đã gửi khiếu nại cho công việc này rồi.");
-
-            var caregiver = await _context.Caregivers.FindAsync(job.CaregiverId);
-            if (caregiver == null) return RedirectWithError("Không tìm thấy thông tin người chăm sóc.");
+            if (senior == null || job.SeniorId != senior.Id)
+                return AccessDenied();
 
             var viewModel = new FileComplaintViewModel
             {
                 JobId = job.Id,
-                CaregiverId = caregiver.Id,
-                CaregiverName = caregiver.Name,
-                SeniorId = senior.Id
+                CaregiverId = job.CaregiverId ?? 0,
+                SeniorId = senior.Id,
+                CaregiverName = job.Caregiver?.FullName ?? "Người chăm sóc"
             };
 
             return View(viewModel);
@@ -451,210 +821,258 @@ namespace Chamsoc.Controllers
         [HttpPost]
         public async Task<IActionResult> FileComplaint(FileComplaintViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
-
             var userRole = HttpContext.Session.GetString("UserRole");
             var userId = HttpContext.Session.GetString("UserId");
 
-            if (string.IsNullOrEmpty(userRole) || userRole != "Senior" || string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userId))
+                return RedirectToAction("Login", "Account");
+
+            if (userRole != "Senior")
+                return AccessDenied();
+
+            var job = await _context.CareJobs
+                .Include(j => j.Caregiver)
+                .FirstOrDefaultAsync(j => j.Id == model.JobId);
+
+            if (job == null) return NotFound();
+
+            if (job.Status != "Hoàn thành")
             {
-                return View("~/Views/Shared/AccessDenied.cshtml");
+                TempData["ErrorMessage"] = "Chỉ có thể khiếu nại công việc đã hoàn thành.";
+                return RedirectToAction("Details", new { id = model.JobId });
             }
 
-            var job = await _context.CareJobs.FindAsync(model.JobId);
-            if (job == null || job.Status != "Hoàn tất") return RedirectWithError("Công việc không hợp lệ hoặc chưa hoàn tất.");
-
             var senior = await _context.Seniors.FirstOrDefaultAsync(s => s.UserId == userId);
-            if (senior == null || job.SeniorId != senior.Id) return RedirectWithError("Bạn không có quyền khiếu nại công việc này.");
+            if (senior == null || job.SeniorId != senior.Id)
+                return AccessDenied();
 
-            var existingComplaint = await _context.Complaints.AnyAsync(c => c.JobId == model.JobId && c.SeniorId == senior.Id);
-            if (existingComplaint) return RedirectWithError("Bạn đã gửi khiếu nại cho công việc này rồi.");
+            string imagePath = null;
+            string thumbnailPath = null;
+
+            if (model.ImageFile != null)
+            {
+                try
+                {
+                    // Tạo đường dẫn đầy đủ đến thư mục uploads
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "complaints");
+                    
+                    // Kiểm tra và tạo thư mục nếu chưa tồn tại
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    // Tạo tên file duy nhất
+                    var uniqueFileName = DateTime.Now.Ticks + "_" + model.ImageFile.FileName;
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    // Lưu file
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.ImageFile.CopyToAsync(stream);
+                    }
+
+                    // Lưu đường dẫn tương đối cho database
+                    imagePath = "/uploads/complaints/" + uniqueFileName;
+                    thumbnailPath = imagePath;
+
+                    // Log thông tin để debug
+                    Console.WriteLine($"File saved to: {filePath}");
+                    Console.WriteLine($"Image path: {imagePath}");
+                }
+                catch (Exception ex)
+                {
+                    // Log lỗi
+                    Console.WriteLine($"Error saving file: {ex.Message}");
+                    TempData["ErrorMessage"] = "Có lỗi xảy ra khi lưu ảnh. Vui lòng thử lại.";
+                    return RedirectToAction("FileComplaint", new { jobId = model.JobId });
+                }
+            }
 
             var complaint = new Complaint
             {
-                JobId = model.JobId,
-                CaregiverId = model.CaregiverId,
+                JobId = job.Id,
+                CaregiverId = job.CaregiverId ?? 0,
                 SeniorId = senior.Id,
                 Description = model.Description,
-                Status = "Pending",
-                CreatedAt = DateTime.Now
-                // Resolution để null, sẽ được Admin cập nhật sau
+                Status = "Chờ xử lý",
+                CreatedAt = DateTime.Now,
+                ImagePath = imagePath,
+                ThumbnailPath = thumbnailPath
             };
 
             _context.Complaints.Add(complaint);
+            job.HasComplained = true;
+            _context.Update(job);
 
-            var admin = await _context.Users.FirstOrDefaultAsync(u => u.Role == "Admin");
-            if (admin != null)
+            // Tạo thông báo cho Admin
+            var adminUsers = await _context.Users.Where(u => u.Role == "Admin").ToListAsync();
+            foreach (var admin in adminUsers)
             {
-                var adminNotification = new Notification
+                var notification = new Notification
                 {
                     UserId = admin.Id,
-                    JobId = complaint.JobId,
-                    Message = $"Có khiếu nại mới từ khách hàng về công việc #{complaint.JobId}: {model.Description}",
+                    JobId = job.Id,
+                    Title = "Có khiếu nại mới",
+                    Message = $"Có khiếu nại mới từ Senior về công việc #{job.Id}.\n" +
+                              $"Người chăm sóc: {job.Caregiver?.FullName ?? "Chưa có"}\n" +
+                              $"Nội dung: {model.Description}",
                     CreatedAt = DateTime.Now,
-                    IsRead = false
+                    IsRead = false,
+                    Type = "Complaint"
                 };
-                _context.Notifications.Add(adminNotification);
-                await _notificationHub.Clients.User(admin.Id).SendAsync("ReceiveNotification", adminNotification.Message);
+                _context.Notifications.Add(notification);
+
+                // Gửi thông báo qua SignalR
+                await _notificationHub.Clients.User(admin.Id).SendAsync("ReceiveNotification", notification.Message);
             }
 
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Khiếu nại của bạn đã được gửi thành công!";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving complaint: {ex.Message}");
+                TempData["ErrorMessage"] = $"Có lỗi xảy ra: {ex.Message}";
+            }
+
+            return RedirectToAction("Details", new { id = model.JobId });
+        }
+
+        [HttpGet("api/carejobs/active")]
+        public IActionResult CheckActiveJobs()
+        {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var activeJobs = _context.CareJobs
+                .Include(j => j.Caregiver)
+                .Include(j => j.Senior)
+                .Where(j => (j.Caregiver.UserId == userId || j.Senior.UserId == userId) && 
+                            (j.Status == "Đang chờ" || j.Status == "Đang thực hiện"))
+                .ToList();
+
+            return Json(new { hasActiveJob = activeJobs.Any() });
+        }
+
+        [HttpGet]
+        public IActionResult BookCaregiver(int id)
+        {
+            var caregiver = _context.Caregivers
+                .Include(c => c.User)
+                .FirstOrDefault(c => c.Id == id);
+
+            if (caregiver == null)
+            {
+                return NotFound();
+            }
+
+            var ratings = _context.Ratings
+                .Where(r => r.CaregiverId == caregiver.Id)
+                .ToList();
+
+            var viewModel = new BookCaregiverViewModel
+            {
+                CaregiverId = caregiver.Id,
+                CaregiverName = caregiver.FullName,
+                CaregiverAvatar = caregiver.AvatarUrl,
+                CaregiverSkills = caregiver.Skills,
+                ServicePrice = caregiver.Price,
+                CaregiverRating = ratings.Any() ? ratings.Average(r => r.Stars) : 0,
+                CaregiverRatingCount = ratings.Count,
+                StartTime = DateTime.Now,
+                NumberOfHours = 1
+            };
+
+            var userId = HttpContext.Session.GetString("UserId");
+            ViewBag.SeniorPhone = _context.Users.FirstOrDefault(u => u.Id == userId)?.PhoneNumber ?? "Chưa có số điện thoại";
+
+            return View("~/Views/Caregivers/BookCaregiver.cshtml", viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BookCaregiver(BookCaregiverViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var caregiver = await _context.Caregivers
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.Id == model.CaregiverId);
+
+            if (caregiver == null)
+            {
+                return NotFound();
+            }
+
+            var userId = HttpContext.Session.GetString("UserId");
+            var senior = await _context.Seniors
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(s => s.UserId == userId);
+
+            if (senior == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy thông tin Người cần chăm sóc.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Create new job
+            var job = new CareJob
+            {
+                SeniorId = senior.Id,
+                CaregiverId = caregiver.Id,
+                SeniorName = senior.Name,
+                CaregiverName = caregiver.FullName,
+                SeniorPhone = senior.User.PhoneNumber,
+                StartTime = model.StartTime,
+                EndTime = model.StartTime.AddHours(model.NumberOfHours),
+                Status = "Chờ thanh toán",
+                ServiceType = model.ServiceType,
+                TotalBill = model.ServicePrice * model.NumberOfHours,
+                CreatedByRole = "Senior",
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            };
+
+            job.Deposit = job.TotalBill * 0.3m; // 30% deposit
+            job.RemainingAmount = job.TotalBill - job.Deposit;
+
+            _context.CareJobs.Add(job);
+
+            // Create notification for caregiver
+            var notification = new Notification
+            {
+                UserId = caregiver.UserId,
+                Title = "Yêu cầu chăm sóc mới",
+                Message = $"Bạn có yêu cầu chăm sóc mới từ {senior.Name}",
+                CreatedAt = DateTime.Now,
+                IsRead = false,
+                Type = "Booking"
+            };
+
+            _context.Notifications.Add(notification);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Khiếu nại của bạn đã được gửi thành công.";
-            return RedirectToAction("Index");
-        }
+            // Send real-time notification
+            await _notificationHub.Clients.User(caregiver.UserId).SendAsync("ReceiveNotification", notification.Message);
 
-        private bool IsAuthorizedUser(CareJob job)
-        {
-            var userRole = HttpContext.Session.GetString("UserRole");
-            var userId = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userId)) return false;
-
-            if (userRole == "Senior")
-            {
-                var senior = _context.Seniors.FirstOrDefault(s => s.UserId == userId);
-                return senior != null && job.SeniorId == senior.Id;
-            }
-            else if (userRole == "Caregiver")
-            {
-                var caregiver = _context.Caregivers.FirstOrDefault(c => c.UserId == userId);
-                return caregiver != null && job.CaregiverId == caregiver.Id;
-            }
-            return false;
-        }
-
-        private void UpdateAvailability(CareJob job)
-        {
-            var caregiver = _context.Caregivers.Find(job.CaregiverId);
-            if (caregiver != null) { caregiver.IsAvailable = true; _context.Caregivers.Update(caregiver); }
-
-            var senior = _context.Seniors.Find(job.SeniorId);
-            if (senior != null) { senior.Status = true; _context.Seniors.Update(senior); }
-        }
-
-        private async Task SendCancellationNotifications(CareJob job)
-        {
-            var userRole = HttpContext.Session.GetString("UserRole");
-            if (userRole == "Caregiver")
-            {
-                var senior = await _context.Seniors.FindAsync(job.SeniorId);
-                if (senior != null)
-                {
-                    var seniorUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == senior.UserId);
-                    if (seniorUser != null)
-                    {
-                        var notification = new Notification
-                        {
-                            UserId = seniorUser.Id,
-                            JobId = job.Id,
-                            Message = $"Người chăm sóc đã hủy công việc #{job.Id}.",
-                            CreatedAt = DateTime.Now,
-                            IsRead = false
-                        };
-                        _context.Notifications.Add(notification);
-                        await _notificationHub.Clients.User(seniorUser.Id).SendAsync("ReceiveNotification", notification.Message);
-                    }
-                }
-            }
-            else if (userRole == "Senior")
-            {
-                var caregiver = await _context.Caregivers.FindAsync(job.CaregiverId);
-                if (caregiver != null)
-                {
-                    var caregiverUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == caregiver.UserId);
-                    if (caregiverUser != null)
-                    {
-                        var notification = new Notification
-                        {
-                            UserId = caregiverUser.Id,
-                            JobId = job.Id,
-                            Message = $"Khách hàng đã hủy công việc #{job.Id}.",
-                            CreatedAt = DateTime.Now,
-                            IsRead = false
-                        };
-                        _context.Notifications.Add(notification);
-                        await _notificationHub.Clients.User(caregiverUser.Id).SendAsync("ReceiveNotification", notification.Message);
-                    }
-                }
-            }
-        }
-
-        private async Task SendDepositNotification(CareJob job)
-        {
-            var caregiver = await _context.Caregivers.FindAsync(job.CaregiverId);
-            if (caregiver != null)
-            {
-                var caregiverUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == caregiver.UserId);
-                if (caregiverUser != null)
-                {
-                    var notification = new Notification
-                    {
-                        UserId = caregiverUser.Id,
-                        JobId = job.Id,
-                        Message = $"Công việc #{job.Id} đã được cả hai bên chấp nhận. Vui lòng nạp cọc để bắt đầu.",
-                        CreatedAt = DateTime.Now,
-                        IsRead = false,
-                        Type = "CareJob"
-                    };
-                    _context.Notifications.Add(notification);
-                    await _notificationHub.Clients.User(caregiverUser.Id).SendAsync("ReceiveNotification", notification.Message);
-                }
-            }
-        }
-
-        private async Task SendNotificationToCaregiver(CareJob job, string acceptedBy)
-        {
-            var caregiver = await _context.Caregivers.FindAsync(job.CaregiverId);
-            if (caregiver != null)
-            {
-                var caregiverUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == caregiver.UserId);
-                if (caregiverUser != null)
-                {
-                    var notification = new Notification
-                    {
-                        UserId = caregiverUser.Id,
-                        JobId = job.Id,
-                        Message = $"{acceptedBy} đã chấp nhận công việc #{job.Id}. Vui lòng xác nhận để tiếp tục.",
-                        CreatedAt = DateTime.Now,
-                        IsRead = false,
-                        Type = "CareJob"
-                    };
-                    _context.Notifications.Add(notification);
-                    await _notificationHub.Clients.User(caregiverUser.Id).SendAsync("ReceiveNotification", notification.Message);
-                }
-            }
-        }
-
-        private async Task SendNotificationToSenior(CareJob job, string acceptedBy)
-        {
-            var senior = await _context.Seniors.FindAsync(job.SeniorId);
-            if (senior != null)
-            {
-                var seniorUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == senior.UserId);
-                if (seniorUser != null)
-                {
-                    var notification = new Notification
-                    {
-                        UserId = seniorUser.Id,
-                        JobId = job.Id,
-                        Message = $"{acceptedBy} đã chấp nhận công việc #{job.Id}. Vui lòng xác nhận để tiếp tục.",
-                        CreatedAt = DateTime.Now,
-                        IsRead = false,
-                        Type = "CareJob"
-                    };
-                    _context.Notifications.Add(notification);
-                    await _notificationHub.Clients.User(seniorUser.Id).SendAsync("ReceiveNotification", notification.Message);
-                }
-            }
-        }
-
-        private IActionResult RedirectWithError(string message)
-        {
-            TempData["ErrorMessage"] = message;
-            return RedirectToAction("Index");
+            TempData["SuccessMessage"] = "Đã gửi yêu cầu chăm sóc thành công!";
+            return RedirectToAction("Index", "Caregivers");
         }
 
         private IActionResult AccessDenied() => View("~/Views/Shared/AccessDenied.cshtml");
-        private bool IsSenior               (CareJob job) => _context.Seniors.FirstOrDefault(s => s.UserId == HttpContext.Session.GetString("UserId"))?.Id == job.SeniorId;
     }
 }

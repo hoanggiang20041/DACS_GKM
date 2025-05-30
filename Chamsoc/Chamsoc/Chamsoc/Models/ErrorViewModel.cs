@@ -6,4 +6,4 @@ namespace Chamsoc.Models
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
-}
+} 

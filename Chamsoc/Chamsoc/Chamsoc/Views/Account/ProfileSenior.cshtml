@@ -4,144 +4,149 @@
     string currentUserRole = ViewBag.CurrentUserRole;
 }
 
-<style>
-    .verified-tick {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        background: url('/images/tick.png') no-repeat center center;
-        background-size: cover;
-        margin-left: 5px;
-        vertical-align: middle;
-        position: relative;
-    }
-
-        .verified-tick::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border: 2px solid transparent;
-            border-radius: 50%;
-            animation: rainbow-border 3s linear infinite;
-            background: url('/images/tick.png') no-repeat center center;
-            background-size: cover;
-            z-index: -1;
-        }
-
-    @@keyframes rainbow-border {
-        0%
-
-    {
-        border-color: #ff0000;
-    }
-
-    16% {
-        border-color: #ff7f00;
-    }
-
-    33% {
-        border-color: #ffff00;
-    }
-
-    50% {
-        border-color: #00ff00;
-    }
-
-    66% {
-        border-color: #00ffff;
-    }
-
-    83% {
-        border-color: #0000ff;
-    }
-
-    100% {
-        border-color: #ff00ff;
-    }
-
-    }
-
-    .profile-frame {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 15px;
-        background-color: #f9f9f9;
-        margin-bottom: 20px;
-    }
-</style>
-
-<div class="container my-5">
-    <h2 class="text-center mb-4">Trang cá nhân người cần chăm sóc</h2>
+<div class="container-fluid py-4">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="text-center mb-3">
-                @if (!string.IsNullOrEmpty(Model.AvatarUrl))
-                {
-                    <img src="@Model.AvatarUrl" alt="Avatar" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;" />
-                }
-                else
-                {
-                    <img src="https://via.placeholder.com/100" alt="Avatar mặc định" class="rounded-circle" style="width: 100px; height: 100px;" />
-                }
-            </div>
-            <div class="text-center mb-3">
-                <p><strong>Tên:</strong> @Model.Name</p>
-                <p>
-                    <strong>Tình trạng:</strong>
-                    @if (Model.IsVerified)
-                    {
-                        <span>Đã xác minh <span class="verified-tick"></span></span>
-                    }
-                    else
-                    {
-                        <span>Chưa xác minh</span>
-                    }
-                </p>
-            </div>
-            <div class="profile-frame text-center">
-                <p><strong>Tuổi:</strong> @Model.Age</p>
-                <p><strong>Tình trạng bệnh:</strong> @Model.CareNeeds</p>
-                <p><strong>Chi phí chi trả (1 giờ):</strong> @Model.Price.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</p>
-                <p><strong>Ngày đăng ký:</strong> @Model.RegistrationDate.ToString("dd/MM/yyyy")</p>
-                <p><strong>Trạng thái:</strong> @(Model.Status ? "Sẵn sàng" : "Đang bận")</p>
-                <p>
-                    <strong>Giấy tờ tùy thân và giấy khám sức khỏe:</strong>
-                    @if (!string.IsNullOrEmpty(Model.IdentityAndHealthDocs))
-                    {
-                        var docs = Model.IdentityAndHealthDocs.Split(",");
-                        foreach (var doc in docs)
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user me-2"></i>Thông tin cá nhân
+                        </h5>
+                        @if (Model.IsVerified)
                         {
-                            <a href="@doc" target="_blank" class="d-block">Xem giấy tờ (@doc.Split('/').Last())</a>
+                            <span class="badge bg-success fs-6">
+                                <i class="fas fa-check-circle me-1"></i>Đã xác minh
+                            </span>
                         }
-                    }
-                    else
-                    {
-                        <span>Không có</span>
-                    }
-                </p>
-            </div>
-            <div class="text-center">
-                <a asp-action="UpdateProfileSenior" asp-controller="Account" asp-route-id="@ViewBag.User.Id" class="btn btn-primary">Cập nhật</a>
-                @if (currentUserRole == "Admin")
-                {
-                    <a asp-action="ManageUsers" asp-controller="Admin" class="btn btn-secondary">Quay lại</a>
-                }
-                else if (currentUserRole == "Senior")
-                {
-                    <a asp-action="ListCaregivers" asp-controller="Caregivers" class="btn btn-secondary">Quay lại</a>
-                }
-                else if (currentUserRole == "Caregiver")
-                {
-                    <a asp-action="ListSeniors" asp-controller="Seniors" class="btn btn-secondary">Quay lại</a>
-                }
-                else
-                {
-                    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Quay lại</a>
-                }
+                        else
+                        {
+                            <span class="badge bg-warning fs-6">
+                                <i class="fas fa-clock me-1"></i>Chưa xác minh
+                            </span>
+                        }
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        @if (!string.IsNullOrEmpty(Model.AvatarUrl))
+                        {
+                            <img src="@Model.AvatarUrl" alt="Avatar" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;" />
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/120" alt="Avatar mặc định" class="rounded-circle" />
+                        }
+                        <h4 class="mt-3 mb-1">@Model.Name</h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="info-section mb-4">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-info-circle me-2"></i>Thông tin cơ bản
+                                </h6>
+                                <div class="mb-3">
+                                    <label class="fw-bold">Tuổi:</label>
+                                    <p class="mb-0">@Model.Age</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="fw-bold">Tình trạng bệnh:</label>
+                                    <p class="mb-0">@Model.CareNeeds</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="fw-bold">Trạng thái:</label>
+                                    <p class="mb-0">@(Model.Status ? "Sẵn sàng" : "Đang bận")</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="info-section mb-4">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-address-card me-2"></i>Thông tin liên hệ
+                                </h6>
+                                <div class="mb-3">
+                                    <label class="fw-bold">Email:</label>
+                                    <p class="mb-0">@ViewBag.User.Email</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="fw-bold">Số điện thoại:</label>
+                                    <p class="mb-0">@ViewBag.User.PhoneNumber</p>
+                                </div>
+                            </div>
+
+                            <div class="info-section mb-4">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-money-bill-wave me-2"></i>Thông tin chi phí
+                                </h6>
+                                <div class="mb-3">
+                                    <label class="fw-bold">Chi phí có thể chi trả (1 giờ):</label>
+                                    <p class="mb-0 text-success fw-bold">@Model.Price.ToString("N0") VNĐ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 justify-content-center">
+                        <a asp-action="UpdateProfileSenior" asp-controller="Account" asp-route-id="@ViewBag.User.Id" class="btn btn-primary">
+                            <i class="fas fa-edit me-2"></i>Cập nhật
+                        </a>
+                        @if (currentUserRole == "Admin")
+                        {
+                            <a asp-action="ManageUsers" asp-controller="Admin" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Quay lại
+                            </a>
+                        }
+                        else if (currentUserRole == "Senior")
+                        {
+                            <a asp-action="ListCaregivers" asp-controller="Caregivers" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Quay lại
+                            </a>
+                        }
+                        else if (currentUserRole == "Caregiver")
+                        {
+                            <a asp-action="ListSeniors" asp-controller="Seniors" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Quay lại
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Quay lại
+                            </a>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .card {
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+    .card-header {
+        border-bottom: none;
+    }
+    .info-section {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+    }
+    .badge {
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+    }
+    .btn {
+        padding: 0.5rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+    }
+    .alert {
+        border-radius: 0.5rem;
+        border: none;
+    }
+</style>
