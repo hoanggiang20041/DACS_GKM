@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Chamsoc.Services;
+<<<<<<< HEAD
 using Chamsoc.Models;
+=======
+>>>>>>> 515296af2b606831ed326d5772fae09ed1ab25b0
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -61,5 +64,15 @@ namespace Chamsoc.Controllers
     public class ChatRequest
     {
         public List<ChatMessage> Messages { get; set; }
+<<<<<<< HEAD
+=======
+    }
+
+    // Một tin nhắn trong hội thoại (system, user, assistant)
+    public class ChatMessage
+    {
+        public string Role { get; set; }      // "system", "user", "assistant"
+        public string Content { get; set; }   // Nội dung
+>>>>>>> 515296af2b606831ed326d5772fae09ed1ab25b0
     }
 }

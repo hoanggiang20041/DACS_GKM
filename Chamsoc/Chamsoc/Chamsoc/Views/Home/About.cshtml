@@ -1,143 +1,152 @@
-﻿@{
-    ViewData["Title"] = "Giới thiệu - GKM Support and Care System";
-}
-
-<style>
-    /* Banner */
-    .banner {
-        position: relative;
-        text-align: center;
-        color: white;
-        height: 400px; /* Đảm bảo chiều cao cố định */
-        opacity: 0; /* Ẩn ban đầu để tạo hiệu ứng */
-        animation: fadeIn 1.5s ease-in-out forwards; /* Hiệu ứng fade-in */
+﻿    @{
+        ViewData["Title"] = "Giới thiệu - GKM Support and Care System";
     }
 
-        .banner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-    .banner-text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        width: 80%; /* Đảm bảo chữ không bị tràn */
-        opacity: 0; /* Ẩn ban đầu */
-        animation: slideIn 1s ease-in-out 0.5s forwards; /* Hiệu ứng slide-in cho chữ */
-    }
-
-        .banner-text h1 {
-            font-size: 3rem;
-            font-weight: bold;
+    <style>
+        /* Banner */
+        .banner {
+            position: relative;
+            text-align: center;
             color: white;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8); /* Bóng đổ đậm hơn */
-            background: rgba(0, 0, 0, 0.5); /* Nền mờ để chữ nổi bật */
-            padding: 10px 20px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            height: 400px; /* Đảm bảo chiều cao cố định */
+            opacity: 0; /* Ẩn ban đầu để tạo hiệu ứng */
+            animation: fadeIn 1.5s ease-in-out forwards; /* Hiệu ứng fade-in */
         }
 
-        .banner-text p {
-            font-size: 1.25rem;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-            background: rgba(0, 0, 0, 0.5); /* Nền mờ */
-            padding: 5px 15px;
-            border-radius: 5px;
-        }
+            .banner img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
 
-    @@keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @@keyframes slideIn {
-        0% {
-            opacity: 0;
-            transform: translate(-50%, -70%);
-        }
-
-        100% {
-            opacity: 1;
+        .banner-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
+            text-align: center;
+            width: 80%; /* Đảm bảo chữ không bị tràn */
+            opacity: 0; /* Ẩn ban đầu */
+            animation: slideIn 1s ease-in-out 0.5s forwards; /* Hiệu ứng slide-in cho chữ */
         }
+
+            .banner-text h1 {
+                font-size: 3rem;
+                font-weight: bold;
+                color: white;
+                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8); /* Bóng đổ đậm hơn */
+                background: rgba(0, 0, 0, 0.5); /* Nền mờ để chữ nổi bật */
+                padding: 10px 20px;
+                border-radius: 8px;
+                margin-bottom: 10px;
+            }
+
+            .banner-text p {
+                font-size: 1.25rem;
+                color: white;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+                background: rgba(0, 0, 0, 0.5); /* Nền mờ */
+                padding: 5px 15px;
+                border-radius: 5px;
+            }
+
+        @@keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @@keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -70%);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+    /* In đậm riêng cho tiêu đề có class highlighted-title */
+    .highlighted-title {
+        font-weight: bold;
     }
 
     /* Reason Cards */
     .reason-card {
-        background-color: #f8f9fa;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 20px;
-        margin-bottom: 20px;
-        transition: transform 0.3s;
+        background-color: #000000; /* Màu nền mặc định cho các ô là đen */
+        color: white; /* Chữ màu trắng */
+        border: 1px solid #ddd; /* Viền mỏng, màu xám nhạt */
+        border-radius: 8px; /* Bo tròn các góc */
+        padding: 20px; /* Đệm bên trong */
+        margin-bottom: 20px; /* Khoảng cách dưới thẻ */
+        transition: transform 0.3s; /* Hiệu ứng khi di chuột vào */
     }
 
-        .reason-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    /* Cập nhật màu sắc cho từng lý do */
+    .reason-card1 {
+        background-color: #007bff !important; /* Màu xanh dương */
+    }
 
-        .reason-card h4 {
-            color: #007bff;
+    .reason-card2 {
+        background-color: #28a745 !important; /* Màu xanh lá cây */
+    }
+
+    .reason-card3 {
+        background-color: #ff6f61 !important; /* Màu cam */
+    }
+
+
+        /* Intro Section */
+        .intro-section h2, .services-section h2 {
+            color: #333;
             font-weight: bold;
+            margin-bottom: 30px;
         }
 
-    /* Intro Section */
-    .intro-section h2, .services-section h2 {
-        color: #333;
-        font-weight: bold;
-        margin-bottom: 30px;
-    }
-
-    .intro-section img {
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        height: auto;
-    }
-
-    /* Services Section */
-    .service-card {
-        border-radius: 8px;
-        padding: 20px;
-        margin-bottom: 20px;
-        color: white;
-    }
-
-        .service-card h5 {
-            font-weight: bold;
+        .intro-section img {
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            height: auto;
         }
-</style>
+
+        /* Services Section */
+        .service-card {
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+            .service-card h5 {
+                font-weight: bold;
+            }
+    </style>
 
 <!-- Tại sao nên chọn chúng tôi -->
 <div class="container my-5">
-    <h2 class="text-center mb-4">Tại Sao Nên Chọn GKM - Support and Care System</h2>
+    <h2 class="text-center mb-4 highlighted-title">Tại Sao Nên Chọn GKM - Support and Care System</h2>
     <div class="row text-center">
         <div class="col-md-4">
-            <div class="reason-card">
+            <div class="reason-card reason-card1">
                 <h4>Đặt Lịch Dễ Dàng</h4>
-                <p>Hệ thống cho phép đặt lịch chăm sóc sức khỏe và vật lý trị liệu nhanh chóng, tiện lợi.</p>
+                <p>Hệ thống cho phép đặt lịch chăm sóc sức khỏe và vật lý trị liệu nhanh chóng, tiện lợi, dễ dàng. </p>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="reason-card">
+            <div class="reason-card reason-card2">
                 <h4>Đội Ngũ Chuyên Nghiệp</h4>
                 <p>Đội ngũ nhân viên được đào tạo chuyên sâu, tận tâm và có kinh nghiệm trong lĩnh vực chăm sóc sức khỏe.</p>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="reason-card">
+            <div class="reason-card reason-card3">
                 <h4>Dịch Vụ Toàn Diện</h4>
                 <p>Cung cấp các dịch vụ chăm sóc sức khỏe và vật lý trị liệu đa dạng, đáp ứng mọi nhu cầu của khách hàng.</p>
             </div>
@@ -145,45 +154,25 @@
     </div>
 </div>
 
-<!-- Giới thiệu -->
-<div class="container my-5 intro-section">
-    <h2 class="text-center mb-4">Giới Thiệu</h2>
-    <div class="row align-items-center">
-        <div class="col-md-6">
-            <h3>GKM - Support and Care System</h3>
-            <p>
-                GKM - Support and Care System là hệ thống đặt lịch chăm sóc sức khỏe và vật lý trị liệu hiện đại, giúp kết nối khách hàng với các chuyên gia chăm sóc sức khỏe một cách nhanh chóng và hiệu quả. Chúng tôi cung cấp dịch vụ đặt lịch trực tuyến, hỗ trợ chăm sóc tại nhà hoặc tại các cơ sở y tế, với đội ngũ nhân viên chuyên nghiệp sẵn sàng phục vụ 24/7 trên toàn quốc.
-            </p>
-            <p><strong>Phạm vi dịch vụ chăm sóc sức khỏe và vật lý trị liệu:</strong></p>
-            <ul>
-                <li>Minh bạch: Quy trình đặt lịch rõ ràng, thông tin minh bạch, không qua trung gian.</li>
-                <li>Tận tâm: Đội ngũ nhân viên luôn đặt sức khỏe và sự thoải mái của khách hàng lên hàng đầu.</li>
-                <li>Chuyên môn: Nhân viên được đào tạo chuyên sâu về chăm sóc sức khỏe và vật lý trị liệu.</li>
-            </ul>
-        </div>
-        <div class="col-md-6">
-            <img src="https://aihealth.vn/app/uploads/2021/06/cham-soc-suc-khoe-tai-nha-1.jpg" class="img-fluid" alt="Caregiver" />
-        </div>
-    </div>
-</div>
 
-<!-- Khu vực cung cấp dịch vụ -->
-<div class="container my-5">
-    <h2 class="text-center mb-4">Khu Vực Cung Cấp Dịch Vụ</h2>
-    <p class="text-center">
-        Hồ Chí Minh, Hà Nội, Đà Nẵng, Bà Rịa – Vũng Tàu, Bình Dương, Bình Phước, Biên Hòa – Đồng Nai, Tây Ninh, An Giang, Bạc Liêu, Bến Tre, Cà Mau, Cần Thơ, Đồng Tháp, Hậu Giang, Kien Giang, Long An, Sóc Trăng, Tiền Giang, Trà Vinh, Vĩnh Long, Lâm Đồng – Đà Lạt, Ninh Thuận, Bình Thuận, Thanh Hóa, Vĩnh Nghiêm, Hà Tĩnh, Đồng Hới – Quảng Bình, Quảng Trị, Thừa Thiên-Huế.
-    </p>
-</div>
 
-<!-- Dịch vụ -->
-<div class="container my-5 services-section">
-    <h2 class="text-center mb-4">Dịch Vụ Của GKM - Support and Care System</h2>
-    <div class="row text-center">
-        <div class="col-md-4">
-            <div class="service-card bg-success">
-                <h5>Đặt Lịch Chăm Sóc Sức Khỏe Tại Nhà</h5>
-                <p>Dịch vụ đặt lịch chăm sóc sức khỏe tại nhà, hỗ trợ theo dõi sức khỏe và sinh hoạt hàng ngày.</p>
+    <!-- Giới thiệu -->
+    <div class="container my-5 intro-section">
+        <h2 class="text-center mb-4">Giới Thiệu</h2>
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h3>GKM - Support and Care System</h3>
+                <p>
+                    GKM - Support and Care System là hệ thống đặt lịch chăm sóc sức khỏe và vật lý trị liệu hiện đại, giúp kết nối khách hàng với các chuyên gia chăm sóc sức khỏe một cách nhanh chóng và hiệu quả. Chúng tôi cung cấp dịch vụ đặt lịch trực tuyến, hỗ trợ chăm sóc tại nhà hoặc tại các cơ sở y tế, với đội ngũ nhân viên chuyên nghiệp sẵn sàng phục vụ 24/7 trên toàn quốc.
+                </p>
+                <p><strong>Phạm vi dịch vụ chăm sóc sức khỏe và vật lý trị liệu:</strong></p>
+                <ul>
+                    <li>Minh bạch: Quy trình đặt lịch rõ ràng, thông tin minh bạch, không qua trung gian.</li>
+                    <li>Tận tâm: Đội ngũ nhân viên luôn đặt sức khỏe và sự thoải mái của khách hàng lên hàng đầu.</li>
+                    <li>Chuyên môn: Nhân viên được đào tạo chuyên sâu về chăm sóc sức khỏe và vật lý trị liệu.</li>
+                </ul>
             </div>
+<<<<<<< HEAD
         </div>
         <div class="col-md-4">
             <div class="service-card bg-primary">
@@ -213,17 +202,71 @@
             <div class="service-card bg-secondary">
                 <h5>Tư Vấn Sức Khỏe Trực Tuyến</h5>
                 <p>Dịch vụ tư vấn sức khỏe trực tuyến, hỗ trợ khách hàng mọi lúc, mọi nơi.</p>
+=======
+            <div class="col-md-6">
+                <img src="https://aihealth.vn/app/uploads/2021/06/cham-soc-suc-khoe-tai-nha-1.jpg" class="img-fluid" alt="Caregiver" />
+>>>>>>> 515296af2b606831ed326d5772fae09ed1ab25b0
             </div>
         </div>
     </div>
-</div>
 
-<!-- Bạn đang tìm dịch vụ chăm sóc sức khỏe? -->
-<div class="container my-5 text-center">
-    <h2>Bạn Đang Tìm Dịch Vụ Chăm Sóc Sức Khỏe Đáng Tin Cậy?</h2>
-    <p>Hãy đặt lịch ngay với GKM - Support and Care System để nhận được sự hỗ trợ tốt nhất!</p>
-    @if (User.Identity.IsAuthenticated && Context.Session.GetString("UserRole") == "Senior")
-    {
-        <a href="@Url.Action("ListCaregivers", "Caregivers")" class="btn btn-primary">Đặt Lịch Ngay</a>
-    }
-</div>
+    <!-- Khu vực cung cấp dịch vụ -->
+    <div class="container my-5">
+        <h2 class="text-center mb-4">Khu Vực Cung Cấp Dịch Vụ</h2>
+        <p class="text-center">
+            Hồ Chí Minh, Hà Nội, Đà Nẵng, Bà Rịa – Vũng Tàu, Bình Dương, Bình Phước, Biên Hòa – Đồng Nai, Tây Ninh, An Giang, Bạc Liêu, Bến Tre, Cà Mau, Cần Thơ, Đồng Tháp, Hậu Giang, Kien Giang, Long An, Sóc Trăng, Tiền Giang, Trà Vinh, Vĩnh Long, Lâm Đồng – Đà Lạt, Ninh Thuận, Bình Thuận, Thanh Hóa, Vĩnh Nghiêm, Hà Tĩnh, Đồng Hới – Quảng Bình, Quảng Trị, Thừa Thiên-Huế.
+        </p>
+    </div>
+
+    <!-- Dịch vụ -->
+    <div class="container my-5 services-section">
+        <h2 class="text-center mb-4">Dịch Vụ Của GKM - Support and Care System</h2>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="service-card bg-success">
+                    <h5>Đặt Lịch Chăm Sóc Sức Khỏe Tại Nhà</h5>
+                    <p>Dịch vụ chăm sóc sức khỏe tại nhà, hỗ trợ theo dõi sức khỏe và sinh hoạt hàng ngày.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-card bg-primary">
+                    <h5>Đặt Lịch Vật Lý Trị Liệu</h5>
+                    <p>Dịch vụ đặt lịch vật lý trị liệu với các chuyên gia có nhiều năm kinh nghiệm, hỗ trợ phục hồi chức năng.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-card bg-warning">
+                    <h5>Chăm Sóc Sản Phụ Sau Sinh</h5>
+                    <p>Dịch vụ đặt lịch chăm sóc mẹ và bé sau sinh, hỗ trợ tắm bé, massage mẹ, chăm sóc sức khỏe.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mt-4">
+                <div class="service-card bg-info">
+                    <h5>Hỗ Trợ Người Cao Tuổi</h5>
+                    <p>Dịch vụ đặt lịch chăm sóc người cao tuổi, hỗ trợ sinh hoạt và theo dõi sức khỏe.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mt-4">
+                <div class="service-card bg-danger">
+                    <h5>Chăm Sóc Người Ốm</h5>
+                    <p>Dịch vụ đặt lịch chăm sóc người ốm tại nhà hoặc bệnh viện, hỗ trợ phục hồi sức khỏe.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mt-4">
+                <div class="service-card bg-secondary">
+                    <h5>Tư Vấn Sức Khỏe Trực Tuyến</h5>
+                    <p>Dịch vụ tư vấn sức khỏe trực tuyến, hỗ trợ khách hàng mọi lúc, mọi nơi.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bạn đang tìm dịch vụ chăm sóc sức khỏe? -->
+    <div class="container my-5 text-center">
+        <h2>Bạn Đang Tìm Dịch Vụ Chăm Sóc Sức Khỏe Đáng Tin Cậy?</h2>
+        <p>Hãy đặt lịch ngay với GKM - Support and Care System để nhận được sự hỗ trợ tốt nhất!</p>
+        @if (User.Identity.IsAuthenticated && Context.Session.GetString("UserRole") == "Senior")
+        {
+            <a href="@Url.Action("ListCaregivers", "Caregivers")" class="btn btn-primary">Đặt Lịch Ngay</a>
+        }
+    </div>

@@ -2,7 +2,11 @@
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
+<<<<<<< HEAD
 using Microsoft.Extensions.Logging;
+=======
+using Chamsoc.Controllers;
+>>>>>>> 515296af2b606831ed326d5772fae09ed1ab25b0
 using Chamsoc.Models;
 
 namespace Chamsoc.Services
@@ -19,6 +23,7 @@ namespace Chamsoc.Services
         {
             _httpClient = httpClient;
             _configuration = configuration;
+<<<<<<< HEAD
             _logger = logger;
 
             // Lấy API key từ configuration
@@ -135,6 +140,65 @@ namespace Chamsoc.Services
             {
                 _logger.LogError(ex, "Error in AskAsync");
                 return $"❌ Lỗi: {ex.Message}";
+=======
+
+            var apiKey = _configuration["OpenRouter:ApiKey"];
+            if (!string.IsNullOrEmpty(apiKey))
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+                _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            }
+        }
+
+        public async Task<string> AskAsync(List<ChatMessage> messages)
+        {
+            try
+            {
+                var requestBody = new
+                {
+                    model = "gpt-3.5-turbo", // có thể cấu hình từ appsettings nếu cần
+                    messages = messages.Select(m => new
+                    {
+                        role = m.Role,
+                        content = m.Content
+                    }).ToList()
+                };
+
+                var response = await _httpClient.PostAsJsonAsync("https://openrouter.ai/api/v1/chat/completions", requestBody);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    // Có thể log chi tiết lỗi từ OpenRouter tại đây nếu cần
+                    return $"❌ Lỗi khi gọi OpenRouter: {response.StatusCode}";
+                }
+
+                var result = await response.Content.ReadFromJsonAsync<OpenAiResponse>();
+
+                return result?.Choices?.FirstOrDefault()?.Message?.Content?.Trim()
+                       ?? "❌ Bot không thể phản hồi lúc này. Vui lòng thử lại sau.";
+            }
+            catch (Exception ex)
+            {
+                // Log lỗi nếu cần
+                return $"❌ Đã xảy ra lỗi khi xử lý yêu cầu: {ex.Message}";
+            }
+        }
+
+        // Mapping response từ OpenRouter
+        public class OpenAiResponse
+        {
+            public List<Choice> Choices { get; set; }
+
+            public class Choice
+            {
+                public Message Message { get; set; }
+            }
+
+            public class Message
+            {
+                public string Role { get; set; }
+                public string Content { get; set; }
+>>>>>>> 515296af2b606831ed326d5772fae09ed1ab25b0
             }
         }
     }
