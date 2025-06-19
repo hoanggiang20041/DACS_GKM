@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\Chamsoc.lx3iutwqnx.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\css\\call.css",
+      "PackagePath": "staticwebassets\\css\\call.css"
+    },
+    {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
@@ -17,20 +21,72 @@
       "PackagePath": "staticwebassets\\js\\site.js"
     },
     {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\0f7823e5-42ca-4f2e-8a4d-e2c25193a8e7.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\0f7823e5-42ca-4f2e-8a4d-e2c25193a8e7.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\135f321d-19a1-461a-992b-637e54c3e243.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\135f321d-19a1-461a-992b-637e54c3e243.jpg"
+    },
+    {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\1a781a9e-65bf-460c-8275-0ab659c5decf_1.png",
       "PackagePath": "staticwebassets\\uploads\\avatars\\1a781a9e-65bf-460c-8275-0ab659c5decf_1.png"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\1c7cfe40-9709-4c8d-8de8-b74b86690ad7.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\1c7cfe40-9709-4c8d-8de8-b74b86690ad7.jpg"
     },
     {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\1e710604-7d93-4255-ab52-e64e6a6020f1_1706861694-95867803-custom.jpg",
       "PackagePath": "staticwebassets\\uploads\\avatars\\1e710604-7d93-4255-ab52-e64e6a6020f1_1706861694-95867803-custom.jpg"
     },
     {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\345ae4b1-e84b-44e1-bc02-036f1425211c.png",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\345ae4b1-e84b-44e1-bc02-036f1425211c.png"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\38ce17c1-c811-4d7b-b150-92a7224571f3.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\38ce17c1-c811-4d7b-b150-92a7224571f3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\3fbd894a-47a3-43d2-8669-c020596c9744.png",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\3fbd894a-47a3-43d2-8669-c020596c9744.png"
+    },
+    {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\43740847-8f63-4e9e-807b-93d53a9e0273.jpg",
       "PackagePath": "staticwebassets\\uploads\\avatars\\43740847-8f63-4e9e-807b-93d53a9e0273.jpg"
     },
     {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\4fed0bf9-b910-422c-ba7b-4dadb47b11eb.png",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\4fed0bf9-b910-422c-ba7b-4dadb47b11eb.png"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\586c250f-a351-42da-8247-617306438423.png",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\586c250f-a351-42da-8247-617306438423.png"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\58c7f553-65b8-4d69-ab70-eb4e5d9fbdff.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\58c7f553-65b8-4d69-ab70-eb4e5d9fbdff.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\5fa30387-ac94-428f-b303-fc2e95aa1867.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\5fa30387-ac94-428f-b303-fc2e95aa1867.jpg"
+    },
+    {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\5fab3fa8-0193-4577-9658-dc5f4fa3b5e3_448735191_997255028658976_1842512308837990710_n.jpg",
       "PackagePath": "staticwebassets\\uploads\\avatars\\5fab3fa8-0193-4577-9658-dc5f4fa3b5e3_448735191_997255028658976_1842512308837990710_n.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\645ae0f0-2331-47a8-88f5-e347a6f5affa.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\645ae0f0-2331-47a8-88f5-e347a6f5affa.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\6751d364-62fe-453c-85e1-b5bf9c60c12b.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\6751d364-62fe-453c-85e1-b5bf9c60c12b.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\76bf54eb-01f2-4db5-b98e-bc3671a7abde.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\76bf54eb-01f2-4db5-b98e-bc3671a7abde.jpg"
     },
     {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\863c2398-821e-4c7c-96c6-032f6cdeb787.jpg",
@@ -41,8 +97,32 @@
       "PackagePath": "staticwebassets\\uploads\\avatars\\8b111fce-8bbc-45ad-a06c-55b5066d4118_1.png"
     },
     {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\8b8f478a-bef6-48ab-a44b-42af44fa0d9e.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\8b8f478a-bef6-48ab-a44b-42af44fa0d9e.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\971a8d19-0b96-4782-bddc-aaa761f57edf.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\971a8d19-0b96-4782-bddc-aaa761f57edf.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\9bd4c0ac-205a-40bb-96b8-503dc24043c0.jpeg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\9bd4c0ac-205a-40bb-96b8-503dc24043c0.jpeg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\a07d48dc-842b-4fbe-8928-05a4d6d50447.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\a07d48dc-842b-4fbe-8928-05a4d6d50447.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\a4ac22b7-0208-48ff-ada1-8213fc3f56a8.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\a4ac22b7-0208-48ff-ada1-8213fc3f56a8.jpg"
+    },
+    {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\a87c4834-0bd3-47a6-a5f8-f9126bfb3d05.jpg",
       "PackagePath": "staticwebassets\\uploads\\avatars\\a87c4834-0bd3-47a6-a5f8-f9126bfb3d05.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\b71453c2-06bb-493a-8f4c-8a1d3d4021a3.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\b71453c2-06bb-493a-8f4c-8a1d3d4021a3.jpg"
     },
     {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\be005f35-1ee7-48aa-b8fc-a77889d84889_1666750887-1616272448-custom.jpeg",
@@ -53,8 +133,16 @@
       "PackagePath": "staticwebassets\\uploads\\avatars\\d2bc1045-9c23-47a2-9a62-dcd80d4c4090_448735191_997255028658976_1842512308837990710_n.jpg"
     },
     {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\d6d0ce95-63a3-4422-931d-b87177562926.png",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\d6d0ce95-63a3-4422-931d-b87177562926.png"
+    },
+    {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\d7b45678-38f4-4ff3-8cb8-e6e87cbd5cff_1.png",
       "PackagePath": "staticwebassets\\uploads\\avatars\\d7b45678-38f4-4ff3-8cb8-e6e87cbd5cff_1.png"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\dd7d0f15-8539-43b3-9048-4fb1993188d7.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\dd7d0f15-8539-43b3-9048-4fb1993188d7.jpg"
     },
     {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\e4f319d4-d739-42b5-90a7-34d104bff792_1706861694-95867803-custom.jpg",
@@ -65,8 +153,136 @@
       "PackagePath": "staticwebassets\\uploads\\avatars\\ecfd33d5-3a26-404f-ad8c-c1213d391454_1706861694-95867803-custom.jpg"
     },
     {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\avatars\\f02fb161-6632-4deb-a781-c0ed4f4af85c.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\f02fb161-6632-4deb-a781-c0ed4f4af85c.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\005a12ef-8a19-4242-b424-1f73782ea846.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\005a12ef-8a19-4242-b424-1f73782ea846.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\039b6f8f-28a2-4164-97ff-a08e22686ac4.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\039b6f8f-28a2-4164-97ff-a08e22686ac4.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\1bcde72d-f805-4301-bead-8f1a19633900.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\1bcde72d-f805-4301-bead-8f1a19633900.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\1f5d688b-30ea-4eed-8834-e5c0cce02501.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\1f5d688b-30ea-4eed-8834-e5c0cce02501.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\30c0b8e8-071a-447b-99f6-82bba72be24a.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\30c0b8e8-071a-447b-99f6-82bba72be24a.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\33fc58cf-eb4a-4040-a166-a584351b9917.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\33fc58cf-eb4a-4040-a166-a584351b9917.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\3729cbbd-fcbd-4239-860d-aca83ec1381d.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\3729cbbd-fcbd-4239-860d-aca83ec1381d.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\44b206df-2c7c-453c-b2ae-bc77e800d5c0.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\44b206df-2c7c-453c-b2ae-bc77e800d5c0.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\4fa96051-e429-4f24-b45b-3d919696761e.png",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\4fa96051-e429-4f24-b45b-3d919696761e.png"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\5078be10-a714-4d6c-9e48-f091ff4edb37.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\5078be10-a714-4d6c-9e48-f091ff4edb37.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\584c256f-2d5e-481a-bad6-f5996a15b510.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\584c256f-2d5e-481a-bad6-f5996a15b510.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\6acea7e5-783d-4941-b607-5be289f6c2c0.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\6acea7e5-783d-4941-b607-5be289f6c2c0.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\721bfa8d-9b49-4648-9e4f-e46875eb608a.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\721bfa8d-9b49-4648-9e4f-e46875eb608a.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\744703d5-98fa-43d2-b885-87e3b38a44ef.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\744703d5-98fa-43d2-b885-87e3b38a44ef.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\7a20bd64-1c40-4e3e-a021-c09231d2cef0.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\7a20bd64-1c40-4e3e-a021-c09231d2cef0.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\834109e4-5fcd-478e-b441-6e12a1f3284f.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\834109e4-5fcd-478e-b441-6e12a1f3284f.jpg"
+    },
+    {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\9be04210-a796-4ba5-9b1a-3b8251de9ad8.png",
       "PackagePath": "staticwebassets\\uploads\\certificates\\9be04210-a796-4ba5-9b1a-3b8251de9ad8.png"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\a0227c5e-9a3c-4d02-9128-7512386b313f.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\a0227c5e-9a3c-4d02-9128-7512386b313f.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\a09e6630-593f-4d9a-b590-5fe6c165ca8d.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\a09e6630-593f-4d9a-b590-5fe6c165ca8d.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\a32a8152-e15a-42a3-b195-79e1cede80f4.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\a32a8152-e15a-42a3-b195-79e1cede80f4.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\b0088f82-31f3-44be-b739-c029587fce4d.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\b0088f82-31f3-44be-b739-c029587fce4d.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\b2cd9951-440b-4641-b8d7-aa6de94fc3a0.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\b2cd9951-440b-4641-b8d7-aa6de94fc3a0.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\d4de151c-b1c2-48ad-bf1f-7384f5664b11.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\d4de151c-b1c2-48ad-bf1f-7384f5664b11.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\d7bfa064-244a-46d9-a206-5b0636b2db3d.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\d7bfa064-244a-46d9-a206-5b0636b2db3d.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\e3098fb2-0ce4-4306-8692-746c7343c2b9.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\e3098fb2-0ce4-4306-8692-746c7343c2b9.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\e483ceae-a847-42ff-80d7-38c25a620709.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\e483ceae-a847-42ff-80d7-38c25a620709.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\e92f02a4-101c-4f1f-aeb5-48ccccce0fef.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\e92f02a4-101c-4f1f-aeb5-48ccccce0fef.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\f14d9399-e736-4f44-9209-7b94ff9c36e5.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\f14d9399-e736-4f44-9209-7b94ff9c36e5.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\f60f38dd-b2f1-4ecc-b4c5-eaf71ce40947.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\f60f38dd-b2f1-4ecc-b4c5-eaf71ce40947.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\f74af15b-f116-45c5-9bf3-46595a8574fb.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\f74af15b-f116-45c5-9bf3-46595a8574fb.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\ff03bbc5-8990-42bb-bfa6-3ba9d1b015a7.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\ff03bbc5-8990-42bb-bfa6-3ba9d1b015a7.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\certificates\\ff063fbb-93d2-45ca-bf14-851d03d2662e.jpg",
+      "PackagePath": "staticwebassets\\uploads\\certificates\\ff063fbb-93d2-45ca-bf14-851d03d2662e.jpg"
     },
     {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\complaints\\638833251783581200_download (5).jpg",
@@ -77,6 +293,30 @@
       "PackagePath": "staticwebassets\\uploads\\complaints\\638839399144797061_Project.png"
     },
     {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\complaints\\638841103002811812_Anh-bac-si-nam-8-min.jpg",
+      "PackagePath": "staticwebassets\\uploads\\complaints\\638841103002811812_Anh-bac-si-nam-8-min.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\complaints\\638841622438322218_adidas-superstar-white-black-c77124-1.png",
+      "PackagePath": "staticwebassets\\uploads\\complaints\\638841622438322218_adidas-superstar-white-black-c77124-1.png"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\complaints\\638842133299544718_adidas-superstar-white-black-c77124-1.png",
+      "PackagePath": "staticwebassets\\uploads\\complaints\\638842133299544718_adidas-superstar-white-black-c77124-1.png"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\0ed9980d-302a-4507-89f5-18697d145338.jpg",
+      "PackagePath": "staticwebassets\\uploads\\degrees\\0ed9980d-302a-4507-89f5-18697d145338.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\14543041-d1d9-43d3-903a-ba9dd9fdc279.jpg",
+      "PackagePath": "staticwebassets\\uploads\\degrees\\14543041-d1d9-43d3-903a-ba9dd9fdc279.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\25cbdba3-47fe-493b-a800-59f5b9e3dd01.jpg",
+      "PackagePath": "staticwebassets\\uploads\\degrees\\25cbdba3-47fe-493b-a800-59f5b9e3dd01.jpg"
+    },
+    {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\3256eb92-a556-46ac-8823-71134e08f807.jpg",
       "PackagePath": "staticwebassets\\uploads\\degrees\\3256eb92-a556-46ac-8823-71134e08f807.jpg"
     },
@@ -85,16 +325,200 @@
       "PackagePath": "staticwebassets\\uploads\\degrees\\557e6ac4-8c76-4620-b3ea-4df7e0e05e21.jpg"
     },
     {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\5906b68f-7a9f-4328-9c18-72a45bff96fd.jpg",
+      "PackagePath": "staticwebassets\\uploads\\degrees\\5906b68f-7a9f-4328-9c18-72a45bff96fd.jpg"
+    },
+    {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\6d8884aa-bd6b-4a7f-84d6-ae9fdff53447.png",
       "PackagePath": "staticwebassets\\uploads\\degrees\\6d8884aa-bd6b-4a7f-84d6-ae9fdff53447.png"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\71dae2a5-cecb-4668-95ea-eb295923c56f.jpg",
+      "PackagePath": "staticwebassets\\uploads\\degrees\\71dae2a5-cecb-4668-95ea-eb295923c56f.jpg"
     },
     {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\88fbbfa6-09e4-4ae5-a8ad-93c816050c2d.jpg",
       "PackagePath": "staticwebassets\\uploads\\degrees\\88fbbfa6-09e4-4ae5-a8ad-93c816050c2d.jpg"
     },
     {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\976ed210-3660-4f9a-9e07-52d8e07ba538.jpg",
+      "PackagePath": "staticwebassets\\uploads\\degrees\\976ed210-3660-4f9a-9e07-52d8e07ba538.jpg"
+    },
+    {
       "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\a7e7244f-6541-4130-a50a-04ddfaa84acc.png",
       "PackagePath": "staticwebassets\\uploads\\degrees\\a7e7244f-6541-4130-a50a-04ddfaa84acc.png"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\b0dcc6cf-e51e-4091-891e-2ddd1f2b8b8c.jpg",
+      "PackagePath": "staticwebassets\\uploads\\degrees\\b0dcc6cf-e51e-4091-891e-2ddd1f2b8b8c.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\cbf150ec-38fb-4873-8a58-0581b9226853.jpg",
+      "PackagePath": "staticwebassets\\uploads\\degrees\\cbf150ec-38fb-4873-8a58-0581b9226853.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\d169a457-d12f-488c-a209-379cfd03dbe1.jpg",
+      "PackagePath": "staticwebassets\\uploads\\degrees\\d169a457-d12f-488c-a209-379cfd03dbe1.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\dcf17e0a-4b48-47d3-8300-b38acf8d949d.jpg",
+      "PackagePath": "staticwebassets\\uploads\\degrees\\dcf17e0a-4b48-47d3-8300-b38acf8d949d.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\e7d5f8ea-bdbf-4c60-b254-02c7f416f6e8.jpg",
+      "PackagePath": "staticwebassets\\uploads\\degrees\\e7d5f8ea-bdbf-4c60-b254-02c7f416f6e8.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\degrees\\ee401106-478e-4a4e-b695-46531b9ad858.jpg",
+      "PackagePath": "staticwebassets\\uploads\\degrees\\ee401106-478e-4a4e-b695-46531b9ad858.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\00656c56-43c4-4374-8077-b6deea06e560.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\00656c56-43c4-4374-8077-b6deea06e560.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\036b863c-8052-407f-aea0-f911143c9f1d.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\036b863c-8052-407f-aea0-f911143c9f1d.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\0f4ea8f7-7236-43a1-b88f-7066e7433987.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\0f4ea8f7-7236-43a1-b88f-7066e7433987.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\1fb09ef3-cfe4-4e95-8d5f-d4e750207fdc.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\1fb09ef3-cfe4-4e95-8d5f-d4e750207fdc.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\217c776d-7184-44df-8df5-d423de1a94cc.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\217c776d-7184-44df-8df5-d423de1a94cc.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\23c1aae2-89a0-4286-9b65-36d85b3d4af5.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\23c1aae2-89a0-4286-9b65-36d85b3d4af5.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\2698d1aa-57ef-4e3b-aafb-fafe64560c24.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\2698d1aa-57ef-4e3b-aafb-fafe64560c24.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\27c2ba7f-0244-4ab4-ab40-7410036f36c3.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\27c2ba7f-0244-4ab4-ab40-7410036f36c3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\2a94275a-b4d0-49af-8a0b-8988274439fc.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\2a94275a-b4d0-49af-8a0b-8988274439fc.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\3c639aae-6739-49ce-8533-c17094ae169d.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\3c639aae-6739-49ce-8533-c17094ae169d.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\3c8524a8-7586-4ad9-ac8e-07edc9edfde6.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\3c8524a8-7586-4ad9-ac8e-07edc9edfde6.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\43a2590c-0e25-4b48-81ea-3f88aee85c40.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\43a2590c-0e25-4b48-81ea-3f88aee85c40.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\596a96be-b48b-4f6d-af16-2d1cdb24857c.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\596a96be-b48b-4f6d-af16-2d1cdb24857c.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\5bd758e7-2be3-4748-a1aa-ad4af4a6fde8.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\5bd758e7-2be3-4748-a1aa-ad4af4a6fde8.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\60c80375-9f38-40e1-b09c-1c9320c0142c.png",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\60c80375-9f38-40e1-b09c-1c9320c0142c.png"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\670b19a3-1d4f-48fb-8402-24ed637ea658.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\670b19a3-1d4f-48fb-8402-24ed637ea658.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\6a7fb8bf-bcb8-4cdc-a8f2-c30262bb0d72.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\6a7fb8bf-bcb8-4cdc-a8f2-c30262bb0d72.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\6ed65efe-a6dd-4798-99c3-1b54f4b62667.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\6ed65efe-a6dd-4798-99c3-1b54f4b62667.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\77940484-a81e-45db-bcdf-bc01bb1a55ab.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\77940484-a81e-45db-bcdf-bc01bb1a55ab.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\8220df90-efed-41b2-9347-e4bcf8d2056d.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\8220df90-efed-41b2-9347-e4bcf8d2056d.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\88536625-3c74-4da2-9070-998cb4e3fb66.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\88536625-3c74-4da2-9070-998cb4e3fb66.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\ad4db9ec-9be1-48fe-8a66-a7c8c410c9b2.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\ad4db9ec-9be1-48fe-8a66-a7c8c410c9b2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\ae81cb5a-f2d5-458a-ab0e-3a697be58cb2.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\ae81cb5a-f2d5-458a-ab0e-3a697be58cb2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\b25b87f4-56d6-46c6-9544-fd61b477060d.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\b25b87f4-56d6-46c6-9544-fd61b477060d.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\b80be74e-44f9-4381-b9e6-fade997e386f.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\b80be74e-44f9-4381-b9e6-fade997e386f.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\bb06746f-a005-4fd7-bc69-63294ab3cd64.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\bb06746f-a005-4fd7-bc69-63294ab3cd64.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\c1607fa2-a627-4e55-836f-8228dc2baf26.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\c1607fa2-a627-4e55-836f-8228dc2baf26.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\c21862f6-d797-447c-a281-50aade8543e5.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\c21862f6-d797-447c-a281-50aade8543e5.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\c5a4a88e-64fb-4d06-9553-9b80d6561b4e.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\c5a4a88e-64fb-4d06-9553-9b80d6561b4e.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\c6ed5dc5-18b9-4479-baa1-11848345042c.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\c6ed5dc5-18b9-4479-baa1-11848345042c.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\cb8f6892-b8c3-49dd-9a78-3aeb3f624b5a.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\cb8f6892-b8c3-49dd-9a78-3aeb3f624b5a.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\d03e2187-03e4-4609-bcda-b21a7a16f422.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\d03e2187-03e4-4609-bcda-b21a7a16f422.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\dae48cde-20a0-4dc1-8d30-8e64e177066b.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\dae48cde-20a0-4dc1-8d30-8e64e177066b.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\e48d20a6-84d0-45da-9dd8-25dcf22d6d25.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\e48d20a6-84d0-45da-9dd8-25dcf22d6d25.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\e5df7070-ebf4-4c35-881e-799668e57c4f.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\e5df7070-ebf4-4c35-881e-799668e57c4f.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\e67f9d0e-ae37-40b8-8d27-02cb4e760cbf.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\e67f9d0e-ae37-40b8-8d27-02cb4e760cbf.jpg"
+    },
+    {
+      "Id": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\wwwroot\\uploads\\identityAndHealthDocs\\f9f9d3be-efe2-47cc-a897-749c8e9afbbe.jpg",
+      "PackagePath": "staticwebassets\\uploads\\identityAndHealthDocs\\f9f9d3be-efe2-47cc-a897-749c8e9afbbe.jpg"
     },
     {
       "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.Chamsoc.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

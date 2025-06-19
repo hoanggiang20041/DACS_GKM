@@ -616,21 +616,10 @@
                                     <li class="dropdown-divider"></li>
                                     <li>
                                         <a class="dropdown-item" asp-controller="Admin" asp-action="BalanceHistory">
-                                            @{
-                                                var userId = Context.Session.GetString("UserId");
-                                                var admin = DbContext?.Users.FirstOrDefault(u => u.Id == userId && u.Role == "Admin");
-                                                if (admin != null)
-                                                {
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <span><i class="fas fa-wallet me-2"></i>Số dư:</span>
-                                                        <span class="badge bg-success">@admin.Balance.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</span>
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    <span class="text-danger">Lỗi: Không thể tải số dư.</span>
-                                                }
-                                            }
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span><i class="fas fa-wallet me-2"></i>Số dư:</span>
+                                                <span class="badge bg-success">@(ViewBag.AdminBalance?.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))) VNĐ</span>
+                                            </div>
                                         </a>
                                     </li>
                                 </ul>

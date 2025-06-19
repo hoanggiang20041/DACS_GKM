@@ -40,7 +40,8 @@ namespace Chamsoc.Models
 
         public string Experience { get; set; } = null!;
         
-        public string Pricing { get; set; } = null!;
+        [Required]
+        public string Pricing { get; set; } = "{\"1Hour\": 800000, \"2Hours\": 1500000, \"5Sessions\": 3500000}";
         
         public double TotalRatings { get; set; }
 
@@ -48,6 +49,7 @@ namespace Chamsoc.Models
         public string? Contact { get; set; }
         public string? AvatarUrl { get; set; }
         public string? CertificateFilePath { get; set; }
+        [Required]
         public decimal Price { get; set; }
         public string? FullName { get; set; }
 

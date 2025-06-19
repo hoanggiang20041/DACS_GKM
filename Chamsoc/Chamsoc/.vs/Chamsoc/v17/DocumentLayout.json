@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|c:\\users\\giang\\desktop\\dacs_2705\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|solutionrelative:chamsoc\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|c:\\users\\giang\\desktop\\dacs_2705\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\admin\\managepayments.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|solutionrelative:chamsoc\\views\\admin\\managepayments.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|c:\\users\\giang\\desktop\\dacs_2705\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\migrations\\20250602061905_them1a1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|solutionrelative:chamsoc\\migrations\\20250602061905_them1a1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|c:\\users\\giang\\desktop\\dacs_2705\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\views\\caregivers\\listcaregivers.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|solutionrelative:chamsoc\\views\\caregivers\\listcaregivers.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -29,18 +41,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|c:\\users\\giang\\desktop\\dacs_2705\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|solutionrelative:chamsoc\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250529163706_Themhuhu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Chamsoc\\Migrations\\20250529163706_Themhuhu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250529162737_Them23.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Chamsoc\\Migrations\\20250529162737_Them23.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250529160418_Them22.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Chamsoc\\Migrations\\20250529160418_Them22.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250529160235_Them1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -114,6 +114,18 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250506014415_AddLocationToCareJob.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|c:\\users\\giang\\desktop\\dacs_2705\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\migrations\\20250529160418_them22.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|solutionrelative:chamsoc\\migrations\\20250529160418_them22.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|c:\\users\\giang\\desktop\\dacs_2705\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\migrations\\20250529162737_them23.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|solutionrelative:chamsoc\\migrations\\20250529162737_them23.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|c:\\users\\giang\\desktop\\dacs_2705\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\migrations\\20250529163706_themhuhu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1949A47A-7E2F-4063-AB29-CA7121B3BAC6}|Chamsoc\\Chamsoc.csproj|solutionrelative:chamsoc\\migrations\\20250529163706_themhuhu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -123,7 +135,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -131,7 +143,44 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 0,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Chamsoc\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Chamsoc\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAGoCAAAAAAAAAIAwwGoCAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-02T15:38:25.522Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ManagePayments.cshtml",
+              "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\ManagePayments.cshtml",
+              "RelativeDocumentMoniker": "Chamsoc\\Views\\Admin\\ManagePayments.cshtml",
+              "ToolTip": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\ManagePayments.cshtml",
+              "RelativeToolTip": "Chamsoc\\Views\\Admin\\ManagePayments.cshtml",
+              "ViewState": "AgIAAOUAAAAAAAAAAIAwwPMAAABGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-02T14:35:13.18Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "20250602061905_them1a1.cs",
+              "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250602061905_them1a1.cs",
+              "RelativeDocumentMoniker": "Chamsoc\\Migrations\\20250602061905_them1a1.cs",
+              "ToolTip": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250602061905_them1a1.cs",
+              "RelativeToolTip": "Chamsoc\\Migrations\\20250602061905_them1a1.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T06:19:07.467Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
               "Title": "20250529160418_Them22.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250529160418_Them22.cs",
               "RelativeDocumentMoniker": "Chamsoc\\Migrations\\20250529160418_Them22.cs",
@@ -167,7 +216,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "ListCaregivers.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Caregivers\\ListCaregivers.cshtml",
               "RelativeDocumentMoniker": "Chamsoc\\Views\\Caregivers\\ListCaregivers.cshtml",
@@ -175,12 +224,11 @@
               "RelativeToolTip": "Chamsoc\\Views\\Caregivers\\ListCaregivers.cshtml",
               "ViewState": "AgIAAC8FAAAAAAAAAAAgwD4FAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-19T07:25:56.347Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-19T07:25:56.347Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "ListSeniors.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Seniors\\ListSeniors.cshtml",
               "RelativeDocumentMoniker": "Chamsoc\\Views\\Seniors\\ListSeniors.cshtml",
@@ -188,12 +236,11 @@
               "RelativeToolTip": "Chamsoc\\Views\\Seniors\\ListSeniors.cshtml",
               "ViewState": "AgIAACcBAAAAAAAAAAAgwDMBAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-16T20:45:48.608Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-16T20:45:48.608Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "ListCaregivers.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\ListCaregivers.cshtml",
               "RelativeDocumentMoniker": "Chamsoc\\Views\\ListCaregivers.cshtml",
@@ -201,12 +248,11 @@
               "RelativeToolTip": "Chamsoc\\Views\\ListCaregivers.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-29T21:35:23.365Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T21:35:23.365Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "ViewContactRequest.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Caregivers\\ViewContactRequest.cshtml",
               "RelativeDocumentMoniker": "Chamsoc\\Views\\Caregivers\\ViewContactRequest.cshtml",
@@ -214,8 +260,7 @@
               "RelativeToolTip": "Chamsoc\\Views\\Caregivers\\ViewContactRequest.cshtml",
               "ViewState": "AgIAAMIAAAAAAAAAAAAgwMoAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-29T19:01:23.012Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T19:01:23.012Z"
             },
             {
               "$type": "Document",
@@ -231,7 +276,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Program.cs",
               "RelativeDocumentMoniker": "Chamsoc\\Program.cs",
@@ -239,12 +284,11 @@
               "RelativeToolTip": "Chamsoc\\Program.cs",
               "ViewState": "AgIAAEQAAAAAAAAAAAAQwLMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-16T20:19:24.868Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-16T20:19:24.868Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\appsettings.json",
               "RelativeDocumentMoniker": "Chamsoc\\appsettings.json",
@@ -252,12 +296,11 @@
               "RelativeToolTip": "Chamsoc\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-05-28T19:16:33.848Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-28T19:16:33.848Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 31,
               "Title": "20250529162737_Them23.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250529162737_Them23.cs",
               "RelativeDocumentMoniker": "Chamsoc\\Migrations\\20250529162737_Them23.cs",
@@ -269,7 +312,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "NotificationsController.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\NotificationsController.cs",
               "RelativeDocumentMoniker": "Chamsoc\\Controllers\\NotificationsController.cs",
@@ -277,12 +320,11 @@
               "RelativeToolTip": "Chamsoc\\Controllers\\NotificationsController.cs",
               "ViewState": "AgIAAKEBAAAAAAAAAAAwwLEBAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T16:43:44.76Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T16:43:44.76Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 32,
               "Title": "20250529163706_Themhuhu.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250529163706_Themhuhu.cs",
               "RelativeDocumentMoniker": "Chamsoc\\Migrations\\20250529163706_Themhuhu.cs",

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace Chamsoc.Controllers
 {
@@ -618,28 +620,11 @@ namespace Chamsoc.Controllers
                         certificateFilePath = await SaveFile(certificate, "certificates");
                     }
 
-                    // Khởi tạo bảng giá mặc định dựa trên chuyên môn
-                    string pricing = null;
-                    if (skills == "Bác sĩ")
-                    {
-                        pricing = "{\"1Hour\": 2000000, \"2Hours\": 3500000, \"5Sessions\": 8000000}";
-                    }
-                    else if (skills == "Y tá")
-                    {
-                        pricing = "{\"1Hour\": 1500000, \"2Hours\": 2500000, \"5Sessions\": 6000000}";
-                    }
-                    else if (skills == "Điều dưỡng")
-                    {
-                        pricing = "{\"1Hour\": 1200000, \"2Hours\": 2000000, \"5Sessions\": 5000000}";
-                    }
-                    else if (skills == "Vật lý trị liệu")
-                    {
-                        pricing = "{\"1Hour\": 1800000, \"2Hours\": 3000000, \"5Sessions\": 7000000}";
-                    }
-                    else if (skills == "Dinh dưỡng")
-                    {
-                        pricing = "{\"1Hour\": 1000000, \"2Hours\": 1800000, \"5Sessions\": 4000000}";
-                    }
+                    // Đảm bảo price luôn có giá trị hợp lệ và không null
+                    decimal finalPrice = price > 0 ? price : 800000;
+
+                    // Tạo chuỗi JSON pricing với định dạng cố định
+                    string pricing = $"{{\"1Hour\": {finalPrice}, \"2Hours\": {finalPrice * 1.8m}, \"5Sessions\": {finalPrice * 4.5m}}}";
 
                     var caregiver = new Caregiver
                     {
@@ -648,13 +633,11 @@ namespace Chamsoc.Controllers
                         Skills = skills,
                         Contact = phoneNumber,
                         IsAvailable = isAvailable,
-                        CertificateFilePath = certificateFilePath,
-                        IsVerified = false,
-                        AvatarUrl = "https://via.placeholder.com/150",
-                        Price = price,
+                        Price = finalPrice,
                         Pricing = pricing,
+                        Certificate = certificateFilePath,
                         Experience = "Chưa có kinh nghiệm",
-                        Degree = skills // Sử dụng chuyên môn làm bằng cấp mặc định
+                        IsVerified = false
                     };
                     _context.Caregivers.Add(caregiver);
                     await _context.SaveChangesAsync();
@@ -794,10 +777,17 @@ namespace Chamsoc.Controllers
             }
             caregiverToUpdate.Contact = contact;
             caregiverToUpdate.IsAvailable = isAvailable;
-            if (price > 0)
+            caregiverToUpdate.Price = price;
+
+            // Tạo pricing dựa trên giá người dùng nhập
+            var pricingObj = new
             {
-                caregiverToUpdate.Price = price;
-            }
+                _1Hour = price,
+                _2Hours = price * 1.8m,
+                _5Sessions = price * 4.5m
+            };
+            string pricing = $"{{\"1Hour\": {pricingObj._1Hour}, \"2Hours\": {pricingObj._2Hours}, \"5Sessions\": {pricingObj._5Sessions}}}";
+            caregiverToUpdate.Pricing = pricing;
 
             // Xử lý avatar nếu có
             if (avatar != null && avatar.Length > 0)

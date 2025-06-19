@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Chamsoc")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6a061d8caa5ab174aacfe31f588159a5429f79d4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d9e87f506c8a372ccce4afa9338755bb9399f0bc")]
 [assembly: System.Reflection.AssemblyProductAttribute("Chamsoc")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Chamsoc")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

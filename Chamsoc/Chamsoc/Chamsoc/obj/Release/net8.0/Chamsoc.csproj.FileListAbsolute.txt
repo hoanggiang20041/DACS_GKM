@@ -168,7 +168,6 @@ C:\Users\admin\Desktop\DACS_GKM\Chamsoc\Chamsoc\Chamsoc\obj\Release\net8.0\Chams
 C:\Users\admin\Desktop\DACS_GKM\Chamsoc\Chamsoc\Chamsoc\obj\Release\net8.0\Chamsoc.genruntimeconfig.cache
 C:\Users\admin\Desktop\DACS_GKM\Chamsoc\Chamsoc\Chamsoc\obj\Release\net8.0\ref\Chamsoc.dll
 C:\Users\giang\Desktop\DACS_2705\DACS_GKM\Chamsoc\Chamsoc\Chamsoc\bin\Release\net8.0\NuGet.Config
-C:\Users\giang\Desktop\DACS_2705\DACS_GKM\Chamsoc\Chamsoc\Chamsoc\bin\Release\net8.0\appsettings.Development.json
 C:\Users\giang\Desktop\DACS_2705\DACS_GKM\Chamsoc\Chamsoc\Chamsoc\bin\Release\net8.0\appsettings.json
 C:\Users\giang\Desktop\DACS_2705\DACS_GKM\Chamsoc\Chamsoc\Chamsoc\bin\Release\net8.0\global.json
 C:\Users\giang\Desktop\DACS_2705\DACS_GKM\Chamsoc\Chamsoc\Chamsoc\bin\Release\net8.0\packages\microsoft.entityframeworkcore.tools\8.0.3\tools\netcoreapp2.0\any\ef.runtimeconfig.json

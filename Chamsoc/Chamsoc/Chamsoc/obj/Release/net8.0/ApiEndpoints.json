@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "ContainingType": "Chamsoc.Controllers.CallController",
+    "Method": "HandleAnswer",
+    "RelativePath": "Call/HandleAnswer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "answer",
+        "Type": "Chamsoc.Controllers.WebRTCAnswer",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Chamsoc.Controllers.CallController",
+    "Method": "HandleIceCandidate",
+    "RelativePath": "Call/HandleIceCandidate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "candidate",
+        "Type": "Chamsoc.Controllers.WebRTCIceCandidate",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Chamsoc.Controllers.CallController",
+    "Method": "HandleOffer",
+    "RelativePath": "Call/HandleOffer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "offer",
+        "Type": "Chamsoc.Controllers.WebRTCOffer",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

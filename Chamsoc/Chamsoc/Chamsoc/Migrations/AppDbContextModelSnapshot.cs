@@ -263,7 +263,7 @@ namespace Chamsoc.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("CareJobs");
+                    b.ToTable("CareJobs", (string)null);
                 });
 
             modelBuilder.Entity("Chamsoc.Models.Caregiver", b =>
@@ -344,7 +344,7 @@ namespace Chamsoc.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Caregivers");
+                    b.ToTable("Caregivers", (string)null);
                 });
 
             modelBuilder.Entity("Chamsoc.Models.Complaint", b =>
@@ -392,7 +392,7 @@ namespace Chamsoc.Migrations
 
                     b.HasIndex("SeniorId");
 
-                    b.ToTable("Complaints");
+                    b.ToTable("Complaints", (string)null);
                 });
 
             modelBuilder.Entity("Chamsoc.Models.Notification", b =>
@@ -406,10 +406,6 @@ namespace Chamsoc.Migrations
                     b.Property<int?>("CareJobId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -420,7 +416,6 @@ namespace Chamsoc.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Link")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Message")
@@ -447,7 +442,7 @@ namespace Chamsoc.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("Chamsoc.Models.Payment", b =>
@@ -515,7 +510,7 @@ namespace Chamsoc.Migrations
 
                     b.HasIndex("SeniorId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("Chamsoc.Models.Rating", b =>
@@ -557,7 +552,7 @@ namespace Chamsoc.Migrations
 
                     b.HasIndex("SeniorId");
 
-                    b.ToTable("Ratings");
+                    b.ToTable("Ratings", (string)null);
                 });
 
             modelBuilder.Entity("Chamsoc.Models.Senior", b =>
@@ -609,7 +604,7 @@ namespace Chamsoc.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Seniors");
+                    b.ToTable("Seniors", (string)null);
                 });
 
             modelBuilder.Entity("Chamsoc.Models.Service", b =>
@@ -644,7 +639,7 @@ namespace Chamsoc.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("Chamsoc.Models.Transaction", b =>
@@ -693,7 +688,7 @@ namespace Chamsoc.Migrations
 
                     b.HasIndex("SeniorId");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("Transactions", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

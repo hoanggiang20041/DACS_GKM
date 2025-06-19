@@ -47,16 +47,23 @@ namespace Chamsoc.Controllers
         {
             base.OnActionExecuting(context);
             
-            // Lấy thông tin admin hiện tại
-            var currentUser = _userManager.GetUserAsync(User).Result;
-            if (currentUser != null)
-            {
-                ViewBag.TotalBalance = currentUser.Balance;
-            }
-            else
-            {
-                ViewBag.TotalBalance = 0;
-            }
+            // Tính tổng số tiền từ tất cả giao dịch hoàn thành
+            var totalAmount = _context.CareJobs
+                .Where(j => j.Status == "Hoàn thành")
+                .Sum(j => j.TotalBill);
+
+            // Tính tổng số dư hệ thống (không tính admin)
+            var totalSystemBalance = _context.Users
+                .Where(u => u.Role != "Admin")
+                .Sum(u => u.Balance);
+
+            // Số dư Admin là 30% của tổng số tiền giao dịch hoàn thành
+            var adminBalance = totalAmount * 0.3M;
+
+            // Lưu các giá trị vào ViewBag
+            ViewBag.TotalAmount = totalAmount;
+            ViewBag.TotalSystemBalance = totalSystemBalance;
+            ViewBag.AdminBalance = adminBalance;
         }
 
         public IActionResult Index()
@@ -1042,16 +1049,11 @@ namespace Chamsoc.Controllers
                         identityDocsPath = await SaveFile(identityDocs, "identityAndHealthDocs");
                     }
 
-                    // Khởi tạo bảng giá mặc định dựa trên kỹ năng
-                    string pricing = null;
-                    if (skills == "Khám toàn diện")
-                    {
-                        pricing = "{\"1Hour\": 1500000, \"2Hours\": 2500000, \"5Sessions\": 6000000}";
-                    }
-                    else if (skills == "Trị liệu")
-                    {
-                        pricing = "{\"1Hour\": 1200000, \"2Hours\": 2000000, \"5Sessions\": 5000000}";
-                    }
+                    // Đảm bảo price luôn có giá trị hợp lệ và không null
+                    decimal finalPrice = price > 0 ? price : 800000;
+
+                    // Tạo chuỗi JSON pricing với định dạng cố định
+                    string pricing = $"{{\"1Hour\": {finalPrice}, \"2Hours\": {finalPrice * 1.8m}, \"5Sessions\": {finalPrice * 4.5m}}}";
 
                     var caregiver = new Caregiver
                     {
@@ -1064,7 +1066,7 @@ namespace Chamsoc.Controllers
                         IdentityAndHealthDocs = identityDocsPath,
                         IsVerified = false,
                         AvatarUrl = "https://via.placeholder.com/150",
-                        Price = price,
+                        Price = finalPrice,
                         Pricing = pricing,
                         Experience = "Chưa có kinh nghiệm"
                     };
@@ -1116,7 +1118,7 @@ namespace Chamsoc.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ManagePayments(DateTime? startDate = null, DateTime? endDate = null, string status = null, int page = 1)
+        public async Task<IActionResult> ManagePayments(DateTime? startDate = null, DateTime? endDate = null, string status = null, string searchName = null, int page = 1)
         {
             // Set default date range if not provided
             var effectiveStartDate = startDate ?? DateTime.Now.AddMonths(-1);
@@ -1125,6 +1127,7 @@ namespace Chamsoc.Controllers
             ViewBag.StartDate = effectiveStartDate;
             ViewBag.EndDate = effectiveEndDate;
             ViewBag.Status = status;
+            ViewBag.SearchName = searchName;
             ViewBag.CurrentPage = page;
 
             var pageSize = 10; // Số lượng item trên mỗi trang
@@ -1140,6 +1143,15 @@ namespace Chamsoc.Controllers
             if (!string.IsNullOrEmpty(status))
             {
                 query = query.Where(j => j.PaymentStatus == status);
+            }
+
+            // Add search by name functionality
+            if (!string.IsNullOrEmpty(searchName))
+            {
+                searchName = searchName.ToLower();
+                query = query.Where(j => 
+                    j.Senior.User.FullName.ToLower().Contains(searchName) || 
+                    j.Caregiver.User.FullName.ToLower().Contains(searchName));
             }
 
             // Tính tổng số trang
@@ -1535,6 +1547,14 @@ namespace Chamsoc.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult BalanceHistory()
         {
+            // Lấy tổng số tiền từ tất cả giao dịch hoàn thành
+            var totalPayments = _context.CareJobs
+                .Where(j => j.Status == "Hoàn thành")
+                .Sum(j => j.TotalBill);
+
+            // Lưu vào ViewBag để view có thể sử dụng
+            ViewBag.TotalPayments = totalPayments;
+
             var users = _userManager.Users
                 .Where(u => u.Role != "Admin")
                 .ToList()
@@ -1590,6 +1610,32 @@ namespace Chamsoc.Controllers
                 .ToList();
 
             return View(users);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetTransactionDetails(string userId)
+        {
+            try
+            {
+                var transactions = await _context.CareJobs
+                    .Where(j => j.Senior.UserId == userId || j.Caregiver.UserId == userId)
+                    .OrderByDescending(j => j.CreatedAt)
+                    .Select(j => new
+                    {
+                        createdAt = j.CreatedAt,
+                        totalAmount = j.TotalBill,
+                        serviceType = j.ServiceType,
+                        status = j.Status
+                    })
+                    .ToListAsync();
+
+                return Json(new { success = true, data = transactions });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
     }
 }

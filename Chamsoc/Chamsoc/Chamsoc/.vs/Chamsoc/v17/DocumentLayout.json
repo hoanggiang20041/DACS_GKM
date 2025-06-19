@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\giang\\desktop\\dacs_2705\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\controllers\\chatbotcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:controllers\\chatbotcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|c:\\users\\giang\\desktop\\dacs_2705\\dacs_gkm\\chamsoc\\chamsoc\\chamsoc\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{51EAFDA6-E54E-4590-91C5-04F9DBFE9D9C}|Chamsoc.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
@@ -188,37 +192,40 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 1,
           "Children": [
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "20250528190209_Them1234.cs",
-              "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250528190209_Them1234.cs",
-              "RelativeDocumentMoniker": "Migrations\\20250528190209_Them1234.cs",
-              "ToolTip": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250528190209_Them1234.cs",
-              "RelativeToolTip": "Migrations\\20250528190209_Them1234.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "ChatbotController.cs",
+              "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\ChatbotController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ChatbotController.cs",
+              "ToolTip": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\ChatbotController.cs",
+              "RelativeToolTip": "Controllers\\ChatbotController.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-28T19:02:09.846Z",
+              "WhenOpened": "2025-06-07T12:23:43.395Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Chamsoc",
+              "DocumentIndex": 4,
+              "Title": "Chamsoc.csproj",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Chamsoc.csproj",
               "RelativeDocumentMoniker": "Chamsoc.csproj",
               "ToolTip": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Chamsoc.csproj",
               "RelativeToolTip": "Chamsoc.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-05-28T18:52:00.309Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-28T18:52:00.309Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "NuGet.Config",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\NuGet.Config",
               "RelativeDocumentMoniker": "NuGet.Config",
@@ -226,16 +233,11 @@
               "RelativeToolTip": "NuGet.Config",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2025-05-28T18:51:42.088Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+              "WhenOpened": "2025-05-28T18:51:42.088Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "ManagePayments.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\ManagePayments.cshtml",
               "RelativeDocumentMoniker": "Views\\Admin\\ManagePayments.cshtml",
@@ -247,7 +249,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "ListCaregivers.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Caregivers\\ListCaregivers.cshtml",
               "RelativeDocumentMoniker": "Views\\Caregivers\\ListCaregivers.cshtml",
@@ -259,7 +261,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "GenerateQR.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\VietQR\\GenerateQR.cshtml",
               "RelativeDocumentMoniker": "Views\\VietQR\\GenerateQR.cshtml",
@@ -267,12 +269,11 @@
               "RelativeToolTip": "Views\\VietQR\\GenerateQR.cshtml",
               "ViewState": "AgIAABsAAAAAAAAAAAAAABIAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-19T07:51:21.178Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-19T07:51:21.178Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -285,7 +286,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 2,
+              "Title": "20250528190209_Them1234.cs",
+              "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250528190209_Them1234.cs",
+              "RelativeDocumentMoniker": "Migrations\\20250528190209_Them1234.cs",
+              "ToolTip": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250528190209_Them1234.cs",
+              "RelativeToolTip": "Migrations\\20250528190209_Them1234.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-28T19:02:09.846Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
               "Title": "ControllerThanhToan.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\ControllerThanhToan.cs",
               "RelativeDocumentMoniker": "Controllers\\ControllerThanhToan.cs",
@@ -297,7 +310,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -305,12 +318,11 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAAJ4AAAAAAAAAAAAwwLUAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-19T07:39:02.584Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-19T07:39:02.584Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "AdminController.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\AdminController.cs",
               "RelativeDocumentMoniker": "Controllers\\AdminController.cs",
@@ -322,7 +334,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "ManageUsers.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\ManageUsers.cshtml",
               "RelativeDocumentMoniker": "Views\\Admin\\ManageUsers.cshtml",
@@ -334,7 +346,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "Microsoft.NET.Sdk.DefaultItems.targets",
               "DocumentMoniker": "C:\\Program Files\\dotnet\\sdk\\9.0.100\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.Sdk.DefaultItems.targets",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\dotnet\\sdk\\9.0.100\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.Sdk.DefaultItems.targets",
@@ -346,7 +358,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "AccountController.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\AccountController.cs",
               "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
@@ -358,7 +370,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "HandleComplaint.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\HandleComplaint.cshtml",
               "RelativeDocumentMoniker": "Views\\Admin\\HandleComplaint.cshtml",
@@ -370,7 +382,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "_AdminLayout.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Shared\\_AdminLayout.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_AdminLayout.cshtml",
@@ -382,7 +394,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "TransactionStats.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\TransactionStats.cshtml",
               "RelativeDocumentMoniker": "Views\\Admin\\TransactionStats.cshtml",
@@ -394,7 +406,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "TransactionViewModel.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Models\\TransactionViewModel.cs",
               "RelativeDocumentMoniker": "Models\\TransactionViewModel.cs",
@@ -406,7 +418,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "CareJobsController.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\CareJobsController.cs",
               "RelativeDocumentMoniker": "Controllers\\CareJobsController.cs",
@@ -418,7 +430,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\CareJobs\\Details.cshtml",
               "RelativeDocumentMoniker": "Views\\CareJobs\\Details.cshtml",
@@ -430,7 +442,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "ManageComplaints.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Admin\\ManageComplaints.cshtml",
               "RelativeDocumentMoniker": "Views\\Admin\\ManageComplaints.cshtml",
@@ -442,7 +454,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "UpdateProfileCaregiver.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Shared\\UpdateProfileCaregiver.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\UpdateProfileCaregiver.cshtml",
@@ -454,7 +466,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 23,
               "Title": "SeniorsController.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\SeniorsController.cs",
               "RelativeDocumentMoniker": "Controllers\\SeniorsController.cs",
@@ -466,7 +478,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "CaregiversController.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\CaregiversController.cs",
               "RelativeDocumentMoniker": "Controllers\\CaregiversController.cs",
@@ -478,7 +490,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 26,
               "Title": "ViewNotification.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Notifications\\ViewNotification.cshtml",
               "RelativeDocumentMoniker": "Views\\Notifications\\ViewNotification.cshtml",
@@ -490,7 +502,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 24,
               "Title": "BookCaregiver.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\CareJobs\\BookCaregiver.cshtml",
               "RelativeDocumentMoniker": "Views\\CareJobs\\BookCaregiver.cshtml",
@@ -502,7 +514,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 25,
               "Title": "BookCaregiver.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Caregivers\\BookCaregiver.cshtml",
               "RelativeDocumentMoniker": "Views\\Caregivers\\BookCaregiver.cshtml",
@@ -514,7 +526,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 27,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
@@ -526,7 +538,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 28,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\CareJobs\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\CareJobs\\Index.cshtml",
@@ -538,7 +550,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 29,
               "Title": "20250519080558_chamsoc.cs",
               "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250519080558_chamsoc.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Migrations\\20250519080558_chamsoc.cs",
@@ -549,7 +561,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 31,
               "Title": "MakeDeposit.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Deposit\\MakeDeposit.cshtml",
               "RelativeDocumentMoniker": "Views\\Deposit\\MakeDeposit.cshtml",
@@ -561,7 +573,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 30,
               "Title": "SubmitComplaint.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\CareJobs\\SubmitComplaint.cshtml",
               "RelativeDocumentMoniker": "Views\\CareJobs\\SubmitComplaint.cshtml",
@@ -573,7 +585,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 33,
               "Title": "CareJob.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Models\\CareJob.cs",
               "RelativeDocumentMoniker": "Models\\CareJob.cs",
@@ -585,7 +597,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 32,
               "Title": "NotificationsController.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\NotificationsController.cs",
               "RelativeDocumentMoniker": "Controllers\\NotificationsController.cs",
@@ -597,7 +609,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 34,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Data\\AppDbContext.cs",
               "RelativeDocumentMoniker": "Data\\AppDbContext.cs",
@@ -609,7 +621,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 35,
               "Title": "DepositSuccess.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Caregivers\\DepositSuccess.cshtml",
               "RelativeDocumentMoniker": "Views\\Caregivers\\DepositSuccess.cshtml",
@@ -621,7 +633,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 36,
               "Title": "ViewProfileSenior.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Account\\ViewProfileSenior.cshtml",
               "RelativeDocumentMoniker": "Views\\Account\\ViewProfileSenior.cshtml",
@@ -633,7 +645,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 37,
               "Title": "ProfileCaregiver.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Account\\ProfileCaregiver.cshtml",
               "RelativeDocumentMoniker": "Views\\Account\\ProfileCaregiver.cshtml",
@@ -645,7 +657,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 38,
               "Title": "DepositController.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Controllers\\DepositController.cs",
               "RelativeDocumentMoniker": "Controllers\\DepositController.cs",
@@ -657,7 +669,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 39,
               "Title": "RateCaregiver.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\CareJobs\\RateCaregiver.cshtml",
               "RelativeDocumentMoniker": "Views\\CareJobs\\RateCaregiver.cshtml",
@@ -669,7 +681,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 40,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Views\\Notifications\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Notifications\\Index.cshtml",
@@ -681,7 +693,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 41,
               "Title": "Transaction.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Models\\Transaction.cs",
               "RelativeDocumentMoniker": "Models\\Transaction.cs",
@@ -693,7 +705,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 42,
               "Title": "Complaint.cs",
               "DocumentMoniker": "C:\\Users\\giang\\Desktop\\DACS_2705\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\Models\\Complaint.cs",
               "RelativeDocumentMoniker": "Models\\Complaint.cs",
@@ -705,7 +717,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 43,
               "Title": "Privacy.cshtml",
               "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Views\\Home\\Privacy.cshtml",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Views\\Home\\Privacy.cshtml",
@@ -716,7 +728,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 44,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Views\\Home\\Index.cshtml",
@@ -727,7 +739,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 45,
               "Title": "DepositController.cs",
               "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Controllers\\DepositController.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Controllers\\DepositController.cs",
@@ -738,7 +750,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 46,
               "Title": "Chamsoc.Web.csproj",
               "DocumentMoniker": "C:\\Users\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Chamsoc.Web.csproj",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\admin\\Desktop\\DACS_GKM\\Chamsoc\\Chamsoc\\Chamsoc\\src\\Chamsoc.Web\\Chamsoc.Web.csproj",

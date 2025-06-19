@@ -209,6 +209,26 @@
             <div class="modal-body">
                 <form id="filterForm" class="row g-3">
                     <div class="col-md-6">
+                        <label class="form-label">Người cần chăm sóc:</label>
+                        <select class="form-select" id="seniorFilter">
+                            <option value="">Tất cả người cần chăm sóc</option>
+                            @foreach (var senior in Model.Select(p => p.SeniorName).Distinct())
+                            {
+                                <option value="@senior">@senior</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Người chăm sóc:</label>
+                        <select class="form-select" id="caregiverFilter">
+                            <option value="">Tất cả người chăm sóc</option>
+                            @foreach (var caregiver in Model.Select(p => p.CaregiverName).Distinct())
+                            {
+                                <option value="@caregiver">@caregiver</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label">Trạng thái:</label>
                         <select class="form-select" id="statusFilter">
                             <option value="">Tất cả trạng thái</option>
@@ -221,29 +241,7 @@
                         <label class="form-label">Phương thức thanh toán:</label>
                         <select class="form-select" id="paymentMethodFilter">
                             <option value="">Tất cả phương thức</option>
-                            <option value="Cash">Tiền mặt</option>
                             <option value="Bank">Chuyển khoản</option>
-                            <option value="Momo">Ví Momo</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Người cần chăm sóc:</label>
-                        <select class="form-select" id="seniorFilter">
-                            <option value="">Tất cả người cần chăm sóc</option>
-                            @foreach (var payment in Model.Select(p => p.SeniorName).Distinct())
-                            {
-                                <option value="@payment">@payment</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Người chăm sóc:</label>
-                        <select class="form-select" id="caregiverFilter">
-                            <option value="">Tất cả người chăm sóc</option>
-                            @foreach (var payment in Model.Select(p => p.CaregiverName).Distinct())
-                            {
-                                <option value="@payment">@payment</option>
-                            }
                         </select>
                     </div>
                     <div class="col-md-6">
@@ -437,6 +435,7 @@
         $(document).ready(function () {
             initializeDataTable();
             initializeDatePickers();
+            initializeFromUrl();
         });
 
         function initializeDataTable() {
@@ -450,33 +449,163 @@
                 columnDefs: [
                     { orderable: false, targets: [9] }
                 ],
+                dom: 'lrtip',
                 initComplete: function() {
-                    // Khởi tạo các bộ lọc sau khi DataTable được tạo
-                    updateFilters();
+                    updateFilterDropdowns();
                 }
+            });
+
+            setupFilterEvents();
+        }
+
+        function updateFilterDropdowns() {
+            const currentSenior = $('#seniorFilter').val();
+            const currentCaregiver = $('#caregiverFilter').val();
+
+            const seniors = new Set();
+            paymentsTable.rows().every(function(rowIdx, tableLoop, rowLoop) {
+                const seniorName = $(this.data()[1]).find('.font-size-14').text().trim();
+                if (seniorName) seniors.add(seniorName);
+            });
+            
+            const seniorFilter = $('#seniorFilter');
+            seniorFilter.empty().append('<option value="">Tất cả người cần chăm sóc</option>');
+            Array.from(seniors).sort().forEach(senior => {
+                seniorFilter.append(`<option value="${senior}">${senior}</option>`);
+            });
+
+            const caregivers = new Set();
+            paymentsTable.rows().every(function(rowIdx, tableLoop, rowLoop) {
+                const caregiverName = $(this.data()[2]).find('.font-size-14').text().trim();
+                if (caregiverName) caregivers.add(caregiverName);
+            });
+
+            const caregiverFilter = $('#caregiverFilter');
+            caregiverFilter.empty().append('<option value="">Tất cả người chăm sóc</option>');
+            Array.from(caregivers).sort().forEach(caregiver => {
+                caregiverFilter.append(`<option value="${caregiver}">${caregiver}</option>`);
+            });
+
+            if (currentSenior) seniorFilter.val(currentSenior);
+            if (currentCaregiver) caregiverFilter.val(currentCaregiver);
+        }
+
+        function setupFilterEvents() {
+            // Xóa các sự kiện change tự động
+            // $('#seniorFilter, #caregiverFilter, #statusFilter, #paymentMethodFilter').on('change', function() {
+            //     applyFilters();
+            // });
+
+            // $('#startDate, #endDate, #minAmount, #maxAmount').on('change', function() {
+            //     applyFilters();
+            // });
+
+            // Chỉ áp dụng filter khi nhấn nút
+            $('#filterModal .btn-primary').on('click', function() {
+                applyFilters();
             });
         }
 
-        function updateFilters() {
-            // Cập nhật danh sách người cần chăm sóc
-            const seniorSelect = $('#seniorFilter');
-            seniorSelect.empty().append('<option value="">Tất cả người cần chăm sóc</option>');
-            const seniors = [...new Set(paymentsTable.column(1).data().toArray())];
-            seniors.forEach(senior => {
-                if (senior) {
-                    seniorSelect.append(`<option value="${senior}">${senior}</option>`);
+        // Thêm sự kiện cho form để ngăn submit mặc định
+        $(document).ready(function() {
+            $('#filterForm').on('submit', function(e) {
+                e.preventDefault();
+                applyFilters();
+            });
+        });
+
+        function applyFilters() {
+            const filters = {
+                senior: $('#seniorFilter').val(),
+                caregiver: $('#caregiverFilter').val(),
+                status: $('#statusFilter').val(),
+                paymentMethod: $('#paymentMethodFilter').val(),
+                startDate: $('#startDate').val(),
+                endDate: $('#endDate').val(),
+                minAmount: $('#minAmount').val(),
+                maxAmount: $('#maxAmount').val(),
+                sortBy: $('#sortBy').val(),
+                sortOrder: $('#sortOrder').val()
+            };
+
+            // Reset tất cả các bộ lọc trước
+            paymentsTable.search('').columns().search('');
+            $.fn.dataTable.ext.search = [];
+
+            // Thêm bộ lọc tùy chỉnh
+            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                let row = $(paymentsTable.row(dataIndex).node());
+                
+                // Lọc theo người cần chăm sóc
+                if (filters.senior) {
+                    let seniorName = row.find('td:eq(1) .font-size-14').text().trim();
+                    if (seniorName !== filters.senior) return false;
                 }
+
+                // Lọc theo người chăm sóc
+                if (filters.caregiver) {
+                    let caregiverName = row.find('td:eq(2) .font-size-14').text().trim();
+                    if (caregiverName !== filters.caregiver) return false;
+                }
+
+                // Lọc theo trạng thái
+                if (filters.status) {
+                    let status = row.find('td:eq(6) span').text().trim();
+                    if (status !== filters.status) return false;
+                }
+
+                // Lọc theo khoảng thời gian
+                if (filters.startDate && filters.endDate) {
+                    let dateStr = row.find('td:eq(7)').text().trim();
+                    let dateParts = dateStr.split(' ')[0].split('/');
+                    let date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+                    let start = new Date(filters.startDate);
+                    let end = new Date(filters.endDate);
+                    end.setHours(23, 59, 59);
+
+                    if (date < start || date > end) return false;
+                }
+
+                // Lọc theo khoảng tiền
+                if (filters.minAmount || filters.maxAmount) {
+                    let amountStr = row.find('td:eq(3)').text().trim();
+                    let amount = parseFloat(amountStr.replace(/[^\d]/g, ''));
+                    let min = filters.minAmount ? parseFloat(filters.minAmount) : 0;
+                    let max = filters.maxAmount ? parseFloat(filters.maxAmount) : Infinity;
+
+                    if (amount < min || amount > max) return false;
+                }
+
+                return true;
             });
 
-            // Cập nhật danh sách người chăm sóc
-            const caregiverSelect = $('#caregiverFilter');
-            caregiverSelect.empty().append('<option value="">Tất cả người chăm sóc</option>');
-            const caregivers = [...new Set(paymentsTable.column(2).data().toArray())];
-            caregivers.forEach(caregiver => {
-                if (caregiver) {
-                    caregiverSelect.append(`<option value="${caregiver}">${caregiver}</option>`);
-                }
-            });
+            // Áp dụng sắp xếp
+            let sortColumnIndex = getSortColumnIndex(filters.sortBy);
+            paymentsTable.order([sortColumnIndex, filters.sortOrder]).draw();
+
+            // Đóng modal sau khi lọc
+            $('#filterModal').modal('hide');
+        }
+
+        function getSortColumnIndex(sortBy) {
+            switch (sortBy) {
+                case 'id': return 0;
+                case 'date': return 7;
+                case 'amount': return 3;
+                case 'status': return 6;
+                default: return 0;
+            }
+        }
+
+        function resetFilters() {
+            $('#filterForm')[0].reset();
+            initializeDatePickers();
+            
+            paymentsTable.search('').columns().search('');
+            $.fn.dataTable.ext.search = [];
+            paymentsTable.order([0, 'desc']).draw();
+            
+            updateFilterDropdowns();
         }
 
         function initializeDatePickers() {
@@ -486,6 +615,27 @@
 
             $('#startDate').val(thirtyDaysAgo.toISOString().split('T')[0]);
             $('#endDate').val(today.toISOString().split('T')[0]);
+        }
+
+        function initializeFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchName = urlParams.get('searchName');
+            const status = urlParams.get('status');
+            const startDate = urlParams.get('startDate');
+            const endDate = urlParams.get('endDate');
+
+            if (searchName) {
+                $('#searchName').val(decodeURIComponent(searchName));
+            }
+            if (status) {
+                $('#statusFilter').val(status);
+            }
+            if (startDate) {
+                $('#startDate').val(startDate);
+            }
+            if (endDate) {
+                $('#endDate').val(endDate);
+            }
         }
 
         function approvePayment(paymentId) {
@@ -653,98 +803,6 @@
                 case 'Từ chối': return 'Từ chối';
                 default: return status;
             }
-        }
-
-        function applyFilters() {
-            const status = $('#statusFilter').val();
-            const paymentMethod = $('#paymentMethodFilter').val();
-            const startDate = $('#startDate').val();
-            const endDate = $('#endDate').val();
-            const minAmount = $('#minAmount').val();
-            const maxAmount = $('#maxAmount').val();
-            const sortBy = $('#sortBy').val();
-            const sortOrder = $('#sortOrder').val();
-            const senior = $('#seniorFilter').val();
-            const caregiver = $('#caregiverFilter').val();
-
-            // Xóa tất cả các bộ lọc hiện tại
-            paymentsTable.search('').columns().search('');
-
-            // Áp dụng bộ lọc trạng thái
-            if (status) {
-                paymentsTable.column(6).search(status);
-            }
-
-            // Áp dụng bộ lọc phương thức thanh toán
-            if (paymentMethod) {
-                paymentsTable.column(8).search(paymentMethod);
-            }
-
-            // Áp dụng bộ lọc người cần chăm sóc
-            if (senior) {
-                paymentsTable.column(1).search(senior);
-            }
-
-            // Áp dụng bộ lọc người chăm sóc
-            if (caregiver) {
-                paymentsTable.column(2).search(caregiver);
-            }
-
-            // Áp dụng bộ lọc ngày
-            if (startDate && endDate) {
-                $.fn.dataTable.ext.search.push(
-                    function(settings, data, dataIndex) {
-                        const date = new Date(data[7]);
-                        const min = new Date(startDate);
-                        const max = new Date(endDate);
-                        return (date >= min && date <= max);
-                    }
-                );
-            }
-
-            // Áp dụng bộ lọc số tiền
-            if (minAmount || maxAmount) {
-                $.fn.dataTable.ext.search.push(
-                    function(settings, data, dataIndex) {
-                        const amount = parseFloat(data[3].replace(/[^\d]/g, ''));
-                        const min = minAmount ? parseFloat(minAmount) : 0;
-                        const max = maxAmount ? parseFloat(maxAmount) : Infinity;
-                        return (amount >= min && amount <= max);
-                    }
-                );
-            }
-
-            // Áp dụng sắp xếp
-            const sortColumnIndex = getSortColumnIndex(sortBy);
-            paymentsTable.order([sortColumnIndex, sortOrder]);
-
-            // Vẽ lại bảng
-            paymentsTable.draw();
-
-            $('#filterModal').modal('hide');
-        }
-
-        function getSortColumnIndex(sortBy) {
-            switch (sortBy) {
-                case 'id': return 0;
-                case 'date': return 7;
-                case 'amount': return 3;
-                case 'status': return 6;
-                default: return 0;
-            }
-        }
-
-        function resetFilters() {
-            // Reset form
-            $('#filterForm')[0].reset();
-            initializeDatePickers();
-
-            // Xóa tất cả các bộ lọc
-            $.fn.dataTable.ext.search = [];
-            paymentsTable.search('').columns().search('');
-
-            // Vẽ lại bảng
-            paymentsTable.draw();
         }
     </script>
 } 

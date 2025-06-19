@@ -3,21 +3,78 @@
 @{
     ViewData["Title"] = "Lịch sử số dư";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    // Tính tổng tiền cọc (30%) từ các giao dịch hoàn thành
+    var adminBalance = Model
+        .Where(u => u.RecentTransactions != null && u.RecentTransactions.Any())
+        .SelectMany(u => u.RecentTransactions)
+        .Where(t => t.Status == "Hoàn thành")
+        .Sum(t => t.TotalAmount * 0.3M);  // 30% của mỗi giao dịch
+
+    // Tổng số dư hệ thống là tổng của tất cả giao dịch hoàn thành
+    var totalSystemBalance = Model
+        .Where(u => u.RecentTransactions != null && u.RecentTransactions.Any())
+        .SelectMany(u => u.RecentTransactions)
+        .Where(t => t.Status == "Hoàn thành")
+        .Sum(t => t.TotalAmount);
 }
 
 <div class="row">
     <div class="col-12">
+        <!-- Bộ lọc -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <form id="filterForm" class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Người cần chăm sóc:</label>
+                        <select class="form-select" id="seniorFilter">
+                            <option value="">Tất cả người cần chăm sóc</option>
+                            @foreach (var user in Model.Where(u => u.Role == "Senior").Select(u => new { u.FullName }).Distinct())
+                            {
+                                <option value="@user.FullName">@user.FullName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Người chăm sóc:</label>
+                        <select class="form-select" id="caregiverFilter">
+                            <option value="">Tất cả người chăm sóc</option>
+                            @foreach (var user in Model.Where(u => u.Role == "Caregiver").Select(u => new { u.FullName }).Distinct())
+                            {
+                                <option value="@user.FullName">@user.FullName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">&nbsp;</label>
+                        <button type="button" class="btn btn-primary w-100" onclick="applyFilters()">
+                            <i class="fas fa-filter me-2"></i>Lọc
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tổng số dư -->
         <div class="card shadow-sm mb-4">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3 class="card-title mb-0">
                         <i class="fas fa-wallet me-2"></i>Tổng số dư hệ thống
                     </h3>
-                    <h2 class="text-primary mb-0">@Model.Sum(u => u.CurrentBalance).ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</h2>
+                    <div class="text-end">
+                        <div class="small text-muted mb-1">
+                            Số dư Admin: @(ViewBag.AdminBalance?.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))) VNĐ
+                        </div>
+                        <h2 class="text-primary mb-0" id="totalBalance">
+                            @(ViewBag.TotalAmount?.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))) VNĐ
+                        </h2>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- Bảng lịch sử -->
         <div class="card shadow-sm">
             <div class="card-body">
                 <h3 class="card-title mb-4">
@@ -27,19 +84,20 @@
                 @if (Model != null && Model.Count > 0)
                 {
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table table-hover" id="transactionTable">
                             <thead>
                                 <tr>
                                     <th>Người dùng</th>
                                     <th>Vai trò</th>
                                     <th>Số dư hiện tại</th>
                                     <th>Giao dịch gần đây</th>
+                                    <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var user in Model)
                                 {
-                                    <tr>
+                                    <tr data-role="@user.Role" data-name="@user.FullName">
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div class="avatar me-2">
@@ -59,47 +117,28 @@
                                                 @user.Role
                                             </span>
                                         </td>
-                                        <td>@user.CurrentBalance.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</td>
+                                        <td>
+                                            @{
+                                                var userTotal = user.RecentTransactions?
+                                                    .Where(t => t.Status == "Hoàn thành")
+                                                    .Sum(t => t.TotalAmount) ?? 0;
+                                            }
+                                            @userTotal.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ
+                                        </td>
                                         <td>
                                             @if (user.RecentTransactions != null && user.RecentTransactions.Count > 0)
                                             {
-                                                <div class="table-responsive">
-                                                    <table class="table table-sm mb-0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Thời gian</th>
-                                                                <th>Số tiền</th>
-                                                                <th>Loại dịch vụ</th>
-                                                                <th>Trạng thái</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach (var transaction in user.RecentTransactions)
-                                                            {
-                                                                <tr>
-                                                                    <td>@transaction.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
-                                                                    <td>@transaction.TotalAmount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) VNĐ</td>
-                                                                    <td>
-                                                                        <span class="badge bg-info">
-                                                                            @transaction.ServiceType
-                                                                        </span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <span class="badge @(transaction.Status == "Hoàn thành" ? "bg-success" : 
-                                                                                            transaction.Status == "Chờ thanh toán" ? "bg-warning" : 
-                                                                                            transaction.Status == "Hủy" ? "bg-danger" : "bg-info")">
-                                                                            @transaction.Status
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                            }
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                <span class="text-success">@user.RecentTransactions.Count giao dịch</span>
+                                                <td>
+                                                    <button type="button" class="btn btn-info btn-sm" onclick="showTransactionDetails('@user.UserId')">
+                                                        <i class="fas fa-info-circle"></i> Chi tiết
+                                                    </button>
+                                                </td>
                                             }
                                             else
                                             {
                                                 <span class="text-muted">Chưa có giao dịch</span>
+                                                <td></td>
                                             }
                                         </td>
                                     </tr>
@@ -119,6 +158,158 @@
         </div>
     </div>
 </div>
+
+<!-- Modal chi tiết giao dịch -->
+<div class="modal fade" id="transactionDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-info-circle me-2"></i>Chi tiết giao dịch
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="transactionDetailsContent">
+                <!-- Nội dung sẽ được điền bằng JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            initializeDataTable();
+        });
+
+        function initializeDataTable() {
+            $('#transactionTable').DataTable({
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.10.24/i18n/Vietnamese.json"
+                },
+                pageLength: 10,
+                order: [[0, "asc"]],
+                dom: 'lrtip'
+            });
+        }
+
+        function applyFilters() {
+            const seniorFilter = $('#seniorFilter').val();
+            const caregiverFilter = $('#caregiverFilter').val();
+
+            // Reset tất cả các hàng về trạng thái hiển thị
+            $('#transactionTable tbody tr').show();
+
+            // Nếu cả hai filter đều là "Tất cả" thì không cần lọc
+            if (!seniorFilter && !caregiverFilter) {
+                updateTotalBalance();
+                return;
+            }
+
+            $('#transactionTable tbody tr').each(function() {
+                const $row = $(this);
+                const role = $row.data('role');
+                const name = $row.data('name');
+                let shouldShow = true;
+
+                // Nếu đã chọn lọc Senior và row là Senior
+                if (seniorFilter && role === 'Senior') {
+                    shouldShow = name === seniorFilter;
+                }
+                // Nếu đã chọn lọc Caregiver và row là Caregiver
+                else if (caregiverFilter && role === 'Caregiver') {
+                    shouldShow = name === caregiverFilter;
+                }
+                // Nếu row không thuộc loại đang lọc, ẩn đi
+                else if ((seniorFilter && role !== 'Senior') || (caregiverFilter && role !== 'Caregiver')) {
+                    shouldShow = false;
+                }
+
+                $row.toggle(shouldShow);
+            });
+
+            // Cập nhật tổng số dư
+            updateTotalBalance();
+        }
+
+        function updateTotalBalance() {
+            let total = 0;
+            $('#transactionTable tbody tr:visible').each(function() {
+                if ($(this).find('td:eq(3)').length > 0) {
+                    const balanceText = $(this).find('td:eq(2)').text();
+                    const balance = parseInt(balanceText.replace(/[^\d]/g, ''));
+                    if (!isNaN(balance)) {
+                        total += balance;
+                    }
+                }
+            });
+
+            $('#totalBalance').text(total.toLocaleString('vi-VN') + ' VNĐ');
+        }
+
+        // Thêm sự kiện reset filter
+        function resetFilters() {
+            $('#seniorFilter').val('');
+            $('#caregiverFilter').val('');
+            $('#transactionTable tbody tr').show();
+            updateTotalBalance();
+        }
+
+        function showTransactionDetails(userId) {
+            $.ajax({
+                url: '/Admin/GetTransactionDetails',
+                type: 'GET',
+                data: { userId: userId },
+                success: function(response) {
+                    if (response.success) {
+                        $('#transactionDetailsContent').html(formatTransactionDetails(response.data));
+                        $('#transactionDetailsModal').modal('show');
+                    } else {
+                        Swal.fire('Lỗi!', response.message, 'error');
+                    }
+                },
+                error: function() {
+                    Swal.fire('Lỗi!', 'Không thể tải thông tin chi tiết.', 'error');
+                }
+            });
+        }
+
+        function formatTransactionDetails(transactions) {
+            if (!transactions || transactions.length === 0) {
+                return '<div class="text-center py-4"><p class="text-muted">Không có giao dịch nào.</p></div>';
+            }
+
+            let html = '<div class="table-responsive"><table class="table table-hover">';
+            html += '<thead><tr>';
+            html += '<th>Thời gian</th>';
+            html += '<th>Số tiền</th>';
+            html += '<th>Loại dịch vụ</th>';
+            html += '<th>Trạng thái</th>';
+            html += '</tr></thead><tbody>';
+
+            transactions.forEach(function(transaction) {
+                html += '<tr>';
+                html += `<td>${new Date(transaction.createdAt).toLocaleString('vi-VN')}</td>`;
+                html += `<td>${transaction.totalAmount.toLocaleString('vi-VN')} VNĐ</td>`;
+                html += `<td><span class="badge bg-info">${transaction.serviceType}</span></td>`;
+                html += `<td><span class="badge ${getStatusClass(transaction.status)}">${transaction.status}</span></td>`;
+                html += '</tr>';
+            });
+
+            html += '</tbody></table></div>';
+            return html;
+        }
+
+        function getStatusClass(status) {
+            switch (status) {
+                case 'Hoàn thành': return 'bg-success';
+                case 'Chờ thanh toán': return 'bg-warning';
+                case 'Hủy': return 'bg-danger';
+                default: return 'bg-info';
+            }
+        }
+    </script>
+}
 
 <style>
     .avatar {
@@ -167,5 +358,10 @@
     .card-title {
         margin-bottom: 0;
         font-weight: 600;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
     }
 </style> 
